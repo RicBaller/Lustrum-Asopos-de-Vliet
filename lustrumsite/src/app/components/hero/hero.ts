@@ -1,0 +1,270 @@
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+
+@Component({
+  selector: 'app-hero',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: `
+    <section class="hero">
+      <!-- Animated noise/grain overlay -->
+      <div class="hero-grain"></div>
+
+      <!-- Floating organic blobs -->
+      <div class="blob blob-1"></div>
+      <div class="blob blob-2"></div>
+
+      <div class="hero-content">
+        <p class="hero-eyebrow">Asopos de Vliet presenteert</p>
+
+        <h1 class="hero-title">
+          <span class="title-line">DELE</span><span class="title-line accent">RIUM</span>
+        </h1>
+
+        <p class="hero-sub">
+          Een evolutie van chaos.<br>
+          Een viering van het ongetemd organisme.<br>
+          Welkom bij het 12e Lustrum.
+        </p>
+
+        <div class="hero-actions">
+          <div class="btn-half btn-half--left">
+            <a href="#programma" class="btn-primary">Ontdek de Chaos</a>
+          </div>
+          <div class="btn-half btn-half--right">
+            <a href="#tickets" class="btn-secondary">Tickets kopen</a>
+          </div>
+        </div>
+
+        <div class="scroll-cue">
+          <div class="scroll-line"></div>
+          <span>scroll</span>
+        </div>
+      </div>
+
+      <!-- Wave transition -->
+      <div class="hero-wave">
+        <svg viewBox="0 0 1440 160" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0,120 C240,0 480,160 720,80 C960,0 1200,140 1440,80 L1440,160 L0,160 Z" fill="#ff793e"/>
+        </svg>
+      </div>
+    </section>
+  `,
+  styles: [`
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      background: var(--surface);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    /* Grain texture */
+    .hero-grain {
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.05'/%3E%3C/svg%3E");
+      opacity: 0.4;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Organic blobs */
+    .blob {
+      position: absolute;
+      border-radius: var(--radius-pill);
+      filter: blur(80px);
+      pointer-events: none;
+    }
+
+    .blob-1 {
+      width: 600px;
+      height: 600px;
+      background: var(--surface-bright);
+      top: -200px;
+      right: -150px;
+      animation: float1 8s ease-in-out infinite;
+    }
+
+    .blob-2 {
+      width: 400px;
+      height: 400px;
+      background: #620080;
+      bottom: 100px;
+      left: -100px;
+      animation: float2 10s ease-in-out infinite;
+    }
+
+    @keyframes float1 {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(-30px, 40px) scale(1.05); }
+    }
+
+    @keyframes float2 {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(20px, -30px) scale(0.95); }
+    }
+
+    /* Content */
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      padding: 0 2rem;
+      width: 100%;
+      animation: fadeUp 1s ease both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(40px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero-eyebrow {
+      font-family: var(--font-body);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--secondary);
+      margin-bottom: 1.5rem;
+      animation: fadeUp 1s 0.1s ease both;
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(5rem, 18vw, 16rem);
+      font-weight: 700;
+      line-height: 0.9;
+      letter-spacing: -0.04em;
+      display: flex;
+      justify-content: center;
+      gap: 0;
+      margin-bottom: 2rem;
+      animation: fadeUp 1s 0.2s ease both;
+    }
+
+    .title-line {
+      color: var(--text-primary);
+    }
+
+    .title-line.accent {
+      color: var(--primary);
+    }
+
+    .hero-sub {
+      font-family: var(--font-body);
+      font-size: 1.125rem;
+      line-height: 1.7;
+      color: var(--text-secondary);
+      max-width: 480px;
+      margin: 0 auto 3rem;
+      animation: fadeUp 1s 0.3s ease both;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 0;
+      animation: fadeUp 1s 0.4s ease both;
+    }
+
+    .btn-half {
+      width: 50%;
+      display: flex;
+    }
+
+    .btn-half--left {
+      justify-content: flex-end;
+      padding-right: 0.5rem;
+    }
+
+    .btn-half--right {
+      justify-content: flex-start;
+      padding-left: 0.5rem;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: var(--on-primary);
+      font-family: var(--font-body);
+      font-size: 0.875rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 1rem 2.5rem;
+      border-radius: var(--radius-pill);
+      transition: background 0.2s, transform 0.2s;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dim);
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--secondary);
+      font-family: var(--font-body);
+      font-size: 0.875rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 1rem 2.5rem;
+      border-radius: var(--radius-pill);
+      border: 2px solid rgba(0, 251, 251, 0.3);
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--secondary);
+      transform: translateY(-2px);
+    }
+
+    /* Scroll cue */
+    .scroll-cue {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 2rem;
+      animation: fadeUp 1s 0.8s ease both;
+    }
+
+    .scroll-line {
+      width: 1px;
+      height: 60px;
+      background: var(--text-muted);
+      animation: scrollPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes scrollPulse {
+      0%, 100% { opacity: 0.3; height: 60px; }
+      50% { opacity: 0.8; height: 80px; }
+    }
+
+    .scroll-cue span {
+      font-family: var(--font-body);
+      font-size: 0.625rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    /* Wave */
+    .hero-wave {
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      right: 0;
+      z-index: 2;
+      line-height: 0;
+    }
+
+    .hero-wave svg {
+      display: block;
+      width: 100%;
+      height: 160px;
+    }
+  `]
+})
+export class Hero {}
