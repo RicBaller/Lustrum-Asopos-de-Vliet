@@ -1,0 +1,74 @@
+# Local development compose.
+#
+# Named volumes (vendor, themes, resources) are pre-populated from the image
+# the first time they are created, so no local `composer install` is required.
+#
+# First-time setup:
+#   docker compose up -d --build
+#   docker compose exec app php vendor/bin/sake dev/build flush=1
+#
+# After changing composer.json (new/updated packages), recreate the volumes:
+#   docker compose down -v
+#   docker compose up -d --build
+#
+# Override APP_PORT / DB_PORT by creating a .env file next to this file:
+#   APP_PORT=8080
+#   DB_PORT=3306
+
+services:
+  app:
+    build:
+      context: .
+      target: dev
+    ports:
+      - "${APP_PORT:-8080}:80"
+    volumes:
+      # Live-edit custom PHP code without rebuilding the image
+      - ./app:/var/www/html/app
+      # Named volumes pre-populated from the image on first creation
+      - vendor:/var/www/html/vendor
+      - themes:/var/www/html/themes
+      - resources:/var/www/html/public/_resources
+      # Persistent uploads and GraphQL schema cache
+      - assets:/var/www/html/public/assets
+      - graphql_cache:/var/www/html/.graphql-generated
+    environment:
+      SS_DATABASE_CLASS: MySQLDatabase
+      SS_DATABASE_SERVER: db
+      SS_DATABASE_USERNAME: silverstripe
+      SS_DATABASE_PASSWORD: silverstripe
+      SS_DATABASE_NAME: silverstripe
+      SS_ENVIRONMENT_TYPE: dev
+      SS_DEFAULT_ADMIN_USERNAME: silverstripe
+      SS_DEFAULT_ADMIN_PASSWORD: silverstripe
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: silverstripe
+      MYSQL_USER: silverstripe
+      MYSQL_PASSWORD: silverstripe
+
+    ports:
+      - "${DB_PORT:-3306}:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-prootpassword"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+volumes:
+  db_data:
+  vendor:
+  themes:
+  resources:
+  assets:
+  graphql_cache:

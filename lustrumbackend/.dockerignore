@@ -1,0 +1,24 @@
+# Build context exclusions for Docker
+# Composer-managed packages are installed fresh inside the image so the build
+# context stays small and CI environments don't need a local `composer install`.
+
+# Git metadata
+.git
+.gitignore
+.github
+
+# Composer output — injected into the image by Dockerfile stages
+vendor/
+themes/startup-theme/
+public/_resources/
+_resources/
+
+# Runtime generated files — never baked into the image
+.env
+.graphql-generated/
+public/_graphql/
+silverstripe-cache/
+public/assets/
+
+# Local development artefacts
+*.log
