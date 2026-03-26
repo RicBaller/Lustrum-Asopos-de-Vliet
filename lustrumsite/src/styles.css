@@ -1,0 +1,80 @@
+@import "tailwindcss";
+
+/* ─── Design Tokens ──────────────────────────────────────────────── */
+:root {
+  /* Surfaces — built from #3f0059 */
+  --surface:               #3f0059;
+  --surface-low:           #370050;
+  --surface-mid:           #4b0069;
+  --surface-high:          #580079;
+  --surface-highest:       #65008c;
+  --surface-bright:        #7d00aa;
+
+  /* Brand — #F06C30 orange */
+  --primary:               #F06C30;
+  --primary-dim:           #d45829;
+  --primary-fixed:         #F06C30;
+  --on-primary:            #3d1500;
+
+  /* Accent — #00FFFF cyan */
+  --secondary:             #00ffff;
+  --secondary-container:   #003d3d;
+  --on-secondary:          #002e2e;
+
+  /* Error */
+  --error:                 #ff6e84;
+
+  /* Text */
+  --text-primary:          #ffffff;
+  --text-secondary:        #f0d0ff;
+  --text-muted:            #c080dd;
+
+  /* Typography */
+  --font-display:          'Space Grotesk', sans-serif;
+  --font-body:             'Manrope', sans-serif;
+
+  /* Spacing */
+  --spacing-section:       7rem;
+  --spacing-gutter:        2rem;
+  --spacing-gap:           1.4rem;
+
+  /* Radius */
+  --radius-pill:           9999px;
+  --radius-xl:             3rem;
+  --radius-lg:             1.5rem;
+}
+
+/* ─── Reset & Base ───────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--surface);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+img { display: block; max-width: 100%; }
+
+a { color: inherit; text-decoration: none; }
+
+/* ─── Utility ────────────────────────────────────────────────────── */
+.pill { border-radius: var(--radius-pill); }
+.rounded-xl { border-radius: var(--radius-xl); }
+
+/* ─── Scrollbar ──────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--surface); }
+::-webkit-scrollbar-thumb { background: var(--surface-highest); border-radius: 3px; }
+

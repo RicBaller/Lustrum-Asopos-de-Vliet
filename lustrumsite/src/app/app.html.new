@@ -1,0 +1,9 @@
+<app-navbar />
+<main>
+  <app-hero />
+  <app-reveal-section />
+  <app-programma />
+  <app-beleef />
+  <app-cta-strip />
+</main>
+<app-footer />
