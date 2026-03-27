@@ -3,19 +3,21 @@ import { Navbar } from './components/navbar/navbar';
 import { Hero } from './components/hero/hero';
 import { RevealSection } from './components/reveal-section/reveal-section';
 import { Programma } from './components/programma/programma';
+import { KomendeChaos } from './components/komende-chaos/komende-chaos';
 import { Beleef } from './components/beleef/beleef';
 import { CtaStrip } from './components/cta-strip/cta-strip';
 import { Footer } from './components/footer/footer';
 
 @Component({
   selector: 'app-root',
-  imports: [Navbar, Hero, RevealSection, Programma, Beleef, CtaStrip, Footer],
+  imports: [Navbar, Hero, RevealSection, Programma, KomendeChaos, Beleef, CtaStrip, Footer],
   template: `
     <app-navbar />
     <main>
       <app-hero />
       <app-reveal-section />
       <app-programma />
+      <app-komende-chaos />
       <app-beleef />
       <app-cta-strip />
     </main>
