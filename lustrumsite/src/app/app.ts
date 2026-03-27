@@ -7,11 +7,13 @@ import { KomendeChaos } from './components/komende-chaos/komende-chaos';
 import { Beleef } from './components/beleef/beleef';
 import { CtaStrip } from './components/cta-strip/cta-strip';
 import { Footer } from './components/footer/footer';
+import { Preloader } from './components/preloader/preloader';
 
 @Component({
   selector: 'app-root',
-  imports: [Navbar, Hero, RevealSection, Programma, KomendeChaos, Beleef, CtaStrip, Footer],
+  imports: [Navbar, Hero, RevealSection, Programma, KomendeChaos, Beleef, CtaStrip, Footer, Preloader],
   template: `
+    <app-preloader />
     <app-navbar />
     <main>
       <app-hero />
