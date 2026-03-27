@@ -48,6 +48,7 @@ class ActivityController extends Controller
             'endDate'     => $activity->EndDate,
             'description' => $activity->Description,
             'ticketLink'  => $activity->TicketLink,
+            'image'       => $activity->Image()->exists() ? $activity->Image()->getAbsoluteURL() : null,
         ];
     }
 

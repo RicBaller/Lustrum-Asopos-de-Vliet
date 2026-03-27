@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use SilverStripe\AssetAdmin\Forms\UploadField;
+use SilverStripe\Assets\Image;
 use SilverStripe\Forms\DatetimeField;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\HTMLEditor\HTMLEditorField;
@@ -20,6 +22,14 @@ class Activity extends DataObject
         'TicketLink'  => 'Varchar(255)',
     ];
 
+    private static array $has_one = [
+        'Image' => Image::class,
+    ];
+
+    private static array $owns = [
+        'Image',
+    ];
+
     private static array $summary_fields = [
         'Title'     => 'Titel',
         'StartDate' => 'Startdatum',
@@ -36,6 +46,9 @@ class Activity extends DataObject
             DatetimeField::create('EndDate', 'Einddatum en -tijd'),
             HTMLEditorField::create('Description', 'Omschrijving'),
             TextField::create('TicketLink', 'Ticketlink'),
+            UploadField::create('Image', 'Afbeelding')
+                ->setAllowedFileCategories('image')
+                ->setFolderName('activiteiten'),
         ]);
 
         return $fields;
