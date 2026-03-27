@@ -21,8 +21,8 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 
         <p class="hero-sub">
           Een evolutie van chaos.<br>
-          Een viering van het ongetemd organisme.<br>
-          Welkom bij het 12e Lustrum.
+          Een viering van het ongetemde.<br>
+          Welkom bij het 13e Lustrum<br>van A.L.S.R.V. Asopos de Vliet.
         </p>
 
         <div class="hero-actions">
@@ -43,7 +43,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
       <!-- Wave transition -->
       <div class="hero-wave">
         <svg viewBox="0 0 1440 160" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M0,120 C240,0 480,160 720,80 C960,0 1200,140 1440,80 L1440,160 L0,160 Z" fill="#ff793e"/>
+          <path d="M0,120 C240,0 480,160 720,80 C960,0 1200,140 1440,80 L1440,160 L0,160 Z" fill="#F06C30"/>
         </svg>
       </div>
     </section>
