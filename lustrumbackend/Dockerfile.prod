@@ -70,4 +70,9 @@ RUN mkdir -p public/assets .graphql-generated \
     && chown -R www-data:www-data public/assets .graphql-generated \
     && chmod 775 public/assets .graphql-generated
 
+# Entrypoint: run SilverStripe build then hand off to Apache
+COPY docker/entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
 EXPOSE 80
+CMD ["/usr/local/bin/entrypoint.sh"]
