@@ -32,36 +32,32 @@ function getYoutubeWatchUrl(url: string): string {
         </header>
 
         <div class="video-cards">
-          @for (video of bekendmakingen(); track video.id) {
-            <a class="video-card" [href]="getWatchUrl(video.youtubeURL)" target="_blank" rel="noopener noreferrer">
-              <div class="video-card-thumb">
-                @if (getThumbnail(video.youtubeURL); as thumb) {
-                  <img [src]="thumb" [alt]="video.title" class="video-thumb-img" />
-                }
-                <div class="play-btn" aria-hidden="true">
-                  <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M8 5v14l11-7z"/>
-                  </svg>
+          @for (slot of slots(); track $index) {
+            @if (slot) {
+              <a class="video-card" [href]="getWatchUrl(slot.youtubeURL)" target="_blank" rel="noopener noreferrer">
+                <div class="video-card-thumb">
+                  @if (getThumbnail(slot.youtubeURL); as thumb) {
+                    <img [src]="thumb" [alt]="slot.title" class="video-thumb-img" />
+                  }
+                  <div class="play-btn" aria-hidden="true">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M8 5v14l11-7z"/>
+                    </svg>
+                  </div>
                 </div>
+                <p class="video-card-label">{{ slot.title }}</p>
+                @if (slot.credits) {
+                  <p class="video-card-credits">{{ slot.credits }}</p>
+                }
+              </a>
+            } @else {
+              <div class="video-card">
+                <div class="video-card-thumb">
+                  <div class="coming-soon-badge">BINNENKORT</div>
+                </div>
+                <p class="video-card-label">BINNENKORT</p>
               </div>
-              <p class="video-card-label">{{ video.title }}</p>
-              @if (video.credits) {
-                <p class="video-card-credits">{{ video.credits }}</p>
-              }
-            </a>
-          } @empty {
-            <div class="video-card">
-              <div class="video-card-thumb">
-                <div class="coming-soon-badge">BINNENKORT</div>
-              </div>
-              <p class="video-card-label">KLEUREN REVEAL</p>
-            </div>
-            <div class="video-card">
-              <div class="video-card-thumb">
-                <div class="coming-soon-badge">BINNENKORT</div>
-              </div>
-              <p class="video-card-label">LUSTRUM BEKENDMAKING</p>
-            </div>
+            }
           }
         </div>
       </div>
@@ -173,7 +169,7 @@ function getYoutubeWatchUrl(url: string): string {
 
     .video-card-credits {
       font-family: var(--font-body);
-      font-size: 0.75rem;
+      font-size: 0.9375rem;
       color: var(--on-primary);
       opacity: 0.7;
       margin-top: -0.5rem;
@@ -196,7 +192,7 @@ function getYoutubeWatchUrl(url: string): string {
 
     .video-card-label {
       font-family: var(--font-display);
-      font-size: 1rem;
+      font-size: 1.25rem;
       font-weight: 700;
       color: var(--surface);
       letter-spacing: 0.02em;
@@ -251,9 +247,15 @@ export class RevealSection {
 
   private readonly allVideos = toSignal(this.videoService.getAll(), { initialValue: [] });
 
-  readonly bekendmakingen = computed(() =>
+  private readonly bekendmakingen = computed(() =>
     this.allVideos().filter(v => v.category?.title === 'Bekendmaking')
   );
+
+  // Always exactly 2 slots: video or null (placeholder)
+  readonly slots = computed(() => {
+    const videos = this.bekendmakingen();
+    return [videos[0] ?? null, videos[1] ?? null] as const;
+  });
 
   readonly getThumbnail = getYoutubeThumbnail;
   readonly getWatchUrl = getYoutubeWatchUrl;
