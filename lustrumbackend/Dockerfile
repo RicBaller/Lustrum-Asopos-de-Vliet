@@ -11,7 +11,8 @@ RUN composer install \
         --no-dev \
         --no-interaction \
         --prefer-dist \
-        --optimize-autoloader
+        --optimize-autoloader \
+        --ignore-platform-reqs
 
 # ─── Stage 2: Shared PHP 8.3 + Apache base ─────────────────────────────────────
 FROM php:8.4-apache AS base
