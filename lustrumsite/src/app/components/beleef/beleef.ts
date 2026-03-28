@@ -1,0 +1,243 @@
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+
+interface Memory {
+  title: string;
+  date: string;
+  author: string;
+}
+
+@Component({
+  selector: 'app-beleef',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: `
+    <section class="beleef" id="archief">
+      <!-- Top wave from programma -->
+      <div class="beleef-wave-top">
+        <svg viewBox="0 0 1440 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0,120 L0,40 C200,100 600,0 900,60 C1100,100 1300,20 1440,50 L1440,0 L0,0 Z" fill="var(--primary-fixed)"/>
+        </svg>
+      </div>
+
+      <div class="beleef-inner">
+        <header class="beleef-header">
+          <div class="beleef-title-group">
+            <h2 class="section-title">BELEEF HET TERUG</h2>
+            <p class="beleef-sub">De laatste herinneringen aan het organisme.</p>
+          </div>
+          <div class="beleef-nav">
+            <button class="nav-arrow" aria-label="Vorige">←</button>
+            <button class="nav-arrow nav-arrow--active" aria-label="Volgende">→</button>
+          </div>
+        </header>
+
+        <div class="memories-track">
+          @for (mem of memories; track mem.title) {
+            <article class="memory-card">
+              <div class="memory-img">
+                <div class="memory-img-inner">
+                  <div class="memory-overlay">
+                    <div class="memory-meta">
+                      <span class="memory-date">{{ mem.date }}</span>
+                      <span class="memory-sep">·</span>
+                      <span class="memory-author">{{ mem.author }}</span>
+                    </div>
+                    <h3 class="memory-title">{{ mem.title }}</h3>
+                  </div>
+                </div>
+              </div>
+            </article>
+          }
+        </div>
+      </div>
+
+      <!-- Bottom wave into orange footer cta -->
+      <div class="beleef-wave-bottom">
+        <svg viewBox="0 0 1440 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0,50 C300,100 600,0 900,50 C1100,80 1300,20 1440,60 L1440,100 L0,100 Z" fill="var(--primary-fixed)"/>
+        </svg>
+      </div>
+    </section>
+  `,
+  styles: [`
+    .beleef {
+      position: relative;
+      background: var(--surface);
+      padding: calc(var(--spacing-section) + 80px) 0 calc(var(--spacing-section) + 60px);
+      overflow: hidden;
+    }
+
+    .beleef-wave-top {
+      position: absolute;
+      top: -2px;
+      left: 0;
+      right: 0;
+      line-height: 0;
+    }
+
+    .beleef-wave-top svg {
+      display: block;
+      width: 100%;
+      height: 120px;
+    }
+
+    .beleef-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 var(--spacing-gutter);
+    }
+
+    .beleef-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 3rem;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      font-weight: 700;
+      color: var(--primary);
+      letter-spacing: -0.03em;
+      line-height: 1;
+    }
+
+    .beleef-sub {
+      font-family: var(--font-body);
+      font-size: 1rem;
+      color: var(--text-muted);
+      margin-top: 0.75rem;
+    }
+
+    .beleef-nav {
+      display: flex;
+      gap: 0.75rem;
+    }
+
+    .nav-arrow {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius-pill);
+      border: 2px solid var(--surface-highest);
+      background: none;
+      color: var(--text-muted);
+      font-size: 1.125rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .nav-arrow--active, .nav-arrow:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    /* Memories track */
+    .memories-track {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    .memory-card {
+      cursor: pointer;
+    }
+
+    .memory-img {
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      aspect-ratio: 3/4;
+    }
+
+    .memory-img-inner {
+      width: 100%;
+      height: 100%;
+      background: var(--surface-highest);
+      position: relative;
+      transition: transform 0.4s ease;
+    }
+
+    .memory-card:hover .memory-img-inner {
+      transform: scale(1.03);
+    }
+
+    .memory-card:nth-child(1) .memory-img-inner { background: linear-gradient(180deg, #4b0069 0%, #6a0090 100%); }
+    .memory-card:nth-child(2) .memory-img-inner { background: linear-gradient(180deg, #3f0059 0%, #5c0080 100%); }
+    .memory-card:nth-child(3) .memory-img-inner { background: linear-gradient(180deg, #560075 0%, #7a00a8 100%); }
+
+    .memory-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(29, 0, 44, 0.9) 0%, transparent 50%);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 1.5rem;
+    }
+
+    .memory-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .memory-date,
+    .memory-author {
+      font-family: var(--font-body);
+      font-size: 0.6875rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .memory-sep {
+      color: var(--surface-bright);
+    }
+
+    .memory-title {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: -0.01em;
+      line-height: 1.2;
+    }
+
+    .beleef-wave-bottom {
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      right: 0;
+      line-height: 0;
+    }
+
+    .beleef-wave-bottom svg {
+      display: block;
+      width: 100%;
+      height: 100px;
+    }
+
+    @media (max-width: 768px) {
+      .memories-track {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .memories-track {
+        grid-template-columns: 1fr;
+      }
+    }
+  `]
+})
+export class Beleef {
+  readonly memories: Memory[] = [
+    { title: 'REVEAL PARTY 2024', date: '12 FEB', author: 'DOOR MIASCO' },
+    { title: 'VARSITY TRAININGSKAMP', date: '19 FEB', author: 'DOOR MIASCO' },
+    { title: 'DIES NATALIS BORREL', date: '26 FEB', author: 'DOOR MIASCO' },
+  ];
+}

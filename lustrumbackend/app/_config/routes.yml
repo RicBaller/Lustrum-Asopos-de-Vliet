@@ -1,0 +1,12 @@
+---
+Name: app-routes
+After: '#rootroutes'
+---
+SilverStripe\Control\Director:
+  rules:
+    'api/v1/activities//$ID': 'App\Api\ActivityController'
+    'api/v1/products//$ID': 'App\Api\ProductController'
+    'api/v1/categories//$ID': 'App\Api\CategoryController'
+    'api/v1/albums//$ID': 'App\Api\AlbumController'
+    'api/v1/commissie//$Action/$ID': 'App\Api\CommissieController'
+    'api/v1//$Action': 'App\Api\HelloWorldController'
