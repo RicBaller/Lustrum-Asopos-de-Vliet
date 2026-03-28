@@ -11,89 +11,104 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="preloader" [class.reveal]="revealing()" [class.done]="done()">
-      <!-- Animated rowing boat scene -->
-      <div class="scene">
-        <div class="water-bg"></div>
-
-        <!-- SVG rowing boat -->
-        <div class="boat-wrap">
-          <svg
-            class="boat"
-            viewBox="0 0 200 120"
-            xmlns="http://www.w3.org/2000/svg"
-            aria-hidden="true"
-          >
-            <!-- Water ripple lines -->
-            <ellipse class="ripple r1" cx="100" cy="95" rx="70" ry="6" />
-            <ellipse class="ripple r2" cx="100" cy="95" rx="50" ry="4" />
-
-            <!-- Hull -->
-            <path
-              d="M30 70 Q100 90 170 70 L160 82 Q100 100 40 82 Z"
-              fill="#F06C30"
-            />
-            <!-- Hull highlight -->
-            <path
-              d="M40 71 Q100 88 160 71 L158 74 Q100 91 42 74 Z"
-              fill="#ff8c55"
-              opacity="0.4"
-            />
-            <!-- Gunwale -->
-            <path
-              d="M30 70 Q100 85 170 70"
-              fill="none"
-              stroke="#d45829"
-              stroke-width="2"
-            />
-
-            <!-- Rower body -->
-            <rect x="90" y="46" width="18" height="24" rx="4" fill="#7d00aa" />
-            <!-- Rower head -->
-            <circle cx="99" cy="40" r="8" fill="#f0d0ff" />
-            <!-- Shirt stripe -->
-            <rect x="90" y="52" width="18" height="4" rx="1" fill="#00ffff" opacity="0.7" />
-
-            <!-- Oar left -->
-            <g class="oar oar-left">
-              <line x1="80" y1="68" x2="28" y2="82" stroke="#c8a060" stroke-width="3" stroke-linecap="round" />
-              <ellipse cx="27" cy="83" rx="10" ry="4" fill="#c8a060" opacity="0.9" transform="rotate(-15 27 83)" />
-            </g>
-            <!-- Oar right -->
-            <g class="oar oar-right">
-              <line x1="118" y1="68" x2="172" y2="82" stroke="#c8a060" stroke-width="3" stroke-linecap="round" />
-              <ellipse cx="173" cy="83" rx="10" ry="4" fill="#c8a060" opacity="0.9" transform="rotate(15 173 83)" />
+      <!-- The whole preloader container slides down at the end. The top edge is a wave. -->
+      <div class="water-container">
+        <!-- SVG Canvas for the Rowers -->
+        <svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" class="rowing-svg">
+          <defs>
+            <!-- Linker Riem -->
+            <g id="oar-left">
+              <g class="anim-oar-L">
+                <!-- Riem as -->
+                <line x1="0" y1="0" x2="-160" y2="0" stroke="#222" stroke-width="4" stroke-linecap="round"/>
+                <!-- Riem blad -->
+                <path d="M -160 -4 L -200 -7 L -205 7 L -160 4 Z" fill="#F06C30" stroke="#222" stroke-linejoin="round"/>
+              </g>
             </g>
 
-            <!-- Bow decoration -->
-            <path d="M165 74 L172 68 L172 76 Z" fill="#F06C30" />
-          </svg>
-        </div>
+            <!-- Rechter Riem -->
+            <g id="oar-right">
+              <g class="anim-oar-R">
+                <!-- Riem as -->
+                <line x1="0" y1="0" x2="160" y2="0" stroke="#222" stroke-width="4" stroke-linecap="round"/>
+                <!-- Riem blad -->
+                <path d="M 160 -4 L 200 -7 L 205 7 L 160 4 Z" fill="#F06C30" stroke="#222" stroke-linejoin="round"/>
+              </g>
+            </g>
 
-        <!-- Splash particles -->
-        <div class="splashes">
-          @for (s of splashes; track s) {
-            <span class="splash" [style.left]="s.left" [style.animation-delay]="s.delay"></span>
-          }
-        </div>
+            <!-- Individuele Roeier -->
+            <g id="rower">
+              <!-- Schouders/lichaam -->
+              <ellipse cx="0" cy="0" rx="18" ry="12" fill="#7d00aa" stroke="#222" stroke-width="1.5"/>
+              <!-- Hoofd -->
+              <circle cx="0" cy="-3" r="9" fill="#f0d0ff" stroke="#222" stroke-width="1.5"/>
+            </g>
+          </defs>
 
-        <!-- Logo overlay -->
-        <div class="brand">
-          <span class="brand-title">Delerium</span>
-          <span class="brand-sub">Lustrum Asopos de Vliet</span>
-        </div>
-      </div>
+          <!-- Animatie Groep: Dit geheel beweegt van boven naar beneden over het scherm -->
+          <g class="moving-down-group">
+            <!-- 2. Bewegende Waterrimpels -->
+            <g stroke="rgba(255, 255, 255, 0.25)" stroke-width="2.5" fill="none" stroke-linecap="round">
+              <g class="ripple ripple-1">
+                <path d="M 280 150 Q 400 180 520 150" />
+                <path d="M 240 250 Q 400 280 560 250" />
+              </g>
+              <g class="ripple ripple-2">
+                <path d="M 250 100 Q 400 130 550 100" />
+                <path d="M 290 350 Q 400 380 510 350" />
+              </g>
+              <g class="ripple ripple-3">
+                <path d="M 260 50 Q 400 80 540 50" />
+                <path d="M 230 420 Q 400 450 570 420" />
+              </g>
+            </g>
 
-      <!-- Wave curtain reveal overlay -->
-      <div class="curtain">
+            <!-- 3. De Roeiboot (Hull) -->
+            <g id="boat-group">
+              <!-- Vorm van de boot -->
+              <path d="M 400 60 
+                        C 430 180, 435 420, 400 540 
+                        C 365 420, 370 180, 400 60 Z" 
+                    fill="#3d1500" stroke="#222" stroke-width="2" stroke-linejoin="round"/>
+              
+              <!-- Middenlijn van de boot -->
+              <line x1="400" y1="60" x2="400" y2="540" stroke="#F06C30" stroke-width="2" />
+              
+              <!-- Zitplaatsen (bankjes) -->
+              <line x1="388" y1="185" x2="412" y2="185" stroke="#aaa" stroke-width="3" stroke-linecap="round"/>
+              <line x1="388" y1="265" x2="412" y2="265" stroke="#aaa" stroke-width="3" stroke-linecap="round"/>
+              <line x1="388" y1="345" x2="412" y2="345" stroke="#aaa" stroke-width="3" stroke-linecap="round"/>
+              <line x1="388" y1="425" x2="412" y2="425" stroke="#aaa" stroke-width="3" stroke-linecap="round"/>
+
+              <!-- 4. Riemen & Roeiers (Quad Scull) -->
+              <use href="#oar-left" x="385" y="180" />
+              <use href="#oar-right" x="415" y="180" />
+              <use href="#rower" x="400" y="180" />
+
+              <use href="#oar-left" x="385" y="260" />
+              <use href="#oar-right" x="415" y="260" />
+              <use href="#rower" x="400" y="260" />
+
+              <use href="#oar-left" x="385" y="340" />
+              <use href="#oar-right" x="415" y="340" />
+              <use href="#rower" x="400" y="340" />
+
+              <use href="#oar-left" x="385" y="420" />
+              <use href="#oar-right" x="415" y="420" />
+              <use href="#rower" x="400" y="420" />
+            </g>
+          </g>
+        </svg>
+
+        <!-- Wave Curtain Top -->
         <svg
           class="curtain-wave"
           viewBox="0 0 1440 120"
           preserveAspectRatio="none"
           xmlns="http://www.w3.org/2000/svg"
-          aria-hidden="true"
         >
           <path
-            d="M0,60 C240,120 480,0 720,60 C960,120 1200,0 1440,60 L1440,0 L0,0 Z"
+            d="M0,60 C240,120 480,0 720,60 C960,120 1200,0 1440,60 L1440,120 L0,120 Z"
             fill="#3f0059"
           />
         </svg>
@@ -105,183 +120,127 @@ import {
       position: fixed;
       inset: 0;
       z-index: 9999;
-      background: #3f0059;
       display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-    }
-
-    /* ── Scene ── */
-    .scene {
-      position: relative;
-      width: 340px;
-      height: 260px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .water-bg {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 80px;
-      background: linear-gradient(180deg, #1a003a 0%, #0d001e 100%);
-      border-radius: 50% 50% 0 0 / 30px 30px 0 0;
-      opacity: 0.5;
-    }
-
-    /* ── Boat ── */
-    .boat-wrap {
-      position: relative;
-      z-index: 2;
-      animation: bobAndRow 2s ease-in-out infinite;
-    }
-
-    .boat {
-      width: 260px;
-      height: auto;
-      filter: drop-shadow(0 8px 24px rgba(240,108,48,0.35));
-    }
-
-    @keyframes bobAndRow {
-      0%   { transform: translateY(0px) rotate(0deg); }
-      25%  { transform: translateY(-6px) rotate(-0.8deg); }
-      50%  { transform: translateY(-2px) rotate(0deg); }
-      75%  { transform: translateY(-8px) rotate(0.8deg); }
-      100% { transform: translateY(0px) rotate(0deg); }
-    }
-
-    /* ── Oars ── */
-    .oar-left {
-      transform-origin: 80px 68px;
-      animation: rowLeft 2s ease-in-out infinite;
-    }
-    .oar-right {
-      transform-origin: 118px 68px;
-      animation: rowRight 2s ease-in-out infinite;
-    }
-
-    @keyframes rowLeft {
-      0%   { transform: rotate(0deg); }
-      25%  { transform: rotate(20deg); }
-      50%  { transform: rotate(0deg); }
-      75%  { transform: rotate(-20deg); }
-      100% { transform: rotate(0deg); }
-    }
-    @keyframes rowRight {
-      0%   { transform: rotate(0deg); }
-      25%  { transform: rotate(-20deg); }
-      50%  { transform: rotate(0deg); }
-      75%  { transform: rotate(20deg); }
-      100% { transform: rotate(0deg); }
-    }
-
-    /* ── Ripples ── */
-    .ripple {
-      fill: none;
-      stroke: #00ffff;
-      stroke-width: 1.5;
-      opacity: 0;
-      animation: rippleAnim 2s ease-out infinite;
-    }
-    .r1 { animation-delay: 0s; }
-    .r2 { animation-delay: 0.5s; }
-
-    @keyframes rippleAnim {
-      0%   { opacity: 0; rx: 70; ry: 6; }
-      20%  { opacity: 0.5; }
-      100% { opacity: 0; rx: 90; ry: 9; }
-    }
-
-    /* ── Splashes ── */
-    .splashes {
-      position: absolute;
-      bottom: 60px;
-      left: 0;
-      right: 0;
-      pointer-events: none;
-      z-index: 1;
-    }
-    .splash {
-      position: absolute;
-      bottom: 0;
-      width: 3px;
-      height: 12px;
-      background: #00ffff;
-      border-radius: 2px;
-      opacity: 0;
-      animation: splashAnim 2s ease-in-out infinite;
-    }
-
-    @keyframes splashAnim {
-      0%   { opacity: 0; transform: translateY(0) scaleY(0); }
-      30%  { opacity: 0.7; transform: translateY(-14px) scaleY(1); }
-      70%  { opacity: 0.3; transform: translateY(-6px) scaleY(0.5); }
-      100% { opacity: 0; transform: translateY(0) scaleY(0); }
-    }
-
-    /* ── Brand text ── */
-    .brand {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      text-align: center;
-      z-index: 3;
+      flex-direction: column;
       pointer-events: none;
     }
-    .brand-title {
-      display: block;
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 2.4rem;
-      font-weight: 700;
-      letter-spacing: -0.03em;
-      color: #ffffff;
-      text-shadow: 0 0 30px rgba(240,108,48,0.6);
-    }
-    .brand-sub {
-      display: block;
-      font-family: 'Manrope', sans-serif;
-      font-size: 0.78rem;
-      font-weight: 500;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: #c080dd;
-      margin-top: 4px;
-    }
 
-    /* ── Curtain wave ── */
-    .curtain {
+    .water-container {
       position: absolute;
       inset: 0;
-      pointer-events: none;
-      z-index: 10;
-      /* Starts as a full block covering everything */
-      background: #3f0059;
-      /* Clip from bottom up: full screen visible */
-      clip-path: inset(0 0 0 0);
+      background-color: #3f0059; /* Brand purple */
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      will-change: transform;
     }
 
+    /* SVG Canvas styling */
+    .rowing-svg {
+      width: 100%;
+      height: 100%;
+      max-width: 800px;
+      max-height: 800px;
+      display: block;
+    }
+
+    /* The wave at the top of the container, currently invisible, shown when sliding */
     .curtain-wave {
       position: absolute;
-      bottom: 0;
+      top: -119px; /* Sit right above the container */
       left: 0;
       width: 100%;
       height: 120px;
-      /* Wave sits at the bottom edge of the curtain */
+      transform: scaleY(-1); /* Flips it so the flat side matches the container edge */
+      opacity: 0; /* Hidden initially until reveal */
     }
+
+    /* ─── SVG Animations ─── */
+    
+    /* Beweging boot van boven naar beneden */
+    .moving-down-group {
+      animation: driveBoat 2s cubic-bezier(0.42, 0, 0.58, 1) forwards;
+    }
+
+    @keyframes driveBoat {
+      0% {
+        transform: translateY(-800px);
+      }
+      100% {
+        transform: translateY(100px); /* Slides down into view */
+      }
+    }
+
+    /* Roeislag Animatie - Linker riemen */
+    .anim-oar-L {
+      animation: oar-sweep-L 2s infinite;
+      transform-origin: 0 0;
+    }
+
+    /* Roeislag Animatie - Rechter riemen */
+    .anim-oar-R {
+      animation: oar-sweep-R 2s infinite;
+      transform-origin: 0 0;
+    }
+
+    @keyframes oar-sweep-L {
+      0% { 
+        transform: rotate(45deg); 
+        animation-timing-function: cubic-bezier(0.2, 0.8, 0.3, 1); 
+      }
+      40% { 
+        transform: rotate(-45deg); 
+        animation-timing-function: ease-in-out; 
+      }
+      100% { 
+        transform: rotate(45deg); 
+      }
+    }
+
+    @keyframes oar-sweep-R {
+      0% { 
+        transform: rotate(-45deg); 
+        animation-timing-function: cubic-bezier(0.2, 0.8, 0.3, 1);
+      }
+      40% { 
+        transform: rotate(45deg); 
+        animation-timing-function: ease-in-out;
+      }
+      100% { 
+        transform: rotate(-45deg); 
+      }
+    }
+
+    /* Waterrimpels Animatie - Simuleert de voorwaartse snelheid */
+    .ripple {
+      animation: flowDown 2.5s linear infinite;
+    }
+    .ripple-1 { animation-delay: 0s; }
+    .ripple-2 { animation-delay: -0.8s; }
+    .ripple-3 { animation-delay: -1.6s; }
+
+    @keyframes flowDown {
+        0% { transform: translateY(-50px); opacity: 0; }
+        15% { opacity: 1; }
+        85% { opacity: 1; }
+        100% { transform: translateY(250px); opacity: 0; }
+    }
+
 
     /* ── Reveal animation ── */
-    .preloader.reveal .curtain {
-      animation: curtainUp 1.4s cubic-bezier(0.76, 0, 0.24, 1) forwards;
+    /* De "golven het scherm openen" -> De hele container glijdt omlaag uit beeld */
+    .preloader.reveal .curtain-wave {
+      opacity: 1;
+    }
+    
+    .preloader.reveal .water-container {
+      animation: openCurtainDown 1.5s cubic-bezier(0.76, 0, 0.24, 1) forwards;
     }
 
-    @keyframes curtainUp {
-      0%   { clip-path: inset(0 0 0 0); }
-      100% { clip-path: inset(0 0 100% 0); }
+    @keyframes openCurtainDown {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(110vh); } /* Schuift naar beneden het scherm uit */
     }
 
     /* ── When done: hide entire preloader ── */
@@ -296,23 +255,17 @@ export class Preloader implements OnInit {
   revealing = signal(false);
   done = signal(false);
 
-  splashes = [
-    { left: '22%', delay: '0s' },
-    { left: '28%', delay: '0.3s' },
-    { left: '68%', delay: '0.15s' },
-    { left: '74%', delay: '0.45s' },
-  ];
-
   ngOnInit(): void {
-    // Start reveal after boat animation plays for a bit
+    // 1. Boat drops in (2s animation). Wait for 2s of rowing.
     setTimeout(() => {
       this.revealing.set(true);
-    }, 1800);
+    }, 2000);
 
-    // After curtain animation finishes, hide completely and emit event
+    // 2. Curtain glides down (1.5s animation). Done after 2s + 1.5s
     setTimeout(() => {
       this.done.set(true);
       this.hidden.emit();
-    }, 1800 + 1400 + 100);
+    }, 3500);
   }
 }
+
