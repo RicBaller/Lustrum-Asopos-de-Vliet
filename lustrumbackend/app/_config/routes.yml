@@ -9,4 +9,5 @@ SilverStripe\Control\Director:
     'api/v1/categories//$ID': 'App\Api\CategoryController'
     'api/v1/albums//$ID': 'App\Api\AlbumController'
     'api/v1/commissie//$Action/$ID': 'App\Api\CommissieController'
+    'api/v1/videos//$ID': 'App\Api\VideoController'
     'api/v1//$Action': 'App\Api\HelloWorldController'
