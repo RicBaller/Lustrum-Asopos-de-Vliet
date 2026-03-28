@@ -14,41 +14,40 @@ import {
       <!-- The whole preloader container slides down at the end. The top edge is a wave. -->
       <div class="water-container">
         <!-- SVG Canvas for the Rowers -->
-        <svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" class="rowing-svg">
-          <defs>
-            <!-- Linker Riem -->
-            <g id="oar-left">
-              <g class="anim-oar-L">
-                <!-- Riem as -->
-                <line x1="0" y1="0" x2="-160" y2="0" stroke="#222" stroke-width="4" stroke-linecap="round"/>
-                <!-- Riem blad -->
-                <path d="M -160 -4 L -200 -7 L -205 7 L -160 4 Z" fill="#F06C30" stroke="#222" stroke-linejoin="round"/>
+        <div class="boat-wrapper">
+          <svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" class="rowing-svg">
+            <defs>
+              <!-- Linker Riem -->
+              <g id="oar-left">
+                <g class="anim-oar-L">
+                  <!-- Riem as -->
+                  <line x1="0" y1="0" x2="-160" y2="0" stroke="#222" stroke-width="4" stroke-linecap="round"/>
+                  <!-- Riem blad -->
+                  <path d="M -160 -4 L -200 -7 L -205 7 L -160 4 Z" fill="#F06C30" stroke="#222" stroke-linejoin="round"/>
+                </g>
               </g>
-            </g>
 
-            <!-- Rechter Riem -->
-            <g id="oar-right">
-              <g class="anim-oar-R">
-                <!-- Riem as -->
-                <line x1="0" y1="0" x2="160" y2="0" stroke="#222" stroke-width="4" stroke-linecap="round"/>
-                <!-- Riem blad -->
-                <path d="M 160 -4 L 200 -7 L 205 7 L 160 4 Z" fill="#F06C30" stroke="#222" stroke-linejoin="round"/>
+              <!-- Rechter Riem -->
+              <g id="oar-right">
+                <g class="anim-oar-R">
+                  <!-- Riem as -->
+                  <line x1="0" y1="0" x2="160" y2="0" stroke="#222" stroke-width="4" stroke-linecap="round"/>
+                  <!-- Riem blad -->
+                  <path d="M 160 -4 L 200 -7 L 205 7 L 160 4 Z" fill="#F06C30" stroke="#222" stroke-linejoin="round"/>
+                </g>
               </g>
-            </g>
 
-            <!-- Individuele Roeier -->
-            <g id="rower">
-              <!-- Schouders/lichaam -->
-              <ellipse cx="0" cy="0" rx="18" ry="12" fill="#7d00aa" stroke="#222" stroke-width="1.5"/>
-              <!-- Hoofd -->
-              <circle cx="0" cy="-3" r="9" fill="#f0d0ff" stroke="#222" stroke-width="1.5"/>
-            </g>
-          </defs>
+              <!-- Individuele Roeier -->
+              <g id="rower">
+                <!-- Schouders/lichaam -->
+                <ellipse cx="0" cy="0" rx="18" ry="12" fill="#7d00aa" stroke="#222" stroke-width="1.5"/>
+                <!-- Hoofd -->
+                <circle cx="0" cy="-3" r="9" fill="#f0d0ff" stroke="#222" stroke-width="1.5"/>
+              </g>
+            </defs>
 
-          <!-- Animatie Groep: Dit geheel beweegt van boven naar beneden over het scherm -->
-          <g class="moving-down-group">
             <!-- 2. Bewegende Waterrimpels -->
-            <g stroke="rgba(255, 255, 255, 0.25)" stroke-width="2.5" fill="none" stroke-linecap="round">
+            <g stroke="#00ffff" stroke-width="3" fill="none" stroke-linecap="round" opacity="0.6">
               <g class="ripple ripple-1">
                 <path d="M 280 150 Q 400 180 520 150" />
                 <path d="M 240 250 Q 400 280 560 250" />
@@ -97,8 +96,8 @@ import {
               <use href="#oar-right" x="415" y="420" />
               <use href="#rower" x="400" y="420" />
             </g>
-          </g>
-        </svg>
+          </svg>
+        </div>
 
         <!-- Wave Curtain Top -->
         <svg
@@ -136,6 +135,16 @@ import {
       will-change: transform;
     }
 
+    .boat-wrapper {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      animation: driveBoat 2s cubic-bezier(0.42, 0, 0.58, 1) forwards;
+    }
+
     /* SVG Canvas styling */
     .rowing-svg {
       width: 100%;
@@ -143,6 +152,7 @@ import {
       max-width: 800px;
       max-height: 800px;
       display: block;
+      transform: rotate(180deg);
     }
 
     /* The wave at the top of the container, currently invisible, shown when sliding */
@@ -156,19 +166,15 @@ import {
       opacity: 0; /* Hidden initially until reveal */
     }
 
-    /* ─── SVG Animations ─── */
+    /* ─── Animaties ─── */
     
     /* Beweging boot van boven naar beneden */
-    .moving-down-group {
-      animation: driveBoat 2s cubic-bezier(0.42, 0, 0.58, 1) forwards;
-    }
-
     @keyframes driveBoat {
       0% {
-        transform: translateY(-800px);
+        transform: translateY(-100vh);
       }
       100% {
-        transform: translateY(100px); /* Slides down into view */
+        transform: translateY(0); /* Centers the boat in the window */
       }
     }
 
