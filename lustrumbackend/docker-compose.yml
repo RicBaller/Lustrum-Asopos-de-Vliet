@@ -41,6 +41,8 @@ services:
       SS_ENVIRONMENT_TYPE: dev
       SS_DEFAULT_ADMIN_USERNAME: silverstripe
       SS_DEFAULT_ADMIN_PASSWORD: silverstripe
+      # CORS: extra origins on top of the automatic localhost allowlist (comma-separated)
+      CORS_ALLOWED_ORIGINS: localhost:4200
     depends_on:
       db:
         condition: service_healthy

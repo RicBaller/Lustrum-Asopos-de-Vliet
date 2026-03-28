@@ -1,4 +1,21 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { VideoService } from '../../services/video.service';
+
+function getYoutubeId(url: string): string | null {
+  const match = url.match(/(?:v=|youtu\.be\/|embed\/)([^&?/]+)/);
+  return match ? match[1] : null;
+}
+
+function getYoutubeThumbnail(url: string): string | null {
+  const id = getYoutubeId(url);
+  return id ? `https://img.youtube.com/vi/${id}/hqdefault.jpg` : null;
+}
+
+function getYoutubeWatchUrl(url: string): string {
+  const id = getYoutubeId(url);
+  return id ? `https://www.youtube.com/watch?v=${id}` : url;
+}
 
 @Component({
   selector: 'app-reveal-section',
@@ -15,18 +32,33 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
         </header>
 
         <div class="video-cards">
-          <div class="video-card">
-            <div class="video-card-thumb">
-              <div class="coming-soon-badge">BINNENKORT</div>
-            </div>
-            <p class="video-card-label">KLEUREN REVEAL</p>
-          </div>
-          <div class="video-card">
-            <div class="video-card-thumb">
-              <div class="coming-soon-badge">BINNENKORT</div>
-            </div>
-            <p class="video-card-label">LUSTRUM BEKENDMAKING</p>
-          </div>
+          @for (slot of slots(); track $index) {
+            @if (slot) {
+              <a class="video-card" [href]="getWatchUrl(slot.youtubeURL)" target="_blank" rel="noopener noreferrer">
+                <div class="video-card-thumb">
+                  @if (getThumbnail(slot.youtubeURL); as thumb) {
+                    <img [src]="thumb" [alt]="slot.title" class="video-thumb-img" />
+                  }
+                  <div class="play-btn" aria-hidden="true">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M8 5v14l11-7z"/>
+                    </svg>
+                  </div>
+                </div>
+                <p class="video-card-label">{{ slot.title }}</p>
+                @if (slot.credits) {
+                  <p class="video-card-credits">{{ slot.credits }}</p>
+                }
+              </a>
+            } @else {
+              <div class="video-card">
+                <div class="video-card-thumb">
+                  <div class="coming-soon-badge">BINNENKORT</div>
+                </div>
+                <p class="video-card-label">BINNENKORT</p>
+              </div>
+            }
+          }
         </div>
       </div>
 
@@ -106,6 +138,43 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
       background: linear-gradient(135deg, #580079 0%, #3f0059 100%);
     }
 
+    .video-thumb-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 0;
+    }
+
+    .play-btn {
+      position: relative;
+      z-index: 1;
+      width: 56px;
+      height: 56px;
+      border-radius: var(--radius-pill);
+      background: rgba(240, 108, 48, 0.9);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.2s, background 0.2s;
+      backdrop-filter: blur(4px);
+    }
+
+    .video-card:hover .play-btn {
+      transform: scale(1.1);
+      background: var(--primary);
+    }
+
+    .video-card-credits {
+      font-family: var(--font-body);
+      font-size: 0.9375rem;
+      color: var(--on-primary);
+      opacity: 0.7;
+      margin-top: -0.5rem;
+    }
+
     .coming-soon-badge {
       position: relative;
       z-index: 1;
@@ -123,7 +192,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 
     .video-card-label {
       font-family: var(--font-display);
-      font-size: 1rem;
+      font-size: 1.25rem;
       font-weight: 700;
       color: var(--surface);
       letter-spacing: 0.02em;
@@ -173,4 +242,21 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
     }
   `]
 })
-export class RevealSection {}
+export class RevealSection {
+  private readonly videoService = inject(VideoService);
+
+  private readonly allVideos = toSignal(this.videoService.getAll(), { initialValue: [] });
+
+  private readonly bekendmakingen = computed(() =>
+    this.allVideos().filter(v => v.category?.title === 'Bekendmaking')
+  );
+
+  // Always exactly 2 slots: video or null (placeholder)
+  readonly slots = computed(() => {
+    const videos = this.bekendmakingen();
+    return [videos[0] ?? null, videos[1] ?? null] as const;
+  });
+
+  readonly getThumbnail = getYoutubeThumbnail;
+  readonly getWatchUrl = getYoutubeWatchUrl;
+}
