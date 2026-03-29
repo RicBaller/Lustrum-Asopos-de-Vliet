@@ -1,18 +1,23 @@
 # ─── Stage 1: Production Composer install ──────────────────────────────────────
-# Installs all production PHP dependencies, the startup theme (via
-# silverstripe/vendor-plugin) and public/_resources in a clean image so the
-# production stage never needs Composer or the build context to provide them.
-FROM composer:2 AS vendor-prod
+# Uses the official SilverStripe platform-build image which runs:
+#   composer validate
+#   composer install --no-dev --prefer-dist --optimize-autoloader ...
+#   composer vendor-expose copy   ← exposes public/_resources and themes
+FROM silverstripe/platform-build AS vendor-prod
 
 WORKDIR /app
-COPY composer.json composer.lock ./
+COPY . .
 
-RUN composer install \
+RUN composer validate \
+    && composer install \
+        --no-progress \
         --no-dev \
         --no-interaction \
         --prefer-dist \
         --optimize-autoloader \
-        --ignore-platform-reqs
+        --ignore-platform-reqs \
+        --no-suggest \
+    && composer vendor-expose copy
 
 # ─── Stage 2: Shared PHP 8.3 + Apache base ─────────────────────────────────────
 FROM php:8.4-apache AS base
