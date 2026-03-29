@@ -43,6 +43,8 @@ export interface AlbumSummary {
   title: string;
   description: string;
   photoCount: number;
+  coverPhotoUrl: string | null;
+  coverPhotographer: string | null;
 }
 
 export interface Photographer {

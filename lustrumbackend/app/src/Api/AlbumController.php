@@ -41,10 +41,16 @@ class AlbumController extends Controller
     private function serializeSummary(Album $album): array
     {
         return [
-            'id'          => $album->ID,
-            'title'       => $album->Title,
-            'description' => $album->Description,
-            'photoCount'  => $album->Photos()->count(),
+            'id'                => $album->ID,
+            'title'             => $album->Title,
+            'description'       => $album->Description,
+            'photoCount'        => $album->Photos()->count(),
+            'coverPhotoUrl'     => $album->CoverPhoto()->exists() && $album->CoverPhoto()->Image()->exists()
+                                    ? $album->CoverPhoto()->Image()->getAbsoluteURL()
+                                    : null,
+            'coverPhotographer' => $album->CoverPhoto()->exists() && $album->CoverPhoto()->Photographer()->exists()
+                                    ? $album->CoverPhoto()->Photographer()->Name
+                                    : null,
         ];
     }
 
