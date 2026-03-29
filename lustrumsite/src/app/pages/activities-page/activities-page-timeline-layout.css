@@ -1,0 +1,121 @@
+.activities-timeline {
+    position: relative;
+    background: #ff7a45;
+    padding: 10rem var(--spacing-gutter) 20rem;
+}
+
+.activities-timeline__inner {
+    max-width: 1240px;
+    margin: 0 auto;
+}
+
+.timeline,
+.timeline-loading {
+    position: relative;
+}
+
+.timeline::before,
+.timeline-loading::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: calc(50% - 1px);
+    width: 2px;
+    background: rgba(55, 0, 80, 0.28);
+}
+
+.timeline-row,
+.timeline-skeleton {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 92px minmax(0, 1fr);
+    align-items: stretch;
+    gap: 3rem;
+}
+
+.timeline-row + .timeline-row,
+.timeline-skeleton + .timeline-skeleton {
+    margin-top: 10rem;
+}
+
+.timeline-row--reverse .timeline-card,
+.timeline-skeleton--reverse .timeline-skeleton__card {
+    grid-column: 3;
+    grid-row: 1;
+}
+
+.timeline-row--reverse .timeline-media,
+.timeline-skeleton--reverse .timeline-skeleton__media {
+    grid-column: 1;
+    grid-row: 1;
+}
+
+.timeline-node,
+.timeline-skeleton__node {
+    grid-column: 2;
+    grid-row: 1;
+    align-self: center;
+    justify-self: center;
+    position: relative;
+    z-index: 1;
+    display: grid;
+    place-items: center;
+    width: 46px;
+    height: 46px;
+    margin: 0 auto;
+    border: 2px solid rgba(43, 0, 61, 0.24);
+    border-radius: 50%;
+    background: var(--secondary);
+    color: #2b003d;
+    font-family: var(--font-display);
+    font-size: 0.95rem;
+    font-weight: 800;
+    box-shadow: 0 0 0 10px rgba(255, 122, 69, 0.7);
+}
+
+.timeline-state {
+    max-width: 34rem;
+    margin: 0 auto;
+    border-radius: 1.5rem;
+    background: rgba(43, 0, 61, 0.14);
+    color: #2b003d;
+    padding: 1.6rem;
+    text-align: center;
+    box-shadow: inset 0 0 0 1px rgba(43, 0, 61, 0.08);
+}
+
+.timeline-state--error {
+    background: rgba(43, 0, 61, 0.16);
+    color: var(--text-primary);
+}
+
+.timeline-state__link {
+    display: inline-flex;
+    margin-top: 1rem;
+    color: var(--secondary);
+    font-weight: 700;
+}
+
+.timeline-skeleton__card,
+.timeline-skeleton__media {
+    background:
+        linear-gradient(90deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.22) 50%, rgba(255, 255, 255, 0.1) 100%),
+        #2b003d;
+    background-size: 220% 100%;
+    animation: shimmer 1.6s infinite linear;
+}
+
+.timeline-skeleton__card,
+.timeline-skeleton__media {
+    min-height: 17rem;
+}
+
+@keyframes shimmer {
+    from {
+        background-position: 200% 0;
+    }
+
+    to {
+        background-position: -20% 0;
+    }
+}

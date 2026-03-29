@@ -1,0 +1,95 @@
+.activities-hero {
+    position: relative;
+    overflow: hidden;
+    background:
+        radial-gradient(circle at 20% 20%, rgba(0, 255, 255, 0.1), transparent 28%),
+        radial-gradient(circle at 80% 18%, rgba(240, 108, 48, 0.18), transparent 26%),
+        var(--surface);
+    padding: 8.5rem var(--spacing-gutter) 10rem;
+}
+
+.activities-hero__grain {
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+    background-size: 22px 22px;
+    opacity: 0.25;
+    pointer-events: none;
+}
+
+.activities-hero__inner {
+    position: relative;
+    z-index: 1;
+    max-width: 1120px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.activities-hero__eyebrow {
+    color: var(--secondary);
+    font-size: 0.85rem;
+    font-weight: 800;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+}
+
+.activities-hero__title {
+    margin-top: 1.2rem;
+    color: var(--primary);
+    font-size: clamp(4rem, 13vw, 8.5rem);
+    font-weight: 800;
+    letter-spacing: -0.06em;
+    line-height: 0.92;
+    text-transform: uppercase;
+}
+
+.activities-hero__subtitle {
+    max-width: 42rem;
+    margin: 1.4rem auto 0;
+    color: var(--secondary);
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+}
+
+.activities-hero__stats {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 2.8rem;
+}
+
+.hero-stat {
+    min-width: 11rem;
+    border: 1px solid rgba(0, 255, 255, 0.25);
+    border-radius: 1.5rem;
+    background: rgba(255, 255, 255, 0.04);
+    padding: 1rem 1.25rem;
+    backdrop-filter: blur(14px);
+}
+
+.hero-stat--wide {
+    min-width: 15rem;
+}
+
+.hero-stat span {
+    display: block;
+    color: var(--text-primary);
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.hero-stat small {
+    display: block;
+    margin-top: 0.25rem;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}

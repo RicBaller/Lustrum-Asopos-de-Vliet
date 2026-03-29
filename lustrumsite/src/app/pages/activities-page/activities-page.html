@@ -1,0 +1,180 @@
+<section class="activities-hero">
+    <div class="activities-hero__grain"></div>
+    <div class="activities-hero__inner">
+    <p class="activities-hero__eyebrow">Activiteiten</p>
+    <h1 class="activities-hero__title">BELEEF DE<br>CHAOS</h1>
+    <p class="activities-hero__subtitle">Het officiele programma van het lustrum Asopos de Vliet.</p>
+
+    <div class="activities-hero__stats">
+        <div class="hero-stat">
+        <span>{{ timelineCards().length }}</span>
+        <small>evenementen</small>
+        </div>
+        <div class="hero-stat hero-stat--wide">
+        <span>{{ programRange() }}</span>
+        <small>chronologisch op een tijdlijn</small>
+        </div>
+    </div>
+    </div>
+
+    <div class="activities-hero__wave" aria-hidden="true">
+    <svg viewBox="0 0 1440 160" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0,80 C180,130 360,150 540,110 C720,70 900,10 1080,30 C1260,50 1350,100 1440,130 L1440,160 L0,160 Z" fill="#ff7a45"/>
+    </svg>
+    </div>
+</section>
+
+<section class="activities-timeline">
+    <div class="activities-timeline__inner">
+    @if (loading()) {
+        <div class="timeline-loading" aria-live="polite">
+        @for (item of skeletonItems; track item) {
+            <div class="timeline-skeleton" [class.timeline-skeleton--reverse]="item % 2 === 0">
+            <div class="timeline-skeleton__card"></div>
+            <div class="timeline-skeleton__node"></div>
+            <div class="timeline-skeleton__media"></div>
+            </div>
+        }
+        </div>
+    } @else if (error(); as message) {
+        <div class="timeline-state timeline-state--error" aria-live="polite">
+        <p>{{ message }}</p>
+        <a routerLink="/" class="timeline-state__link">Terug naar home</a>
+        </div>
+    } @else if (!timelineCards().length) {
+        <div class="timeline-state" aria-live="polite">
+        <p>Er staan nog geen activiteiten in het programma.</p>
+        </div>
+    } @else {
+        <div class="timeline">
+        @for (card of timelineCards(); track card.activity.id; let index = $index) {
+            <div class="timeline-row" [class.timeline-row--reverse]="index % 2 === 1">
+            <article class="timeline-card">
+                <span class="timeline-card__badge">{{ card.badge }}</span>
+                <h2 class="timeline-card__title">{{ card.activity.title }}</h2>
+                <p class="timeline-card__date">{{ card.dateLine }}</p>
+                <p class="timeline-card__time">{{ card.timeLine }}</p>
+                <p class="timeline-card__summary">{{ card.summary }}</p>
+
+                <div class="timeline-card__actions">
+                @if (card.activity.ticketLink) {
+                    <a
+                    class="timeline-action"
+                    [href]="card.activity.ticketLink"
+                    target="_blank"
+                    rel="noreferrer"
+                    >
+                    Tickets
+                    </a>
+                }
+
+                <button type="button" class="timeline-action timeline-action--ghost" (click)="openDialog(card.activity)">
+                    Meer info
+                </button>
+                </div>
+            </article>
+
+            <div class="timeline-node" aria-hidden="true">
+                <span>{{ index + 1 }}</span>
+            </div>
+
+            <button
+                type="button"
+                class="timeline-media"
+                (click)="openDialog(card.activity)"
+                [attr.aria-label]="'Open details voor ' + card.activity.title"
+            >
+                @if (card.activity.image) {
+                <img [src]="card.activity.image" [alt]="card.activity.title">
+                } @else {
+                <div class="timeline-media__fallback">
+                    <span>{{ card.badge }}</span>
+                    <strong>{{ card.activity.title }}</strong>
+                </div>
+                }
+            </button>
+            </div>
+        }
+        </div>
+    }
+    </div>
+
+    <div class="activities-timeline__wave" aria-hidden="true">
+    <svg viewBox="0 0 1440 160" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0,110 C180,70 360,40 540,70 C720,100 900,150 1080,120 C1260,90 1350,40 1440,80 L1440,160 L0,160 Z" fill="#2b003d"/>
+    </svg>
+    </div>
+</section>
+
+<section class="activities-closing">
+    <div class="activities-closing__inner">
+    <h2 class="activities-closing__title">NIETS MISSEN?</h2>
+
+    <div class="activities-closing__actions">
+        @if (firstTicketLink(); as ticketLink) {
+        <a class="closing-button closing-button--solid" [href]="ticketLink" target="_blank" rel="noreferrer">
+            Bestel tickets
+        </a>
+        } @else {
+        <button type="button" class="closing-button closing-button--solid closing-button--disabled" disabled>
+            Tickets volgen snel
+        </button>
+        }
+
+        <a routerLink="/" class="closing-button closing-button--outline">Meer over het lustrum</a>
+    </div>
+    </div>
+</section>
+
+@if (selectedDetail(); as selected) {
+    <div class="activity-dialog-backdrop" (click)="closeDialog()">
+    <section
+        class="activity-dialog"
+        role="dialog"
+        aria-modal="true"
+        [attr.aria-labelledby]="'activity-dialog-title-' + selected.activity.id"
+        (click)="$event.stopPropagation()"
+    >
+        <button type="button" class="activity-dialog__close" (click)="closeDialog()" aria-label="Sluit popup">
+        ×
+        </button>
+
+        <div class="activity-dialog__media">
+        @if (selected.activity.image) {
+            <img [src]="selected.activity.image" [alt]="selected.activity.title">
+        } @else {
+            <div class="activity-dialog__fallback">
+            <span>{{ selected.badge }}</span>
+            <strong>{{ selected.activity.title }}</strong>
+            </div>
+        }
+        </div>
+
+        <div class="activity-dialog__content">
+        <span class="activity-dialog__badge">{{ selected.badge }}</span>
+        <h2 [id]="'activity-dialog-title-' + selected.activity.id">{{ selected.activity.title }}</h2>
+        <p class="activity-dialog__date">{{ selected.dateLine }}</p>
+        <p class="activity-dialog__time">{{ selected.timeLine }}</p>
+
+        <div class="activity-dialog__description" [innerHTML]="selected.descriptionHtml"></div>
+
+        <div class="activity-dialog__actions">
+            @if (selected.activity.ticketLink) {
+            <a
+                class="timeline-action"
+                [href]="selected.activity.ticketLink"
+                target="_blank"
+                rel="noreferrer"
+            >
+                Bestel tickets
+            </a>
+            }
+
+            <button type="button" class="timeline-action timeline-action--ghost" (click)="closeDialog()">
+            Sluiten
+            </button>
+        </div>
+        </div>
+    </section>
+    </div>
+}

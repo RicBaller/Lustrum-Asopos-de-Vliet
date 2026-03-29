@@ -1,0 +1,79 @@
+@media (max-width: 960px) {
+    .activities-timeline {
+        padding-top: 7rem;
+        padding-bottom: 14rem;
+    }
+
+    .timeline::before,
+    .timeline-loading::before {
+        left: 22px;
+    }
+
+    .timeline-row,
+    .timeline-skeleton {
+        grid-template-columns: 46px minmax(0, 1fr);
+        gap: 1.25rem 1.5rem;
+    }
+
+    .timeline-row + .timeline-row,
+    .timeline-skeleton + .timeline-skeleton {
+        margin-top: 7rem;
+    }
+
+    .timeline-card,
+    .timeline-skeleton__card,
+    .timeline-media,
+    .timeline-skeleton__media,
+    .timeline-row--reverse .timeline-card,
+    .timeline-row--reverse .timeline-media,
+    .timeline-skeleton--reverse .timeline-skeleton__card,
+    .timeline-skeleton--reverse .timeline-skeleton__media {
+        grid-column: 2;
+    }
+
+    .timeline-media,
+    .timeline-skeleton__media {
+        grid-row: auto;
+        min-height: 14rem;
+        height: auto;
+    }
+
+    .timeline-node,
+    .timeline-skeleton__node {
+        grid-column: 1;
+        grid-row: 1;
+        align-self: start;
+    }
+
+    .activity-dialog {
+        grid-template-columns: 1fr;
+    }
+
+    .activity-dialog__media {
+        min-height: 17rem;
+    }
+}
+
+@media (max-width: 640px) {
+    .activities-hero {
+        padding-top: 7.5rem;
+        padding-bottom: 8.5rem;
+    }
+
+    .activities-hero__subtitle {
+        letter-spacing: 0.09em;
+    }
+
+    .timeline-card,
+    .timeline-skeleton__card {
+        padding: 1.35rem;
+    }
+
+    .activities-closing {
+        padding-bottom: 4.5rem;
+    }
+
+    .activity-dialog__content {
+        padding: 1.5rem;
+    }
+}

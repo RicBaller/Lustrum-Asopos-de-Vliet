@@ -1,0 +1,139 @@
+.activity-dialog-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    display: grid;
+    place-items: center;
+    background: rgba(16, 0, 24, 0.72);
+    backdrop-filter: blur(18px);
+    padding: 1.5rem;
+}
+
+.activity-dialog {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+    width: min(100%, 980px);
+    max-height: min(90vh, 760px);
+    overflow: hidden;
+    border: 1px solid rgba(0, 255, 255, 0.18);
+    border-radius: 2rem;
+    background: #2b003d;
+    box-shadow: 0 35px 80px rgba(8, 0, 12, 0.45);
+}
+
+.activity-dialog__close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    z-index: 2;
+    width: 2.75rem;
+    height: 2.75rem;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(43, 0, 61, 0.7);
+    color: var(--text-primary);
+    font-size: 1.8rem;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.activity-dialog__media {
+    min-height: 100%;
+    background: #170021;
+}
+
+.activity-dialog__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(1) contrast(1.08);
+}
+
+.activity-dialog__content {
+    overflow: auto;
+    padding: 2rem 2rem 2.2rem;
+}
+
+.activity-dialog__badge {
+    display: inline-flex;
+    border-radius: 999px;
+    background: rgba(0, 255, 255, 0.14);
+    color: var(--secondary);
+    padding: 0.35rem 0.7rem;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.activity-dialog h2 {
+    margin-top: 1rem;
+    color: var(--primary);
+    font-size: clamp(2rem, 4vw, 3.4rem);
+    line-height: 0.95;
+    text-transform: uppercase;
+}
+
+.activity-dialog__date,
+.activity-dialog__time {
+    margin-top: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.activity-dialog__time {
+    margin-top: 0.25rem;
+    color: var(--secondary);
+    font-weight: 700;
+}
+
+.activity-dialog__description {
+    margin-top: 1.35rem;
+    color: #f8e7ff;
+    line-height: 1.7;
+}
+
+.activity-dialog__description :first-child {
+    margin-top: 0;
+}
+
+.activity-dialog__description p + p {
+    margin-top: 1rem;
+}
+
+.activity-dialog__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+    margin-top: 1.35rem;
+}
+
+.activity-dialog__fallback {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    height: 100%;
+    padding: 1.5rem;
+    background:
+        linear-gradient(180deg, rgba(0, 255, 255, 0.08), transparent 40%),
+        linear-gradient(135deg, rgba(43, 0, 61, 0.2), rgba(43, 0, 61, 0.95));
+    color: var(--text-primary);
+    text-align: left;
+}
+
+.activity-dialog__fallback span {
+    color: var(--secondary);
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.activity-dialog__fallback strong {
+    margin-top: auto;
+    color: var(--primary);
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    line-height: 0.95;
+    text-transform: uppercase;
+}
