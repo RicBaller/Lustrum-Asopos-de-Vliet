@@ -68,10 +68,10 @@ import {
               <path d="M 400 60 
                         C 430 180, 435 420, 400 540 
                         C 365 420, 370 180, 400 60 Z" 
-                    fill="#3d1500" stroke="#222" stroke-width="2" stroke-linejoin="round"/>
+                    fill="#ECDC6E" stroke="#222" stroke-width="2" stroke-linejoin="round"/>
               
               <!-- Middenlijn van de boot -->
-              <line x1="400" y1="60" x2="400" y2="540" stroke="#F06C30" stroke-width="2" />
+              <line x1="400" y1="60" x2="400" y2="540" stroke="#000000" stroke-width="2" />
               
               <!-- Zitplaatsen (bankjes) -->
               <line x1="388" y1="185" x2="412" y2="185" stroke="#aaa" stroke-width="3" stroke-linecap="round"/>
