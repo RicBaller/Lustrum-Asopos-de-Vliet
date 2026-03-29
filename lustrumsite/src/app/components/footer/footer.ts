@@ -1,7 +1,9 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-footer',
+  imports: [RouterLink],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <footer class="footer" id="contact">
@@ -28,11 +30,11 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
         <nav class="footer-nav">
           <h4 class="footer-nav-title">Navigatie</h4>
           <ul>
-            <li><a href="#">Home</a></li>
-            <li><a href="#programma">Programma</a></li>
-            <li><a href="#media">Media</a></li>
-            <li><a href="#shop">Shop</a></li>
-            <li><a href="#contact">Contact</a></li>
+            <li><a routerLink="/">Home</a></li>
+            <li><a routerLink="/activiteiten">Activiteiten</a></li>
+            <li><a routerLink="/" fragment="media">Media</a></li>
+            <li><a routerLink="/" fragment="shop">Shop</a></li>
+            <li><a routerLink="/" fragment="contact">Contact</a></li>
           </ul>
         </nav>
 

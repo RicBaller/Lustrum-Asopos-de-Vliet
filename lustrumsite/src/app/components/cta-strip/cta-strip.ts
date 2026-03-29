@@ -1,18 +1,20 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-cta-strip',
+  imports: [RouterLink],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <section class="cta-strip">
       <div class="cta-inner">
         <div class="cta-text">
           <h2 class="cta-title">WORD DEEL VAN<br>HET ORGANISME</h2>
-          <p class="cta-sub">Mis geen enkel moment van Delerium. Claim je plek in de chaos.</p>
+          <p class="cta-sub">Mis geen enkel moment van Delerium. Bekijk wat er op de planning staat.</p>
         </div>
         <div class="cta-actions">
-          <a href="#tickets" class="cta-btn">
-            <span>Tickets kopen</span>
+          <a routerLink="/activiteiten" class="cta-btn">
+            <span>Bekijk activiteiten</span>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
               <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>

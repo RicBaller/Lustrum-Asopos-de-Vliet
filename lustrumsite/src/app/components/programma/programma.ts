@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { RouterLink } from '@angular/router';
 
 interface Event {
   date: string;
@@ -10,13 +11,14 @@ interface Event {
 
 @Component({
   selector: 'app-programma',
+  imports: [RouterLink],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <section class="programma" id="programma">
       <div class="programma-inner">
         <header class="programma-header">
           <h2 class="section-title">PROGRAMMA</h2>
-          <a href="#" class="view-all">Bekijk alles →</a>
+          <a routerLink="/activiteiten" class="view-all">Bekijk alles →</a>
         </header>
 
         <div class="events-list">
