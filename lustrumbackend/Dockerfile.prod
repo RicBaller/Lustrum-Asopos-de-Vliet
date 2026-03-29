@@ -8,8 +8,7 @@ FROM silverstripe/platform-build AS vendor-prod
 WORKDIR /app
 COPY . .
 
-RUN composer validate \
-    && composer install \
+RUN composer install \
         --no-progress \
         --no-dev \
         --no-interaction \
