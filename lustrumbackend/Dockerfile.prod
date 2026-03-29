@@ -1,22 +1,20 @@
-# ─── Stage 1: Production Composer install ──────────────────────────────────────
-FROM composer:2 AS vendor-prod
+# ─── Stage 1: Composer install (no-dev) ─────────────────────────────────────────
+FROM composer:2 AS vendor
 
 WORKDIR /app
 COPY composer.json composer.lock ./
 
 RUN composer install \
-        --no-progress \
         --no-dev \
         --no-interaction \
         --prefer-dist \
         --optimize-autoloader \
-        --ignore-platform-reqs \
-    && composer vendor-expose copy
+        --ignore-platform-reqs
 
-# ─── Stage 2: Shared PHP 8.3 + Apache base ─────────────────────────────────────
-FROM php:8.4-apache AS base
+# ─── Stage 2: Production image ──────────────────────────────────────────────────
+FROM php:8.4-apache
 
-# System libraries required by PHP extensions
+# System libraries for PHP extensions
 RUN apt-get update && apt-get install -y --no-install-recommends \
         libpng-dev \
         libjpeg62-turbo-dev \
@@ -29,6 +27,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         libonig-dev \
         zlib1g-dev \
         unzip \
+        default-mysql-client \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j$(nproc) \
         pdo_mysql \
@@ -42,36 +41,58 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         exif \
         curl \
         sodium \
+        opcache \
     && a2enmod rewrite headers expires \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
+# PHP settings
+COPY docker/php.ini /usr/local/etc/php/conf.d/silverstripe.ini
+
+# OPcache for production
+RUN { \
+        echo 'opcache.memory_consumption=128'; \
+        echo 'opcache.interned_strings_buffer=8'; \
+        echo 'opcache.max_accelerated_files=4000'; \
+        echo 'opcache.revalidate_freq=0'; \
+        echo 'opcache.fast_shutdown=1'; \
+        echo 'opcache.enable=1'; \
+    } > /usr/local/etc/php/conf.d/opcache.ini
+
+# Error logging to stdout/stderr (Docker best practice)
+RUN { \
+        echo 'log_errors = On'; \
+        echo 'error_log = /dev/stderr'; \
+        echo 'display_errors = Off'; \
+    } > /usr/local/etc/php/conf.d/errors.ini
+
+# Apache virtual host
 COPY docker/apache.conf /etc/apache2/sites-available/000-default.conf
-COPY docker/php.ini     /usr/local/etc/php/conf.d/silverstripe.ini
+RUN echo "ServerName localhost" > /etc/apache2/conf-available/fqdn.conf \
+    && a2enconf fqdn
 
 WORKDIR /var/www/html
 
-# ─── Stage 4: Production ───────────────────────────────────────────────────────
-# Self-contained image suitable for deployment. No bind mounts required.
-FROM base AS prod
-
-# Copy application source first (vendor/themes/startup-theme/_resources are
-# excluded by .dockerignore and will be provided by the vendor-prod stage)
+# Copy application source (vendor/themes excluded by .dockerignore)
 COPY --chown=www-data:www-data . .
 
-# Overlay composer-managed packages from the vendor-prod stage
-COPY --from=vendor-prod --chown=www-data:www-data /app/vendor                  ./vendor
-COPY --from=vendor-prod --chown=www-data:www-data /app/themes/startup-theme    ./themes/startup-theme
-COPY --from=vendor-prod --chown=www-data:www-data /app/public/_resources       ./public/_resources
+# Overlay composer-managed packages from vendor stage
+COPY --from=vendor --chown=www-data:www-data /app/vendor             ./vendor
+COPY --from=vendor --chown=www-data:www-data /app/themes/startup-theme ./themes/startup-theme
+COPY --from=vendor --chown=www-data:www-data /app/public/_resources  ./public/_resources
 
-# Create writable runtime directories with correct ownership
+# Writable runtime directories
 RUN mkdir -p public/assets .graphql-generated \
     && chown -R www-data:www-data public/assets .graphql-generated \
     && chmod 775 public/assets .graphql-generated
 
-# Entrypoint: run SilverStripe build then hand off to Apache
+# Entrypoint: waits for DB, runs dev/build, starts Apache
 COPY docker/entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
 EXPOSE 80
-CMD ["/usr/local/bin/entrypoint.sh"]
+
+HEALTHCHECK --interval=30s --timeout=5s --start-period=60s --retries=3 \
+    CMD curl -f http://localhost/api/v1 || exit 1
+
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
