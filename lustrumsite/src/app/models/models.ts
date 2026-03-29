@@ -3,9 +3,9 @@
 export interface Activity {
   id: number;
   title: string;
-  startDate: string;
-  endDate: string;
-  description: string;
+  startDate: string | null;
+  endDate: string | null;
+  description: string | null;
   ticketLink: string | null;
   image: string | null;
 }
