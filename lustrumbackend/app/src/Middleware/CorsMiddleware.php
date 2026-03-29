@@ -11,11 +11,11 @@ class CorsMiddleware implements HTTPMiddleware
 {
     public function process(HTTPRequest $request, callable $delegate): HTTPResponse
     {
-        $origin = $request->getHeader('Origin');
+        $origin = $this->normalizeOrigin($request->getHeader('Origin'));
         $allowed = $this->getAllowedOrigins();
 
         // Preflight OPTIONS request — respond immediately with headers
-        if ($request->httpMethod() === 'OPTIONS' && $origin && in_array($origin, $allowed, true)) {
+        if ($request->httpMethod() === 'OPTIONS' && $origin && $this->isAllowedOrigin($origin, $allowed)) {
             $response = HTTPResponse::create('', 204);
             $this->addHeaders($response, $origin);
             return $response;
@@ -24,7 +24,7 @@ class CorsMiddleware implements HTTPMiddleware
         /** @var HTTPResponse $response */
         $response = $delegate($request);
 
-        if ($origin && in_array($origin, $allowed, true)) {
+        if ($origin && $this->isAllowedOrigin($origin, $allowed)) {
             $this->addHeaders($response, $origin);
         }
 
@@ -55,13 +55,65 @@ class CorsMiddleware implements HTTPMiddleware
         $envOrigins = Environment::getEnv('CORS_ALLOWED_ORIGINS');
         if ($envOrigins) {
             foreach (explode(',', $envOrigins) as $origin) {
-                $origin = trim($origin);
-                if ($origin !== '') {
-                    $origins[] = $origin;
+                foreach ($this->expandConfiguredOrigin($origin) as $expandedOrigin) {
+                    $origins[] = $expandedOrigin;
                 }
             }
         }
 
         return array_unique($origins);
+    }
+
+    private function isAllowedOrigin(string $origin, array $allowedOrigins): bool
+    {
+        foreach ($allowedOrigins as $allowedOrigin) {
+            if ($origin === $allowedOrigin || $this->matchesWildcardOrigin($origin, $allowedOrigin)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private function matchesWildcardOrigin(string $origin, string $allowedOrigin): bool
+    {
+        if (!str_contains($allowedOrigin, '*')) {
+            return false;
+        }
+
+        $pattern = '/^' . str_replace('\\*', '[^/]+', preg_quote($allowedOrigin, '/')) . '$/';
+
+        return (bool) preg_match($pattern, $origin);
+    }
+
+    private function expandConfiguredOrigin(string $origin): array
+    {
+        $origin = $this->normalizeOrigin($origin);
+        if ($origin === null) {
+            return [];
+        }
+
+        if (str_contains($origin, '://')) {
+            return [$origin];
+        }
+
+        return [
+            'https://' . $origin,
+            'http://' . $origin,
+        ];
+    }
+
+    private function normalizeOrigin(?string $origin): ?string
+    {
+        if ($origin === null) {
+            return null;
+        }
+
+        $origin = trim($origin);
+        if ($origin === '') {
+            return null;
+        }
+
+        return rtrim($origin, '/');
     }
 }
