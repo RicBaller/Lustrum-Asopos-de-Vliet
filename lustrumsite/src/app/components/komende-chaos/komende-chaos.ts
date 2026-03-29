@@ -1,15 +1,28 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { RouterLink } from '@angular/router';
+import { catchError, map, of, startWith } from 'rxjs';
+import { Activity } from '../../models/models';
+import { ActivityService } from '../../services/activity.service';
+
+interface ActivityState {
+  activities: Activity[];
+  loading: boolean;
+}
 
 interface KomendEvent {
-  date: string;
-  month: string;
+  id: number;
+  dateLabel: string;
+  detailLine: string;
+  description: string;
+  image: string | null;
   name: string;
-  desc: string;
-  img: string;
+  ticketLink: string | null;
 }
 
 @Component({
   selector: 'app-komende-chaos',
+  imports: [RouterLink],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <section class="kc-section">
@@ -18,26 +31,49 @@ interface KomendEvent {
         <header class="kc-header">
           <h2 class="kc-title">KOMENDE<br>CHAOS</h2>
           <p class="kc-subtitle">
-            Bereid je voor op de hoogtepunten van het jaar. Drie evenementen die de
-            geschiedenisboeken in gaan.
+            De drie eerstvolgende activiteiten van het lustrum, direct uit het programma.
           </p>
         </header>
 
-        <div class="kc-events">
-          @for (event of events; track event.name; let i = $index) {
-            <article class="kc-event" [class.kc-event--reverse]="i % 2 === 1">
-              <div class="kc-img-wrap">
-                <img [src]="event.img" [alt]="event.name" class="kc-img" />
-              </div>
-              <div class="kc-content">
-                <time class="kc-date">{{ event.date }}. {{ event.month }}</time>
-                <h3 class="kc-name">{{ event.name }}</h3>
-                <p class="kc-desc">{{ event.desc }}</p>
-                <a href="#" class="kc-btn">Details</a>
-              </div>
-            </article>
-          }
-        </div>
+        @if (loading()) {
+          <div class="kc-empty">Activiteiten laden...</div>
+        } @else if (events().length) {
+          <div class="kc-events">
+            @for (event of events(); track event.id; let i = $index) {
+              <article class="kc-event" [class.kc-event--reverse]="i % 2 === 1">
+                <div class="kc-img-wrap">
+                  @if (event.image) {
+                    <img [src]="event.image" [alt]="event.name" class="kc-img" />
+                  } @else {
+                    <div class="kc-img-fallback">
+                      <span>{{ event.dateLabel }}</span>
+                      <strong>{{ event.name }}</strong>
+                    </div>
+                  }
+                </div>
+
+                <div class="kc-content">
+                  <time class="kc-date">{{ event.dateLabel }}</time>
+                  <h3 class="kc-name">{{ event.name }}</h3>
+                  <p class="kc-meta">{{ event.detailLine }}</p>
+                  <p class="kc-desc">{{ event.description }}</p>
+
+                  <div class="kc-actions">
+                    @if (event.ticketLink) {
+                      <a class="kc-btn kc-btn--solid" [href]="event.ticketLink" target="_blank" rel="noreferrer">
+                        Tickets
+                      </a>
+                    }
+
+                    <a routerLink="/activiteiten" class="kc-btn">Meer info</a>
+                  </div>
+                </div>
+              </article>
+            }
+          </div>
+        } @else {
+          <div class="kc-empty">Er staan nog geen komende activiteiten in het programma.</div>
+        }
 
       </div>
     </section>
@@ -53,7 +89,7 @@ interface KomendEvent {
     }
 
     .kc-inner {
-      max-width: 900px;
+      max-width: 1180px;
       margin: 0 auto;
       padding: 0 var(--spacing-gutter);
     }
@@ -63,7 +99,7 @@ interface KomendEvent {
       display: grid;
       grid-template-columns: 1fr 1fr;
       align-items: end;
-      gap: 2rem;
+      gap: 3rem;
       margin-bottom: 5rem;
     }
 
@@ -71,50 +107,53 @@ interface KomendEvent {
       font-family: var(--font-display);
       font-size: clamp(3.5rem, 9vw, 6.5rem);
       font-weight: 800;
-      color: var(--primary-contrast);
+      color: var(--surface);
       line-height: 0.95;
       letter-spacing: -0.02em;
     }
 
     .kc-subtitle {
       font-family: var(--font-body);
-      font-size: 0.95rem;
-      line-height: 1.65;
-      color: var(--primary-contrast);
+      font-size: 1rem;
+      line-height: 1.75;
+      color: rgba(61, 21, 0, 0.82);
       align-self: end;
       padding-bottom: 0.25rem;
+      max-width: 34rem;
     }
 
     /* ── Events ── */
     .kc-events {
       display: flex;
       flex-direction: column;
-      gap: 4.5rem;
+      gap: 5.5rem;
     }
 
     .kc-event {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 3rem;
+      grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+      gap: clamp(2rem, 4vw, 4rem);
       align-items: center;
     }
 
-    .kc-event--reverse {
-      direction: rtl;
-    }
-
-    .kc-event--reverse > * {
-      direction: ltr;
-    }
-
-    /* ── Image ── */
     .kc-img-wrap {
+      width: min(100%, 320px);
       aspect-ratio: 1 / 1;
       border-radius: 50%;
       overflow: hidden;
-      max-width: 320px;
-      width: 100%;
       justify-self: center;
+      background: rgba(63, 0, 89, 0.18);
+      box-shadow: 0 20px 45px rgba(61, 21, 0, 0.18);
+    }
+
+    .kc-event--reverse .kc-img-wrap {
+      grid-column: 2;
+      grid-row: 1;
+    }
+
+    .kc-event--reverse .kc-content {
+      grid-column: 1;
+      grid-row: 1;
     }
 
     .kc-img {
@@ -124,48 +163,94 @@ interface KomendEvent {
       display: block;
     }
 
+    .kc-img-fallback {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      width: 100%;
+      height: 100%;
+      padding: 2rem;
+      background:
+        linear-gradient(180deg, rgba(0, 255, 255, 0.08), transparent 40%),
+        linear-gradient(135deg, rgba(63, 0, 89, 0.18), rgba(63, 0, 89, 0.94));
+      color: var(--text-primary);
+    }
+
+    .kc-img-fallback span {
+      color: var(--secondary);
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .kc-img-fallback strong {
+      margin-top: auto;
+      font-family: var(--font-display);
+      font-size: 2rem;
+      line-height: 0.95;
+      text-transform: uppercase;
+    }
+
     /* ── Content ── */
     .kc-content {
       display: flex;
       flex-direction: column;
-      gap: 0.75rem;
+      gap: 0.7rem;
+      max-width: 35rem;
     }
 
     .kc-date {
       font-family: var(--font-body);
-      font-size: 1rem;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      color: var(--primary-contrast);
+      font-size: 0.82rem;
+      font-weight: 800;
+      letter-spacing: 0.16em;
+      color: rgba(61, 21, 0, 0.72);
       text-transform: uppercase;
     }
 
     .kc-name {
       font-family: var(--font-display);
-      font-size: clamp(1.75rem, 4vw, 2.75rem);
+      font-size: clamp(2rem, 4vw, 3.1rem);
       font-weight: 800;
-      color: var(--primary-contrast);
+      color: var(--surface);
       letter-spacing: -0.02em;
       line-height: 1.05;
       text-transform: uppercase;
+    }
+
+    .kc-meta {
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: rgba(61, 21, 0, 0.78);
     }
 
     .kc-desc {
       font-family: var(--font-body);
       font-size: 1rem;
       line-height: 1.65;
-      color: var(--primary-contrast);
+      color: rgba(61, 21, 0, 0.84);
       margin-top: 0.25rem;
     }
 
+    .kc-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.9rem;
+      margin-top: 0.6rem;
+    }
+
     .kc-btn {
-      display: inline-block;
-      margin-top: 0.5rem;
-      padding: 0.5rem 1.5rem;
-      border: 1.5px solid var(--surface-bright);
-      background: var(--surface-bright);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 2.9rem;
+      padding: 0.65rem 1.45rem;
+      border: 1.5px solid var(--surface);
+      background: transparent;
       border-radius: var(--radius-pill);
-      color: var(--primary-contrast);
+      color: var(--surface);
       font-family: var(--font-body);
       font-size: 0.75rem;
       font-weight: 900;
@@ -173,24 +258,48 @@ interface KomendEvent {
       text-transform: uppercase;
       text-decoration: none;
       align-self: flex-start;
-      transition: background 0.2s, color 0.2s;
+      transition: background 0.2s, color 0.2s, transform 0.2s;
+    }
+
+    .kc-btn--solid {
+      background: var(--surface);
+      color: var(--text-primary);
     }
 
     .kc-btn:hover {
+      transform: translateY(-2px);
       background: var(--secondary);
+      border-color: var(--secondary);
       color: var(--on-secondary);
+    }
+
+    .kc-empty {
+      border-radius: 2rem;
+      background: rgba(255, 255, 255, 0.16);
+      color: var(--surface);
+      padding: 2rem;
+      font-size: 1rem;
+      font-weight: 700;
+      text-align: center;
     }
 
     /* ── Responsive ── */
     @media (max-width: 640px) {
       .kc-header {
         grid-template-columns: 1fr;
+        margin-bottom: 3.5rem;
       }
 
       .kc-event,
       .kc-event--reverse {
         grid-template-columns: 1fr;
-        direction: ltr;
+        gap: 1.5rem;
+      }
+
+      .kc-event--reverse .kc-img-wrap,
+      .kc-event--reverse .kc-content {
+        grid-column: auto;
+        grid-row: auto;
       }
 
       .kc-img-wrap {
@@ -200,27 +309,156 @@ interface KomendEvent {
   `],
 })
 export class KomendeChaos {
-  readonly events: KomendEvent[] = [
+  private readonly activityService = inject(ActivityService);
+  private readonly dayFormatter = new Intl.DateTimeFormat('nl-NL', {
+    day: 'numeric',
+    month: 'short',
+  });
+  private readonly detailFormatter = new Intl.DateTimeFormat('nl-NL', {
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long',
+  });
+  private readonly timeFormatter = new Intl.DateTimeFormat('nl-NL', {
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+
+  private readonly activityState = toSignal(
+    this.activityService.getAll().pipe(
+      map((activities): ActivityState => ({
+        activities: [...activities].sort(
+          (left, right) => this.toTimestamp(left.startDate) - this.toTimestamp(right.startDate)
+        ),
+        loading: false,
+      })),
+      startWith({
+        activities: [],
+        loading: true,
+      } satisfies ActivityState),
+      catchError(() =>
+        of({
+          activities: [],
+          loading: false,
+        } satisfies ActivityState)
+      )
+    ),
     {
-      date: '01',
-      month: 'JUN',
-      name: 'LUSTRUM GALA',
-      desc: 'Een avond van ongekende grandeur en stijl. Trek je mooiste pak aan voor een nacht die nooit mag eindigen.',
-      img: 'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=600&q=80',
-    },
-    {
-      date: '15',
-      month: 'JUL',
-      name: 'DELERIUM RAVE',
-      desc: 'Zestien uur lang non-stop techno in de loods. Alleen voor de echte die-hards van de Vliet.',
-      img: 'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=600&q=80',
-    },
-    {
-      date: '26',
-      month: 'AUG',
-      name: 'VLIET REGATTA',
-      desc: 'De ultieme krachtmeting op het water. Laat zien uit welk hout je gesneden bent tijdens de Lustrum editie.',
-      img: 'https://images.unsplash.com/photo-1544097424-8d7b4c1a3c47?w=600&q=80',
-    },
-  ];
+      initialValue: {
+        activities: [],
+        loading: true,
+      },
+    }
+  );
+
+  readonly loading = computed(() => this.activityState().loading);
+
+  readonly events = computed<KomendEvent[]>(() => {
+    const now = Date.now();
+    const sortedActivities = this.activityState().activities;
+    const upcomingActivities = sortedActivities.filter(
+      (activity) => this.toTimestamp(activity.endDate ?? activity.startDate) >= now
+    );
+    const sourceActivities = (upcomingActivities.length ? upcomingActivities : sortedActivities).slice(0, 3);
+
+    return sourceActivities.map((activity) => ({
+      id: activity.id,
+      dateLabel: this.createDateLabel(activity),
+      detailLine: this.createDetailLine(activity),
+      description: this.createExcerpt(activity.description),
+      image: activity.image,
+      name: activity.title,
+      ticketLink: activity.ticketLink,
+    }));
+  });
+
+  private createDateLabel(activity: Activity): string {
+    const start = this.parseDate(activity.startDate);
+    const end = this.parseDate(activity.endDate ?? activity.startDate);
+
+    if (!this.isValidDate(start)) {
+      return 'Datum volgt';
+    }
+
+    const startLabel = this.dayFormatter.format(start).replace('.', '').toUpperCase();
+
+    if (!this.isValidDate(end) || this.isSameDay(start, end)) {
+      return startLabel;
+    }
+
+    const endLabel = this.dayFormatter.format(end).replace('.', '').toUpperCase();
+    return `${startLabel} - ${endLabel}`;
+  }
+
+  private createDetailLine(activity: Activity): string {
+    const start = this.parseDate(activity.startDate);
+    const end = this.parseDate(activity.endDate ?? activity.startDate);
+
+    if (!this.isValidDate(start)) {
+      return 'Tijd volgt';
+    }
+
+    const startTime = this.timeFormatter.format(start);
+    const baseLabel = this.capitalize(this.detailFormatter.format(start));
+
+    if (!this.isValidDate(end) || activity.endDate === activity.startDate) {
+      return `${baseLabel} om ${startTime}`;
+    }
+
+    const endTime = this.timeFormatter.format(end);
+
+    if (this.isSameDay(start, end)) {
+      return `${baseLabel}, ${startTime} - ${endTime}`;
+    }
+
+    return `${baseLabel}, ${startTime} tot ${endTime}`;
+  }
+
+  private createExcerpt(description: string | null): string {
+    const plainText = (description ?? '')
+      .replace(/<[^>]+>/g, ' ')
+      .replace(/&nbsp;/gi, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+
+    if (!plainText) {
+      return 'Meer details over deze activiteit volgen snel.';
+    }
+
+    if (plainText.length <= 150) {
+      return plainText;
+    }
+
+    return `${plainText.slice(0, 147).trimEnd()}...`;
+  }
+
+  private parseDate(value: string | null): Date {
+    if (!value) {
+      return new Date(Number.NaN);
+    }
+
+    const normalized = value.includes('T') ? value : value.replace(' ', 'T');
+    return new Date(normalized);
+  }
+
+  private toTimestamp(value: string | null): number {
+    const date = this.parseDate(value);
+    return this.isValidDate(date) ? date.getTime() : Number.MAX_SAFE_INTEGER;
+  }
+
+  private isValidDate(date: Date): boolean {
+    return !Number.isNaN(date.getTime());
+  }
+
+  private isSameDay(left: Date, right: Date): boolean {
+    return (
+      left.getFullYear() === right.getFullYear() &&
+      left.getMonth() === right.getMonth() &&
+      left.getDate() === right.getDate()
+    );
+  }
+
+  private capitalize(value: string): string {
+    return value ? value[0].toUpperCase() + value.slice(1) : value;
+  }
 }
