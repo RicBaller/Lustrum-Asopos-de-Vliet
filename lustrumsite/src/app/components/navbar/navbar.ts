@@ -1,29 +1,35 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
-  imports: [CommonModule],
+  imports: [RouterLink, RouterLinkActive],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { '[class.scrolled]': 'scrolled()' },
   template: `
     <nav class="navbar" [class.scrolled]="scrolled()">
       <div class="navbar-inner">
-        <a href="#" class="navbar-logo">
+        <a routerLink="/" class="navbar-logo" aria-label="Ga naar home">
           <span class="logo-text">DELERIUM</span>
         </a>
 
         <ul class="navbar-links">
-          <li><a href="#programma">Programma</a></li>
-          <li><a href="#media">Media</a></li>
-          <li><a href="#shop">Shop</a></li>
-          <li><a href="#commissie">Commissie</a></li>
-          <li><a href="#partners">Partners</a></li>
-          <li><a href="#contact">Contact</a></li>
+          <li>
+            <a routerLink="/" routerLinkActive="nav-link-active" [routerLinkActiveOptions]="{ exact: true }">
+              Home
+            </a>
+          </li>
+          <li>
+            <a routerLink="/activiteiten" routerLinkActive="nav-link-active">Activiteiten</a>
+          </li>
+          <li><a routerLink="/" fragment="media">Media</a></li>
+          <li><a routerLink="/" fragment="shop">Shop</a></li>
+          <li><a routerLink="/" fragment="commissie">Commissie</a></li>
+          <li><a routerLink="/" fragment="partners">Partners</a></li>
         </ul>
 
-        <a href="#tickets" class="navbar-cta">
-          Tickets
+        <a routerLink="/activiteiten" class="navbar-cta">
+          Bekijk programma
         </a>
 
         <button class="hamburger" (click)="toggleMenu()" [attr.aria-expanded]="menuOpen()">
@@ -33,13 +39,15 @@ import { CommonModule } from '@angular/common';
 
       <div class="mobile-menu" [class.open]="menuOpen()">
         <ul>
-          <li><a href="#programma" (click)="closeMenu()">Programma</a></li>
-          <li><a href="#media" (click)="closeMenu()">Media</a></li>
-          <li><a href="#shop" (click)="closeMenu()">Shop</a></li>
-          <li><a href="#commissie" (click)="closeMenu()">Commissie</a></li>
-          <li><a href="#partners" (click)="closeMenu()">Partners</a></li>
-          <li><a href="#contact" (click)="closeMenu()">Contact</a></li>
-          <li><a href="#tickets" class="mobile-cta" (click)="closeMenu()">Tickets</a></li>
+          <li><a routerLink="/" (click)="closeMenu()">Home</a></li>
+          <li><a routerLink="/activiteiten" (click)="closeMenu()">Activiteiten</a></li>
+          <li><a routerLink="/" fragment="media" (click)="closeMenu()">Media</a></li>
+          <li><a routerLink="/" fragment="shop" (click)="closeMenu()">Shop</a></li>
+          <li><a routerLink="/" fragment="commissie" (click)="closeMenu()">Commissie</a></li>
+          <li><a routerLink="/" fragment="partners" (click)="closeMenu()">Partners</a></li>
+          <li>
+            <a routerLink="/activiteiten" class="mobile-cta" (click)="closeMenu()">Bekijk programma</a>
+          </li>
         </ul>
       </div>
     </nav>
@@ -98,6 +106,10 @@ import { CommonModule } from '@angular/common';
 
     .navbar-links a:hover {
       color: var(--secondary);
+    }
+
+    .nav-link-active {
+      color: var(--secondary) !important;
     }
 
     .navbar-cta {
