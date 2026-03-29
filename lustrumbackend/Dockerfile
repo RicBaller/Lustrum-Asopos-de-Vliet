@@ -1,12 +1,14 @@
-# ─── Stage 1: Production Composer install ──────────────────────────────────────
-# Installs all production PHP dependencies, the startup theme (via
-# silverstripe/vendor-plugin) and public/_resources in a clean image so the
-# production stage never needs Composer or the build context to provide them.
-FROM composer:2 AS vendor-prod
+# =============================================================================
+# SilverStripe 6 production image for Dokploy
+# Build:  docker build -t lustrum-backend .
+# Run:    docker run --env-file .env -p 80:80 lustrum-backend
+# =============================================================================
+
+# ─── Stage 1: Composer install (production only) ────────────────────────────────
+FROM composer:2 AS vendor
 
 WORKDIR /app
 COPY composer.json composer.lock ./
-
 RUN composer install \
         --no-dev \
         --no-interaction \
@@ -14,86 +16,70 @@ RUN composer install \
         --optimize-autoloader \
         --ignore-platform-reqs
 
-# ─── Stage 2: Shared PHP 8.3 + Apache base ─────────────────────────────────────
-FROM php:8.4-apache AS base
+# ─── Stage 2: Production image ──────────────────────────────────────────────────
+FROM php:8.4-apache-bookworm
 
-# System libraries required by PHP extensions
+# ── PHP extensions ──────────────────────────────────────────────────────────────
 RUN apt-get update && apt-get install -y --no-install-recommends \
-        libpng-dev \
-        libjpeg62-turbo-dev \
-        libfreetype6-dev \
-        libzip-dev \
-        libicu-dev \
-        libtidy-dev \
-        libcurl4-openssl-dev \
-        libsodium-dev \
-        libonig-dev \
-        zlib1g-dev \
-        unzip \
+        libpng-dev libjpeg62-turbo-dev libfreetype6-dev libzip-dev \
+        libicu-dev libtidy-dev libcurl4-openssl-dev libsodium-dev \
+        libonig-dev zlib1g-dev unzip default-mysql-client \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j$(nproc) \
-        pdo_mysql \
-        mysqli \
-        gd \
-        intl \
-        mbstring \
-        tidy \
-        zip \
-        fileinfo \
-        exif \
-        curl \
-        sodium \
-    && a2enmod rewrite headers expires \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+        pdo_mysql mysqli gd intl mbstring tidy zip \
+        fileinfo exif curl sodium opcache \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
+# ── Apache modules ──────────────────────────────────────────────────────────────
+RUN a2enmod rewrite headers expires remoteip setenvif
+
+# ── PHP config ──────────────────────────────────────────────────────────────────
+COPY docker/php.ini /usr/local/etc/php/conf.d/silverstripe.ini
+
+# OPcache tuned for production
+RUN { \
+    echo 'opcache.enable=1'; \
+    echo 'opcache.memory_consumption=128'; \
+    echo 'opcache.interned_strings_buffer=8'; \
+    echo 'opcache.max_accelerated_files=10000'; \
+    echo 'opcache.revalidate_freq=0'; \
+    echo 'opcache.validate_timestamps=0'; \
+} > /usr/local/etc/php/conf.d/opcache.ini
+
+# Logging to stderr (visible via docker logs / Dokploy logs)
+RUN { \
+    echo 'log_errors=On'; \
+    echo 'error_log=/dev/stderr'; \
+    echo 'display_errors=Off'; \
+} > /usr/local/etc/php/conf.d/errors.ini
+
+# ── Apache vhost — reverse-proxy aware (Traefik / Dokploy) ─────────────────────
 COPY docker/apache.conf /etc/apache2/sites-available/000-default.conf
-COPY docker/php.ini     /usr/local/etc/php/conf.d/silverstripe.ini
+RUN echo "ServerName localhost" > /etc/apache2/conf-available/fqdn.conf \
+    && a2enconf fqdn
 
 WORKDIR /var/www/html
 
-# ─── Stage 3: Development ──────────────────────────────────────────────────────
-# Includes Composer and all dev dependencies (PHPUnit etc.).
-# Source directories are bind-mounted by docker-compose.yml so edits are
-# reflected immediately without rebuilding the image.
-FROM base AS dev
-
-# Borrow the Composer binary from the official image
-COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
-
-# Install all dependencies (including dev) into the image layer.
-# docker-compose.yml mounts named volumes on top of vendor/, themes/, etc.
-# so these get pre-populated from the image on first volume creation.
-COPY composer.json composer.lock ./
-RUN composer install --no-interaction --prefer-dist
-
-# Copy the rest of the source (vendor/themes/startup-theme are excluded by
-# .dockerignore because composer already put them in place above)
+# ── Application code (vendor/themes excluded by .dockerignore) ──────────────────
 COPY --chown=www-data:www-data . .
 
-# Ensure writable runtime directories exist with correct ownership
-RUN mkdir -p public/assets .graphql-generated \
-    && chown -R www-data:www-data public/assets .graphql-generated \
-    && chmod 775 public/assets .graphql-generated
+# ── Composer-managed packages from stage 1 ──────────────────────────────────────
+COPY --from=vendor --chown=www-data:www-data /app/vendor              ./vendor
+COPY --from=vendor --chown=www-data:www-data /app/themes/startup-theme ./themes/startup-theme
+COPY --from=vendor --chown=www-data:www-data /app/public/_resources   ./public/_resources
+
+# ── Writable runtime dirs ───────────────────────────────────────────────────────
+RUN mkdir -p public/assets .graphql-generated silverstripe-cache \
+    && chown -R www-data:www-data public/assets .graphql-generated silverstripe-cache \
+    && chmod 775 public/assets .graphql-generated silverstripe-cache
+
+# ── Entrypoint ──────────────────────────────────────────────────────────────────
+COPY docker/entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
 
 EXPOSE 80
 
-# ─── Stage 4: Production ───────────────────────────────────────────────────────
-# Self-contained image suitable for deployment. No bind mounts required.
-FROM base AS prod
+HEALTHCHECK --interval=30s --timeout=5s --start-period=90s --retries=3 \
+    CMD curl -sf http://localhost/api/v1 || exit 1
 
-# Copy application source first (vendor/themes/startup-theme/_resources are
-# excluded by .dockerignore and will be provided by the vendor-prod stage)
-COPY --chown=www-data:www-data . .
-
-# Overlay composer-managed packages from the vendor-prod stage
-COPY --from=vendor-prod --chown=www-data:www-data /app/vendor                  ./vendor
-COPY --from=vendor-prod --chown=www-data:www-data /app/themes/startup-theme    ./themes/startup-theme
-COPY --from=vendor-prod --chown=www-data:www-data /app/public/_resources       ./public/_resources
-
-# Create writable runtime directories with correct ownership
-RUN mkdir -p public/assets .graphql-generated \
-    && chown -R www-data:www-data public/assets .graphql-generated \
-    && chmod 775 public/assets .graphql-generated
-
-EXPOSE 80
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
