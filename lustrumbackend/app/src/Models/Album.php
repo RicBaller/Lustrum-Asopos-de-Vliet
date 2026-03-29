@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use SilverStripe\AssetAdmin\Forms\UploadField;
+use SilverStripe\Forms\DropdownField;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\GridField\GridField;
 use SilverStripe\Forms\GridField\GridFieldAddExistingAutocompleter;
@@ -15,6 +15,8 @@ use SilverStripe\ORM\HasManyList;
 /**
  * @property string $Title
  * @property string $Description
+ * @property int $CoverPhotoID
+ * @method Photo CoverPhoto()
  * @method HasManyList<Photographer> Photographers()
  * @method HasManyList<Photo> Photos()
  */
@@ -25,6 +27,10 @@ class Album extends DataObject
     private static array $db = [
         'Title'       => 'Varchar(255)',
         'Description' => 'HTMLText',
+    ];
+
+    private static array $has_one = [
+        'CoverPhoto' => Photo::class,
     ];
 
     private static array $has_many = [
@@ -42,15 +48,33 @@ class Album extends DataObject
     {
         $fields = parent::getCMSFields();
 
-        // Remove auto-scaffolded has_many tabs
-        $fields->removeByName(['Photographers', 'Photos']);
+        // Remove auto-scaffolded relations
+        $fields->removeByName(['Photographers', 'Photos', 'CoverPhotoID']);
 
         $fields->addFieldsToTab('Root.Main', [
             TextField::create('Title', 'Titel'),
             HTMLEditorField::create('Description', 'Omschrijving'),
         ]);
 
-        // Fotografen tab
+        if ($this->ID) {
+            // Omslagfoto tab — kies een foto uit de al geüploade albumfoto's
+            $photoOptions = ['' => '-- Geen omslagfoto --'];
+            foreach ($this->Photos() as $photo) {
+                /** @var Photo $photo */
+                $label = $photo->Image()->exists() ? $photo->Image()->Name : 'Foto #' . $photo->ID;
+                if ($photo->Photographer()->exists()) {
+                    $label .= ' (' . $photo->Photographer()->Name . ')';
+                }
+                $photoOptions[$photo->ID] = $label;
+            }
+
+            $fields->addFieldToTab(
+                'Root.Omslagfoto',
+                DropdownField::create('CoverPhotoID', 'Omslagfoto', $photoOptions)
+                    ->setEmptyString('-- Geen omslagfoto --')
+            );
+        }
+
         $photographerConfig = GridFieldConfig_RecordEditor::create();
         $photographerConfig->removeComponentsByType(GridFieldAddExistingAutocompleter::class);
         $fields->addFieldToTab(
@@ -63,15 +87,10 @@ class Album extends DataObject
             $photoConfig = GridFieldConfig_RecordEditor::create();
             $photoConfig->removeComponentsByType(GridFieldAddExistingAutocompleter::class);
 
-            // Add upload field inline via a separate UploadField
-            $upload = UploadField::create('Photos', "Foto's uploaden")
-                ->setAllowedFileCategories('image')
-                ->setFolderName('albums/' . $this->ID);
-
-            $fields->addFieldsToTab("Root.Foto's", [
-                $upload,
-                GridField::create("PhotosGrid", "Foto's beheren", $this->Photos(), $photoConfig),
-            ]);
+            $fields->addFieldToTab(
+                "Root.Foto's",
+                GridField::create("PhotosGrid", "Foto's beheren", $this->Photos(), $photoConfig)
+            );
         }
 
         return $fields;
