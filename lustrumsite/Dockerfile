@@ -3,6 +3,8 @@ FROM node:22-alpine AS builder
 
 WORKDIR /app
 
+ARG ENVIRONMENT=production
+
 COPY package*.json ./
 RUN npm ci
 
