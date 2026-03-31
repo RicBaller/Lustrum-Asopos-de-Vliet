@@ -3,9 +3,11 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { catchError, map, of } from 'rxjs';
 import { AlbumService } from '../../services/album.service';
 import { AlbumSummary } from '../../models/models';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-beleef',
+  imports: [RouterLink],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <section class="beleef" id="archief">
@@ -37,7 +39,7 @@ import { AlbumSummary } from '../../models/models';
             <p class="beleef-empty">Nog geen albums beschikbaar.</p>
           } @else {
             @for (album of albums()!; track album.id) {
-              <article class="memory-card">
+              <a class="memory-card" [routerLink]="['/albums', album.id]">
                 <div class="memory-img">
                   <div class="memory-img-inner"
                        [class.memory-img-inner--has-cover]="album.coverPhotoUrl"
@@ -63,7 +65,7 @@ import { AlbumSummary } from '../../models/models';
                     </div>
                   </div>
                 </div>
-              </article>
+              </a>
             }
           }
         </div>
@@ -137,6 +139,24 @@ import { AlbumSummary } from '../../models/models';
 
     .memory-card {
       cursor: pointer;
+      display: block;
+      text-decoration: none;
+      transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    /* Links - tilt links (naar buiten) */
+    .memory-card:nth-child(3n+1):hover {
+      transform: translateY(-8px) rotate(-2deg);
+    }
+
+    /* Midden - recht omhoog */
+    .memory-card:nth-child(3n+2):hover {
+      transform: translateY(-8px) rotate(0deg);
+    }
+
+    /* Rechts - tilt rechts (naar buiten) */
+    .memory-card:nth-child(3n):hover {
+      transform: translateY(-8px) rotate(2deg);
     }
 
     .memory-img {

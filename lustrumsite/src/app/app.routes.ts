@@ -13,6 +13,18 @@ export const routes: Routes = [
 		title: 'Delerium | Activiteiten',
 	},
 	{
+		path: 'albums',
+		loadComponent: () =>
+			import('./pages/albums-page/albums-page').then((module) => module.AlbumsPage),
+		title: 'Delerium | Fotoarchief',
+	},
+	{
+		path: 'albums/:id',
+		loadComponent: () =>
+			import('./pages/album-detail-page/album-detail-page').then((module) => module.AlbumDetailPage),
+		title: 'Delerium | Album',
+	},
+	{
 		path: '**',
 		redirectTo: '',
 	},

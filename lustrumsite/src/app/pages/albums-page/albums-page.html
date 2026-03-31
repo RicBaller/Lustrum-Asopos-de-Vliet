@@ -1,0 +1,68 @@
+<section class="albums-hero">
+    <div class="albums-hero__grain"></div>
+    <div class="albums-hero__inner">
+      <div class="albums-badge">BEELDMATERIAAL</div>
+      <h1 class="albums-hero__title">
+        <span class="text-primary">DELERIUM</span><br>
+        IN BEELD
+      </h1>
+      <p class="albums-hero__subtitle">Herbeleef de chaos.<br>Van de diepste dalen in de boot tot de hoogste pieken van het Lustrumgala.</p>
+    </div>
+  
+    <div class="albums-hero__wave" aria-hidden="true">
+      <svg viewBox="0 0 1440 160" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0,80 C180,130 360,150 540,110 C720,70 900,10 1080,30 C1260,50 1350,100 1440,130 L1440,160 L0,160 Z" fill="#F06C30"/>
+      </svg>
+    </div>
+  </section>
+  
+  <section class="albums-grid-section">
+    <div class="albums-grid__inner">
+      @if (loading()) {
+        <div class="albums-loading" aria-live="polite">
+          @for (item of skeletonItems; track item) {
+            <div class="album-skeleton" [class.album-skeleton--alt]="item % 2 === 0">
+              <div class="album-skeleton__image"></div>
+              <div class="album-skeleton__text"></div>
+            </div>
+          }
+        </div>
+      } @else if (error(); as message) {
+        <div class="albums-state albums-state--error" aria-live="polite">
+          <p>{{ message }}</p>
+          <a routerLink="/" class="albums-state__link">Terug naar home</a>
+        </div>
+      } @else if (!albums().length) {
+        <div class="albums-state" aria-live="polite">
+          <p>Er staan momenteel geen albums in het archief.</p>
+        </div>
+      } @else {
+        <div class="albums-list">
+          @for (album of albums(); track album.id; let index = $index) {
+            <a class="album-card" [routerLink]="['/albums', album.id]" [class.album-card--right]="index % 2 !== 0">
+              <div class="album-card__image-wrapper">
+                <div class="album-card__image"
+                     [style.background-image]="album.coverPhotoUrl ? 'url(' + album.coverPhotoUrl + ')' : null"
+                     [class.album-card__image--placeholder]="!album.coverPhotoUrl">
+                </div>
+              </div>
+              <div class="album-card__content">
+                <div class="album-card__meta">
+                  {{ album.photoCount }} FOTO'S {{ album.coverPhotographer ? '• DOOR ' + album.coverPhotographer : '' }}
+                </div>
+                <h2 class="album-card__title">
+                  {{ album.title }}
+                  <span class="album-card__arrow">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <line x1="5" y1="19" x2="19" y2="5"></line>
+                      <polyline points="9 5 19 5 19 15"></polyline>
+                    </svg>
+                  </span>
+                </h2>
+              </div>
+            </a>
+          }
+        </div>
+      }
+    </div>
+  </section>

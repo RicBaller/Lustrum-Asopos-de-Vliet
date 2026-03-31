@@ -1,5 +1,5 @@
 .activities-closing {
-    background: #2b003d;
+    background: var(--surface);
     padding: 4rem var(--spacing-gutter) 5.5rem;
 }
 

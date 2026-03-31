@@ -48,7 +48,7 @@
 .activities-hero__subtitle {
     max-width: 42rem;
     margin: 1.4rem auto 0;
-    color: var(--secondary);
+    color: var(--text-primary);
     font-size: 1rem;
     font-weight: 700;
     letter-spacing: 0.16em;

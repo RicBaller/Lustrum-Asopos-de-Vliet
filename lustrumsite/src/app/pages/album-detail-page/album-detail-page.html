@@ -1,0 +1,132 @@
+<section class="album-hero">
+    <div class="album-hero__grain"></div>
+    <div class="album-hero__inner">
+      <p class="album-hero__eyebrow">Album</p>
+      @if (loading()) {
+        <h1 class="album-hero__title">LADEN...</h1>
+      } @else if (error()) {
+        <h1 class="album-hero__title">FOUTLADING</h1>
+      } @else if (album()) {
+        <h1 class="album-hero__title">{{ album()!.title }}</h1>
+        <p class="album-hero__subtitle">{{ album()!.description }}</p>
+  
+        <div class="album-hero__stats">
+          <div class="hero-stat">
+            <span>{{ album()!.photos.length }}</span>
+            <small>foto's</small>
+          </div>
+          @if (album()!.photographers.length) {
+            <div class="hero-stat hero-stat--wide">
+              <span>{{ album()!.photographers.length }}</span>
+              <small>fotografen</small>
+            </div>
+          }
+        </div>
+      }
+    </div>
+  
+    <div class="album-hero__wave" aria-hidden="true">
+      <svg viewBox="0 0 1440 160" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0,80 C180,130 360,150 540,110 C720,70 900,10 1080,30 C1260,50 1350,100 1440,130 L1440,160 L0,160 Z" fill="#ff7a45"/>
+      </svg>
+    </div>
+</section>
+
+<section class="album-gallery">
+    <div class="album-gallery__inner">
+      @if (loading()) {
+        <div class="gallery-loading" aria-live="polite">
+          @for (item of skeletonItems; track item) {
+            <div class="gallery-skeleton"></div>
+          }
+        </div>
+      } @else if (error(); as message) {
+        <div class="gallery-state gallery-state--error" aria-live="polite">
+          <p>{{ message }}</p>
+          <a routerLink="/" class="gallery-state__link">Terug naar home</a>
+        </div>
+      } @else if (album()) {
+        @if (!album()!.photos.length) {
+          <div class="gallery-state" aria-live="polite">
+            <p>Er staan nog geen foto's in dit album.</p>
+          </div>
+        } @else {
+          <div class="gallery-groups">
+            @for (group of groupedPhotos(); track group.photographerName) {
+              <div class="gallery-group">
+                <h2 class="gallery-group__title">
+                  <span class="gallery-group__icon">📷</span>
+                  {{ group.photographerName }}
+                </h2>
+                <div class="gallery-grid">
+                  @for (photo of group.photos; track photo.id) {
+                    <button class="gallery-card" (click)="openLightbox(photo)" aria-label="Bekijk foto">
+                      <img [src]="photo.url" alt="Foto uit het album" loading="lazy" class="gallery-card__image" />
+                    </button>
+                  }
+                </div>
+              </div>
+            }
+          </div>
+        }
+      }
+    </div>
+</section>
+  
+<section class="album-closing">
+    <div class="album-closing__wave" aria-hidden="true">
+      <svg viewBox="0 0 1440 160" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0,30 C200,80 400,10 600,40 C800,70 1000,130 1200,110 C1400,90 1440,50 1440,30 L1440,0 L0,0 Z" fill="#ff7a45"/>
+      </svg>
+    </div>
+    <div class="album-closing__inner">
+      <h2>MEER ZIEN?</h2>
+      <div class="album-closing__actions">
+        <a routerLink="/albums" class="btn btn--primary">
+          TERUG NAAR ALBUMS
+        </a>
+      </div>
+    </div>
+</section>
+
+@if (isLightboxOpen() && currentPhoto()) {
+  <div class="lightbox" (click)="closeLightbox()">
+    <div class="lightbox__backdrop backdrop-blur"></div>
+    
+    <button class="lightbox__close" aria-label="Sluiten" (click)="closeLightbox()">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+
+    <button class="lightbox__nav lightbox__nav--prev" aria-label="Vorige foto" (click)="$event.stopPropagation(); previousPhoto()">
+      <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="15 18 9 12 15 6"></polyline>
+      </svg>
+    </button>
+
+    <div class="lightbox__content" (click)="$event.stopPropagation()"
+         [class.slide-left]="slideDirection() === 'left'"
+         [class.slide-right]="slideDirection() === 'right'">
+      <img [src]="currentPhoto()?.url" alt="Uitvergrote foto" class="lightbox__image" />
+      @if (currentPhoto()?.photographer) {
+        <div class="lightbox__caption">
+          <span>📷 {{ currentPhoto()?.photographer?.name }}</span>
+        </div>
+      }
+    </div>
+
+    <button class="lightbox__nav lightbox__nav--next" aria-label="Volgende foto" (click)="$event.stopPropagation(); nextPhoto()">
+      <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="9 18 15 12 9 6"></polyline>
+      </svg>
+    </button>
+    
+    <div class="lightbox__preload" style="display: none;" aria-hidden="true">
+      @for (url of preloadPhotos(); track url) {
+        <img [src]="url" />
+      }
+    </div>
+  </div>
+}
