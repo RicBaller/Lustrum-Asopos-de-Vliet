@@ -101,7 +101,7 @@
 
     <div class="activities-timeline__wave" aria-hidden="true">
     <svg viewBox="0 0 1440 160" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M0,110 C180,70 360,40 540,70 C720,100 900,150 1080,120 C1260,90 1350,40 1440,80 L1440,160 L0,160 Z" fill="#2b003d"/>
+        <path d="M0,110 C180,70 360,40 540,70 C720,100 900,150 1080,120 C1260,90 1350,40 1440,80 L1440,160 L0,160 Z" fill="var(--surface)"/>
     </svg>
     </div>
 </section>
@@ -127,9 +127,10 @@
 </section>
 
 @if (selectedDetail(); as selected) {
-    <div class="activity-dialog-backdrop" (click)="closeDialog()">
+    <div class="activity-dialog-backdrop" [class.activity-dialog-backdrop--closing]="isClosingDialog()" (click)="closeDialog()">
     <section
         class="activity-dialog"
+        [class.activity-dialog--closing]="isClosingDialog()"
         role="dialog"
         aria-modal="true"
         [attr.aria-labelledby]="'activity-dialog-title-' + selected.activity.id"

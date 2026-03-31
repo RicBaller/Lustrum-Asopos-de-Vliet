@@ -7,7 +7,7 @@
     justify-content: flex-start;
     height: 100%;
     border-radius: 1.8rem;
-    background: #2b003d;
+    background: var(--surface-mid);
     color: var(--text-primary);
     padding: 1.65rem 1.7rem 1.5rem;
     box-shadow: 0 18px 45px rgba(43, 0, 61, 0.16);
@@ -124,7 +124,7 @@
     min-height: 17rem;
     border: 0;
     border-radius: 1.7rem;
-    background: #1f002d;
+    background: var(--surface-low);
     overflow: hidden;
     box-shadow: 0 18px 45px rgba(43, 0, 61, 0.14);
     cursor: pointer;
@@ -132,8 +132,12 @@
 }
 
 .timeline-media:hover {
-    transform: translateY(-4px) rotate(-1deg);
+    transform: translateY(-4px) rotate(2deg); /* Default (rechts): tilt naar rechts (buiten) */
     box-shadow: 0 24px 55px rgba(43, 0, 61, 0.22);
+}
+
+.timeline-row--reverse .timeline-media:hover {
+    transform: translateY(-4px) rotate(-2deg); /* Reverse (links): tilt naar links (buiten) */
 }
 
 .timeline-media img {

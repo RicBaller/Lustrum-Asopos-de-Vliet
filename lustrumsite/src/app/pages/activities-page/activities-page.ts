@@ -58,6 +58,8 @@ export class ActivitiesPage implements OnDestroy {
   readonly skeletonItems = [1, 2, 3, 4];
   readonly selectedActivity = signal<Activity | null>(null);
 
+  readonly isClosingDialog = signal(false);
+
   private readonly document = inject(DOCUMENT);
   private readonly activityService = inject(ActivityService);
   private readonly shortMonthFormatter = new Intl.DateTimeFormat('nl-NL', { month: 'short' });
@@ -186,7 +188,13 @@ export class ActivitiesPage implements OnDestroy {
   }
 
   closeDialog() {
-    this.selectedActivity.set(null);
+    if (this.isClosingDialog() || !this.selectedActivity()) return;
+    
+    this.isClosingDialog.set(true);
+    setTimeout(() => {
+      this.selectedActivity.set(null);
+      this.isClosingDialog.set(false);
+    }, 300); // Wait for the 300ms closing animation
   }
 
   private createBadge(activity: Activity): string {
