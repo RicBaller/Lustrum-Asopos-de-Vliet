@@ -22,7 +22,16 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
           <li>
             <a routerLink="/activiteiten" routerLinkActive="nav-link-active">Activiteiten</a>
           </li>
-          <li><a routerLink="/" fragment="media">Media</a></li>
+          <li class="has-dropdown" routerLinkActive="nav-dropdown-active">
+            <a style="cursor: pointer;">
+              Media
+              <svg class="dropdown-icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </a>
+            <div class="dropdown-menu">
+              <a routerLink="/albums" routerLinkActive="nav-link-active">Foto's</a>
+              <a routerLink="/videos" routerLinkActive="nav-link-active">Video's</a>
+            </div>
+          </li>
           <li><a routerLink="/" fragment="shop">Shop</a></li>
           <li><a routerLink="/" fragment="commissie">Commissie</a></li>
           <li><a routerLink="/" fragment="partners">Partners</a></li>
@@ -41,7 +50,16 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
         <ul>
           <li><a routerLink="/" (click)="closeMenu()">Home</a></li>
           <li><a routerLink="/activiteiten" (click)="closeMenu()">Activiteiten</a></li>
-          <li><a routerLink="/" fragment="media" (click)="closeMenu()">Media</a></li>
+          <li class="mobile-has-dropdown">
+            <button class="mobile-dropdown-toggle" (click)="mediaDropdownOpen.set(!mediaDropdownOpen())">
+              Media
+              <svg [style.transform]="mediaDropdownOpen() ? 'rotate(180deg)' : 'rotate(0deg)'" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transition: transform 0.2s"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </button>
+            <div class="mobile-dropdown-menu" [class.open]="mediaDropdownOpen()">
+              <a routerLink="/albums" (click)="closeMenu()">Foto's</a>
+              <a routerLink="/videos" (click)="closeMenu()">Video's</a>
+            </div>
+          </li>
           <li><a routerLink="/" fragment="shop" (click)="closeMenu()">Shop</a></li>
           <li><a routerLink="/" fragment="commissie" (click)="closeMenu()">Commissie</a></li>
           <li><a routerLink="/" fragment="partners" (click)="closeMenu()">Partners</a></li>
@@ -89,12 +107,15 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 
     .navbar-links {
       display: flex;
+      align-items: center;
       list-style: none;
       gap: 2rem;
       margin: 0 auto;
     }
 
     .navbar-links a {
+      display: flex;
+      align-items: center;
       font-family: var(--font-body);
       font-size: 0.875rem;
       font-weight: 500;
@@ -102,14 +123,70 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
       letter-spacing: 0.05em;
       text-transform: uppercase;
       transition: color 0.2s;
+      text-decoration: none;
     }
 
     .navbar-links a:hover {
       color: var(--secondary);
     }
 
-    .nav-link-active {
+    .nav-link-active,
+    .nav-dropdown-active > a {
       color: var(--secondary) !important;
+    }
+
+    .has-dropdown {
+      position: relative;
+    }
+
+    .has-dropdown > a {
+      gap: 0.25rem;
+    }
+
+    .dropdown-icon {
+      transition: transform 0.2s ease;
+    }
+
+    .has-dropdown:hover .dropdown-icon {
+      transform: rotate(180deg);
+    }
+
+    .dropdown-menu {
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%) translateY(10px);
+      background: var(--surface-high);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 0.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      min-width: 160px;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: all 0.2s ease;
+      box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.5);
+    }
+
+    .has-dropdown:hover .dropdown-menu {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(-50%) translateY(0);
+      pointer-events: auto;
+    }
+
+    .dropdown-menu a {
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      display: block;
+      text-align: center;
+    }
+
+    .dropdown-menu a:hover {
+      background: rgba(255, 255, 255, 0.05);
     }
 
     .navbar-cta {
@@ -171,6 +248,39 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
       font-size: 1.125rem;
       font-weight: 500;
       color: var(--text-secondary);
+      text-decoration: none;
+    }
+
+    .mobile-dropdown-toggle {
+      background: none;
+      border: none;
+      font-family: var(--font-body);
+      font-size: 1.125rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0;
+      width: 100%;
+      text-align: left;
+      text-transform: none;
+    }
+
+    .mobile-dropdown-menu {
+      display: none;
+      flex-direction: column;
+      gap: 1rem;
+      padding-top: 1rem;
+      padding-left: 1rem;
+      border-left: 2px solid rgba(255, 255, 255, 0.1);
+      margin-left: 0.5rem;
+      margin-top: 0.5rem;
+    }
+
+    .mobile-dropdown-menu.open {
+      display: flex;
     }
 
     .mobile-cta {
@@ -191,6 +301,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 export class Navbar implements OnInit, OnDestroy {
   scrolled = signal(false);
   menuOpen = signal(false);
+  mediaDropdownOpen = signal(false);
 
   private readonly scrollHandler = () => this.scrolled.set(window.scrollY > 40);
 
@@ -208,5 +319,6 @@ export class Navbar implements OnInit, OnDestroy {
 
   closeMenu() {
     this.menuOpen.set(false);
+    this.mediaDropdownOpen.set(false);
   }
 }
