@@ -50,6 +50,27 @@
               ],
               "outputHashing": "all"
             },
+            "staging": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.staging.ts"
+                }
+              ],
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kB",
+                  "maximumError": "1MB"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "4kB",
+                  "maximumError": "8kB"
+                }
+              ],
+              "outputHashing": "all"
+            },
             "development": {
               "optimization": false,
               "extractLicenses": false,
@@ -63,6 +84,9 @@
           "configurations": {
             "production": {
               "buildTarget": "lustrumsite:build:production"
+            },
+            "staging": {
+              "buildTarget": "lustrumsite:build:staging"
             },
             "development": {
               "buildTarget": "lustrumsite:build:development"
