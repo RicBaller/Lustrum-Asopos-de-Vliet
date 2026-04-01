@@ -1,0 +1,135 @@
+<section class="videos-hero">
+  <div class="videos-hero__grain"></div>
+  <div class="videos-hero__inner">
+    <p class="videos-hero__eyebrow">Media</p>
+    <h1 class="videos-hero__title">VIDEO'S</h1>
+    <p class="videos-hero__subtitle">Alle video's van het derde lustrum, gerangschikt per categorie.</p>
+  </div>
+  <div class="videos-hero__wave" aria-hidden="true">
+    <svg viewBox="0 0 1440 160" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,80 C180,130 360,150 540,110 C720,70 900,10 1080,30 C1260,50 1350,100 1440,130 L1440,160 L0,160 Z" fill="#F06C30"/>
+    </svg>
+  </div>
+</section>
+
+<div class="videos-body">
+  @if (loading()) {
+    <div class="videos-state">
+      <div class="videos-skeleton">
+        @for (i of skeletonCount; track i) {
+          <div class="videos-skeleton__card"></div>
+        }
+      </div>
+    </div>
+  } @else if (error()) {
+    <div class="videos-state videos-state--error">
+      <p>{{ error() }}</p>
+      <a routerLink="/" class="btn btn--primary">Terug naar home</a>
+    </div>
+  } @else if (!groupedVideos().length) {
+    <div class="videos-state">
+      <p>Er zijn nog geen video's beschikbaar.</p>
+    </div>
+  } @else {
+    @for (group of groupedVideos(); track group.label; let i = $index, last = $last) {
+      <section
+        class="video-category"
+        [class.video-category--orange]="isOrangeSection(i)"
+        [attr.aria-label]="group.label"
+      >
+        <div class="video-category__inner">
+          <header class="video-category__header">
+            <h2 class="video-category__title">{{ group.label }}</h2>
+            <span class="video-category__count">
+              {{ group.videos.length }} video{{ group.videos.length !== 1 ? "'s" : '' }}
+            </span>
+          </header>
+
+          <div class="video-grid" [class.video-grid--cols-3]="group.cols === 3">
+            @for (video of group.videos; track video.id) {
+              <button
+                class="video-card"
+                type="button"
+                [attr.aria-label]="'Bekijk ' + video.title"
+                (click)="openLightbox(video)"
+              >
+                <div class="video-card__thumb">
+                  @if (getThumbnailUrl(video.youtubeURL); as thumb) {
+                    <img [src]="thumb" [alt]="video.title" class="video-card__img" loading="lazy" />
+                  }
+                  <div class="video-card__play" aria-hidden="true">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M8 5v14l11-7z"/>
+                    </svg>
+                  </div>
+                </div>
+                <p class="video-card__label">{{ video.title }}</p>
+                @if (video.credits) {
+                  <p class="video-card__credits">{{ video.credits }}</p>
+                }
+              </button>
+            }
+          </div>
+        </div>
+
+        <!-- Wave transition to next section -->
+        <div class="vc-wave-bottom" aria-hidden="true">
+          <svg viewBox="0 0 1440 160" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <path [attr.d]="bottomWavePath(i)" [attr.fill]="bottomWaveFill(i, last)" />
+          </svg>
+        </div>
+      </section>
+    }
+  }
+</div>
+
+<section class="videos-closing" [class.videos-closing--purple]="!closingIsOrange()">
+  <div class="videos-closing__wave" aria-hidden="true">
+    <svg viewBox="0 0 1440 160" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,30 C200,80 400,10 600,40 C800,70 1000,130 1200,110 C1400,90 1440,50 1440,30 L1440,0 L0,0 Z" [attr.fill]="closingIsOrange() ? '#F06C30' : '#3f0059'"/>
+    </svg>
+  </div>
+  <div class="videos-closing__inner">
+    <h2>MEER ZIEN?</h2>
+    <div class="videos-closing__actions">
+      <a routerLink="/albums" class="btn btn--primary">BEKIJK DE FOTO'S</a>
+    </div>
+  </div>
+</section>
+
+@if (isLightboxOpen() && selectedVideo()) {
+  <div class="video-lightbox" (click)="closeLightbox()">
+    <div class="video-lightbox__backdrop"></div>
+
+    <button
+      class="video-lightbox__close"
+      type="button"
+      aria-label="Sluiten"
+      (click)="closeLightbox()"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+
+    <div class="video-lightbox__content" (click)="$event.stopPropagation()">
+      <div class="video-lightbox__player">
+        <iframe
+          [src]="getEmbedUrl(selectedVideo()!.youtubeURL) | safe"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+          class="video-lightbox__iframe"
+          [title]="selectedVideo()!.title"
+        ></iframe>
+      </div>
+      <div class="video-lightbox__meta">
+        <h3 class="video-lightbox__title">{{ selectedVideo()!.title }}</h3>
+        @if (selectedVideo()!.credits) {
+          <p class="video-lightbox__credits">{{ selectedVideo()!.credits }}</p>
+        }
+      </div>
+    </div>
+  </div>
+}
