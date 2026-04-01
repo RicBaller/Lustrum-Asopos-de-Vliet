@@ -25,6 +25,12 @@ export const routes: Routes = [
 		title: 'Delerium | Album',
 	},
 	{
+		path: 'videos',
+		loadComponent: () =>
+			import('./pages/videos-page/videos-page').then((module) => module.VideosPage),
+		title: "Delerium | Video's",
+	},
+	{
 		path: '**',
 		redirectTo: '',
 	},
