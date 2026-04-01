@@ -95,6 +95,7 @@ export interface SubCommissie {
 export interface VideoCategory {
   id: number;
   title: string;
+  sortOrder: number;
 }
 
 export interface Video {
