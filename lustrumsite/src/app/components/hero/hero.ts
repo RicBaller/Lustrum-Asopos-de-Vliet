@@ -5,6 +5,9 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <section class="hero">
+      <!-- Background GIF with overlay -->
+      <div class="hero-background"></div>
+
       <!-- Animated noise/grain overlay -->
       <div class="hero-grain"></div>
 
@@ -57,6 +60,26 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
       align-items: center;
       justify-content: center;
       overflow: hidden;
+    }
+
+    /* Background image layer */
+    .hero-background {
+      position: absolute;
+      inset: 0;
+      background-image: url('/55e8badc7f2a6415439cb27b28d236da.gif');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      z-index: 0;
+    }
+
+    /* Solid color overlay dynamically blending with background */
+    .hero-background::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--surface);
+      opacity: 0.85; /* Adjust this to show more/less of the gif */
     }
 
     /* Grain texture */
