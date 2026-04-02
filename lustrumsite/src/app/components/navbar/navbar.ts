@@ -32,7 +32,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
               <a routerLink="/videos" routerLinkActive="nav-link-active">Video's</a>
             </div>
           </li>
-          <li><a routerLink="/" fragment="shop">Shop</a></li>
+          <li><a routerLink="/shop" routerLinkActive="nav-link-active">Shop</a></li>
           <li><a routerLink="/" fragment="commissie">Commissie</a></li>
           <li><a routerLink="/" fragment="partners">Partners</a></li>
         </ul>
@@ -60,7 +60,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
               <a routerLink="/videos" (click)="closeMenu()">Video's</a>
             </div>
           </li>
-          <li><a routerLink="/" fragment="shop" (click)="closeMenu()">Shop</a></li>
+          <li><a routerLink="/shop" (click)="closeMenu()">Shop</a></li>
           <li><a routerLink="/" fragment="commissie" (click)="closeMenu()">Commissie</a></li>
           <li><a routerLink="/" fragment="partners" (click)="closeMenu()">Partners</a></li>
           <li>
