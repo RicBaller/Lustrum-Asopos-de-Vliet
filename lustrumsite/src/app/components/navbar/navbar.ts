@@ -10,7 +10,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
     <nav class="navbar" [class.scrolled]="scrolled()">
       <div class="navbar-inner">
         <a routerLink="/" class="navbar-logo" aria-label="Ga naar home">
-          <span class="logo-text">DELERIUM</span>
+          <span class="logo-text">DELIRIUM</span>
         </a>
 
         <ul class="navbar-links">

@@ -9,7 +9,7 @@ import { RouterLink } from '@angular/router';
     <footer class="footer" id="contact">
       <div class="footer-inner">
         <div class="footer-brand">
-          <p class="footer-logo">DELERIUM</p>
+          <p class="footer-logo">DELIRIUM</p>
           <p class="footer-sub">© 2024 Lustrum Commissie — Het Electrisch Organisme</p>
           <div class="footer-social">
             <a href="#" class="social-pill" aria-label="Instagram">
