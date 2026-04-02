@@ -9,28 +9,36 @@ use SilverStripe\Control\HTTPResponse;
 
 class ProductController extends Controller
 {
-    private static array $allowed_actions = ['index', 'show'];
+    private static array $allowed_actions = ['index', 'featured', 'show'];
 
     private static array $url_handlers = [
+        'featured' => 'featured',
         '$ID!' => 'show',
         ''     => 'index',
     ];
 
     public function index(HTTPRequest $request): HTTPResponse
     {
-        $products = Product::get()->sort('Title ASC');
+        return $this->jsonResponse($this->serializeProducts($this->getProducts($request)));
+    }
+
+    public function featured(HTTPRequest $request): HTTPResponse
+    {
+        return $this->jsonResponse(
+            $this->serializeProducts($this->getProducts($request)->filter('IsSpotlight', true))
+        );
+    }
+
+    private function getProducts(HTTPRequest $request)
+    {
+        $products = Product::get();
 
         $categoryID = $request->getVar('category');
         if ($categoryID) {
-            $products = $products->filter('CategoryID', (int) $categoryID);
+            $products = $products->filter('ProductCategoryID', (int) $categoryID);
         }
 
-        $data = [];
-        foreach ($products as $product) {
-            $data[] = $this->serialize($product);
-        }
-
-        return $this->jsonResponse($data);
+        return $products;
     }
 
     public function show(HTTPRequest $request): HTTPResponse
@@ -44,11 +52,41 @@ class ProductController extends Controller
         return $this->jsonResponse($this->serialize($product));
     }
 
+    private function serializeProducts(iterable $products): array
+    {
+        $data = [];
+        foreach ($products as $product) {
+            $data[] = $this->serialize($product);
+        }
+
+        usort($data, function (array $left, array $right): int {
+            $categoryComparison = strcasecmp(
+                $left['category']['title'] ?? '~',
+                $right['category']['title'] ?? '~'
+            );
+            if ($categoryComparison !== 0) {
+                return $categoryComparison;
+            }
+
+            $sortOrderComparison = $left['sortOrder'] <=> $right['sortOrder'];
+            if ($sortOrderComparison !== 0) {
+                return $sortOrderComparison;
+            }
+
+            return strcasecmp($left['title'], $right['title']);
+        });
+
+        return $data;
+    }
+
     private function serialize(Product $product): array
     {
         $images = [];
         foreach ($product->Images() as $image) {
-            $images[] = $image->getAbsoluteURL();
+            $url = $image->getAbsoluteURL();
+            if ($url) {
+                $images[] = $url;
+            }
         }
 
         return [
@@ -57,8 +95,13 @@ class ProductController extends Controller
             'description' => $product->Description,
             'price'       => $product->Price,
             'link'        => $product->Link,
-            'category'    => $product->Category()->exists()
-                ? ['id' => $product->Category()->ID, 'title' => $product->Category()->Title]
+            'sortOrder'   => $product->SortOrder,
+            'isSpotlight' => (bool) $product->IsSpotlight,
+            'category'    => $product->ProductCategory()->exists()
+                ? [
+                    'id'    => $product->ProductCategory()->ID,
+                    'title' => $product->ProductCategory()->Title,
+                ]
                 : null,
             'images'      => $images,
         ];

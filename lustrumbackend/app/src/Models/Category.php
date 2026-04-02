@@ -14,10 +14,6 @@ class Category extends DataObject
         'Title' => 'Varchar(255)',
     ];
 
-    private static array $has_many = [
-        'Products' => Product::class,
-    ];
-
     private static array $summary_fields = [
         'Title' => 'Titel',
     ];

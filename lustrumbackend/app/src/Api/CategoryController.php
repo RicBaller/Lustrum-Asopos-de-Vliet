@@ -2,7 +2,7 @@
 
 namespace App\Api;
 
-use App\Models\Category;
+use App\Models\ProductCategory;
 use SilverStripe\Control\Controller;
 use SilverStripe\Control\HTTPRequest;
 use SilverStripe\Control\HTTPResponse;
@@ -19,7 +19,7 @@ class CategoryController extends Controller
     public function index(HTTPRequest $request): HTTPResponse
     {
         $data = [];
-        foreach (Category::get()->sort('Title ASC') as $category) {
+        foreach (ProductCategory::get()->sort('Title ASC') as $category) {
             $data[] = $this->serialize($category);
         }
 
@@ -28,7 +28,7 @@ class CategoryController extends Controller
 
     public function show(HTTPRequest $request): HTTPResponse
     {
-        $category = Category::get()->byID((int) $request->param('ID'));
+        $category = ProductCategory::get()->byID((int) $request->param('ID'));
 
         if (!$category) {
             return $this->jsonResponse(['error' => 'Categorie niet gevonden'], 404);
@@ -37,7 +37,7 @@ class CategoryController extends Controller
         return $this->jsonResponse($this->serialize($category, withProducts: true));
     }
 
-    private function serialize(Category $category, bool $withProducts = false): array
+    private function serialize(ProductCategory $category, bool $withProducts = false): array
     {
         $data = [
             'id'    => $category->ID,
@@ -46,7 +46,7 @@ class CategoryController extends Controller
 
         if ($withProducts) {
             $products = [];
-            foreach ($category->Products() as $product) {
+            foreach ($category->Products()->sort('SortOrder ASC, Title ASC') as $product) {
                 $products[] = ['id' => $product->ID, 'title' => $product->Title];
             }
             $data['products'] = $products;
