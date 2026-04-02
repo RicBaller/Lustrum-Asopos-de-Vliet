@@ -10,11 +10,22 @@ export class ProductService {
   private readonly base = `${environment.apiUrl}/products`;
 
   getAll(categoryId?: number): Observable<Product[]> {
+    const params = this.getParams(categoryId);
+    return this.http.get<Product[]>(this.base, { params });
+  }
+
+  getFeatured(categoryId?: number): Observable<Product[]> {
+    const params = this.getParams(categoryId);
+    return this.http.get<Product[]>(`${this.base}/featured`, { params });
+  }
+
+  private getParams(categoryId?: number): HttpParams {
     let params = new HttpParams();
     if (categoryId !== undefined) {
       params = params.set('category', String(categoryId));
     }
-    return this.http.get<Product[]>(this.base, { params });
+
+    return params;
   }
 
   getById(id: number): Observable<Product> {

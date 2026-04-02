@@ -252,7 +252,7 @@ export class Programma {
     },
     {
       date: '01 JUN',
-      name: 'DELERIUM FESTIVAL',
+      name: 'DELIRIUM FESTIVAL',
       desc: 'Terwijl lang non-stop energie aan de Vliet. De grootste line-up in onze geschiedenis.',
       tag: 'uitverkocht',
       highlight: true,

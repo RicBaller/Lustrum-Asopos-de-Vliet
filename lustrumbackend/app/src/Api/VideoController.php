@@ -63,7 +63,11 @@ class VideoController extends Controller
             'youtubeURL' => $video->YoutubeURL,
             'credits'    => $video->Credits,
             'category'   => $video->VideoCategory()->exists()
-                ? ['id' => $video->VideoCategory()->ID, 'title' => $video->VideoCategory()->Title]
+                ? [
+                    'id'        => $video->VideoCategory()->ID,
+                    'title'     => $video->VideoCategory()->Title,
+                    'sortOrder' => (int) $video->VideoCategory()->SortOrder,
+                ]
                 : null,
         ];
     }

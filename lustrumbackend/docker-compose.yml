@@ -19,12 +19,13 @@ services:
   app:
     build:
       context: .
-      target: dev
     ports:
       - "${APP_PORT:-8080}:80"
     volumes:
       # Live-edit custom PHP code without rebuilding the image
       - ./app:/var/www/html/app
+      # Override OPcache for dev: validate timestamps so file changes are picked up immediately
+      - ./docker/php-dev.ini:/usr/local/etc/php/conf.d/zz-dev.ini
       # Named volumes pre-populated from the image on first creation
       - vendor:/var/www/html/vendor
       - themes:/var/www/html/themes

@@ -1,7 +1,9 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-shop-teaser',
+  imports: [RouterLink],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <section class="shop-teaser" id="shop">
@@ -10,13 +12,13 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
           <p class="shop-teaser__eyebrow">Shop</p>
           <h2 class="shop-teaser__title">SHOP DE<br>CHAOS</h2>
           <p class="shop-teaser__text">
-            Van lustrummerch tot limited drops: hier shop je straks alles om Delerium
+            Van lustrummerch tot limited drops: hier shop je straks alles om Delirium
             ook buiten het programma mee naar huis te nemen.
           </p>
         </div>
 
         <div class="shop-teaser__actions">
-          <button type="button" class="shop-teaser__button">Naar de webshop</button>
+          <a routerLink="/shop" class="shop-teaser__button">Naar de webshop</a>
         </div>
       </div>
 
