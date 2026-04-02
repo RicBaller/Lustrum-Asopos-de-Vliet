@@ -31,7 +31,13 @@ class ProductController extends Controller
 
     private function getProducts(HTTPRequest $request)
     {
-        $products = Product::get();
+        $products = Product::get()
+            ->leftJoin('ProductCategory', '"ProductCategory"."ID" = "Product"."ProductCategoryID"')
+            ->sort([
+                '"ProductCategory"."Title"' => 'ASC',
+                '"Product"."SortOrder"'     => 'ASC',
+                '"Product"."Title"'         => 'ASC',
+            ]);
 
         $categoryID = $request->getVar('category');
         if ($categoryID) {
@@ -58,23 +64,6 @@ class ProductController extends Controller
         foreach ($products as $product) {
             $data[] = $this->serialize($product);
         }
-
-        usort($data, function (array $left, array $right): int {
-            $categoryComparison = strcasecmp(
-                $left['category']['title'] ?? '~',
-                $right['category']['title'] ?? '~'
-            );
-            if ($categoryComparison !== 0) {
-                return $categoryComparison;
-            }
-
-            $sortOrderComparison = $left['sortOrder'] <=> $right['sortOrder'];
-            if ($sortOrderComparison !== 0) {
-                return $sortOrderComparison;
-            }
-
-            return strcasecmp($left['title'], $right['title']);
-        });
 
         return $data;
     }

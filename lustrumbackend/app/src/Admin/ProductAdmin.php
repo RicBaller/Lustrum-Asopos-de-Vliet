@@ -49,7 +49,7 @@ class ProductAdmin extends ModelAdmin
                 ->filter('ProductCategoryID', $category->ID)
                 ->sort('SortOrder ASC, Title ASC');
 
-            $config = GridFieldConfig_RecordEditor::create(25);
+            $config = GridFieldConfig_RecordEditor::create(null);
             if (class_exists('Symbiote\GridFieldExtensions\GridFieldOrderableRows')) {
                 $config->addComponent(
                     \Symbiote\GridFieldExtensions\GridFieldOrderableRows::create('SortOrder')
@@ -72,7 +72,7 @@ class ProductAdmin extends ModelAdmin
             ->filter('ProductCategoryID', 0)
             ->sort('SortOrder ASC, Title ASC');
 
-        $uncatConfig = GridFieldConfig_RecordEditor::create(25);
+        $uncatConfig = GridFieldConfig_RecordEditor::create(null);
         if (class_exists('Symbiote\GridFieldExtensions\GridFieldOrderableRows')) {
             $uncatConfig->addComponent(
                 \Symbiote\GridFieldExtensions\GridFieldOrderableRows::create('SortOrder')
