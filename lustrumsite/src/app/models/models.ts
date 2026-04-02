@@ -32,6 +32,8 @@ export interface Product {
   description: string;
   price: number;
   link: string | null;
+  sortOrder: number;
+  isSpotlight: boolean;
   category: CategorySummary | null;
   images: string[];
 }
