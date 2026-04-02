@@ -11,6 +11,7 @@ use SilverStripe\Forms\GridField\GridField;
 use SilverStripe\Forms\GridField\GridFieldConfig_RecordEditor;
 use SilverStripe\Forms\TabSet;
 use SilverStripe\Forms\Tab;
+use Symbiote\GridFieldExtensions\GridFieldOrderableRows;
 
 class ProductAdmin extends ModelAdmin
 {
@@ -23,10 +24,15 @@ class ProductAdmin extends ModelAdmin
     private static string $menu_title  = 'Producten';
     private static string $menu_icon_class = 'font-icon-cart';
 
-    /**
-     * Override the default edit form for Products to show one tab per category,
-     * each with its own drag-sortable GridField.
-     */
+    private function buildGridConfig(): GridFieldConfig_RecordEditor
+    {
+        // Use a high page size so all items fit on one page (needed for drag-and-drop),
+        // but keep GridFieldPaginator present so detail-form prev/next navigation works.
+        $config = GridFieldConfig_RecordEditor::create(500);
+        $config->addComponent(GridFieldOrderableRows::create('SortOrder'));
+        return $config;
+    }
+
     public function getEditForm($id = null, $fields = null): Form
     {
         $form = parent::getEditForm($id, $fields);
@@ -49,19 +55,11 @@ class ProductAdmin extends ModelAdmin
                 ->filter('ProductCategoryID', $category->ID)
                 ->sort('SortOrder ASC, Title ASC');
 
-            $config = GridFieldConfig_RecordEditor::create(null);
-            if (class_exists('Symbiote\GridFieldExtensions\GridFieldOrderableRows')) {
-                $config->addComponent(
-                    \Symbiote\GridFieldExtensions\GridFieldOrderableRows::create('SortOrder')
-                );
-            }
-
-            // Show category change in the inline editor
             $gridField = GridField::create(
                 'Category_' . $category->ID,
                 $category->Title . ' (' . $products->count() . ')',
                 $products,
-                $config
+                $this->buildGridConfig()
             );
 
             $tabs->push(Tab::create('category_' . $category->ID, $category->Title, $gridField));
@@ -72,17 +70,10 @@ class ProductAdmin extends ModelAdmin
             ->filter('ProductCategoryID', 0)
             ->sort('SortOrder ASC, Title ASC');
 
-        $uncatConfig = GridFieldConfig_RecordEditor::create(null);
-        if (class_exists('Symbiote\GridFieldExtensions\GridFieldOrderableRows')) {
-            $uncatConfig->addComponent(
-                \Symbiote\GridFieldExtensions\GridFieldOrderableRows::create('SortOrder')
-            );
-        }
-
         $tabs->push(Tab::create(
             'category_overig',
             'Overig (' . $uncategorized->count() . ')',
-            GridField::create('Category_overig', 'Overig', $uncategorized, $uncatConfig)
+            GridField::create('Category_overig', 'Overig', $uncategorized, $this->buildGridConfig())
         ));
 
         // Replace the default grid with our tabbed view
