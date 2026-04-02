@@ -32,11 +32,10 @@ class ProductController extends Controller
     private function getProducts(HTTPRequest $request)
     {
         $products = Product::get()
-            ->leftJoin('ProductCategory', '"ProductCategory"."ID" = "Product"."ProductCategoryID"')
             ->sort([
-                '"ProductCategory"."Title"' => 'ASC',
-                '"Product"."SortOrder"'     => 'ASC',
-                '"Product"."Title"'         => 'ASC',
+                'ProductCategory.Title' => 'ASC',
+                'SortOrder'             => 'ASC',
+                'Title'                 => 'ASC',
             ]);
 
         $categoryID = $request->getVar('category');
