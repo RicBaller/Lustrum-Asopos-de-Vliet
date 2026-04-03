@@ -15,7 +15,7 @@ interface AlbumsState {
   selector: 'app-albums-page',
   imports: [RouterLink],
   templateUrl: './albums-page.html',
-  styleUrls: ['./albums-page.css'],
+  styleUrls: ['./albums-page.css', './albums-page-grid.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AlbumsPage {

@@ -29,7 +29,7 @@ interface VideosState {
   selector: 'app-videos-page',
   imports: [RouterLink, SafePipe],
   templateUrl: './videos-page.html',
-  styleUrls: ['./videos-page.css'],
+  styleUrls: ['./videos-page.css', './videos-page-content.css'],
   host: {
     '(document:keydown.escape)': 'closeLightbox()',
   },

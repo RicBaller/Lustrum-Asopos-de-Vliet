@@ -21,7 +21,7 @@ interface ProductState {
   selector: 'app-shop-page',
   imports: [CurrencyPipe],
   templateUrl: './shop-page.html',
-  styleUrls: ['./shop-page.css'],
+  styleUrls: ['./shop-page.css', './shop-page-featured.css', './shop-page-collectie.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ShopPage {

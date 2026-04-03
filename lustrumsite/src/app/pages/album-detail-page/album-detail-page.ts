@@ -21,7 +21,7 @@ interface PhotographerGroup {
   selector: 'app-album-detail-page',
   imports: [RouterLink],
   templateUrl: './album-detail-page.html',
-  styleUrls: ['./album-detail-page.css'],
+  styleUrls: ['./album-detail-page.css', './album-detail-page-gallery.css'],
   host: {
     '(document:keydown.escape)': 'closeLightbox()',
     '(document:keydown.arrowleft)': 'previousPhoto()',

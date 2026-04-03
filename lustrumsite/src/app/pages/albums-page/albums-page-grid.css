@@ -1,0 +1,292 @@
+  /* ── Grid Section ── */
+  
+  .albums-grid-section {
+    background-color: #F06C30; /* Orange background per screenshots */
+    padding: 2rem 1rem 8rem;
+    position: relative;
+    z-index: 10;
+  }
+  
+  .albums-grid__inner {
+    max-width: 1120px;
+    margin: 0 auto;
+    position: relative;
+  }
+  
+  .albums-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    gap: 4rem 2rem;
+  }
+  
+  .album-card {
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .album-card:hover {
+    transform: translateY(-8px);
+  }
+  
+  .album-card__image-wrapper {
+    width: 100%;
+    aspect-ratio: 1; /* Make it square wrapper to support perfect circle */
+    border-radius: 50%; /* Circle shape as in screenshot 3 */
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.4);
+    background-color: var(--surface-highest); /* Placeholder color */
+  }
+  
+  /* Make every other image an oval instead of circle to match the varied shapes */
+  .album-card--right .album-card__image-wrapper {
+    aspect-ratio: 4 / 3;
+    border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+  }
+
+  /* Make some images pure circle */
+  .album-card:nth-child(3n+1) .album-card__image-wrapper {
+    aspect-ratio: 1;
+    border-radius: 50%;
+  }
+  
+  .album-card__image {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .album-card:hover .album-card__image {
+    transform: scale(1.05);
+  }
+  
+  .album-card__content {
+    padding: 0 1rem;
+    text-align: left;
+  }
+  
+  .album-card__meta {
+    font-size: 0.6875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--on-primary);
+    opacity: 0.8;
+    margin-bottom: 0.5rem;
+  }
+  
+  .album-card__title {
+    font-size: 1.75rem;
+    font-weight: 900;
+    line-height: 1.1;
+    text-transform: uppercase;
+    color: var(--surface); /* Dark purple text matching the background */
+    letter-spacing: -0.02em;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .album-card__arrow {
+    background: var(--surface);
+    color: #F06C30;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+  }
+  
+  .album-card__arrow svg {
+    width: 16px;
+    height: 16px;
+  }
+  
+  .album-card:hover .album-card__arrow {
+    transform: translate(2px, -2px);
+    background: var(--text-primary);
+  }
+  
+  /* Loading & States */
+  .albums-loading {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    gap: 4rem 2rem;
+  }
+  
+  .album-skeleton__image {
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.1);
+    animation: flash 1.5s infinite linear;
+    margin-bottom: 1.5rem;
+  }
+  
+  .album-skeleton--alt .album-skeleton__image {
+    aspect-ratio: 4 / 3;
+    border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+  }
+  
+  .album-skeleton__text {
+    height: 2rem;
+    width: 70%;
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    animation: flash 1.5s infinite linear;
+    margin-left: 1rem;
+  }
+  
+  .albums-state {
+    text-align: center;
+    padding: 6rem 1rem;
+    color: var(--on-primary);
+    font-weight: 500;
+  }
+  
+  .albums-state--error p {
+    color: var(--surface);
+    margin-bottom: 1.5rem;
+    font-weight: 700;
+  }
+  
+  .albums-state__link {
+    display: inline-flex;
+    padding: 0.75rem 1.5rem;
+    border-radius: 99px;
+    border: 2px solid var(--surface);
+    color: var(--surface);
+    text-decoration: none;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    transition: all 0.2s ease;
+  }
+  
+  .albums-state__link:hover {
+    background: var(--surface);
+    color: #F06C30;
+  }
+  
+  @keyframes flash {
+    0% { opacity: 0.5; }
+    50% { opacity: 0.8; }
+    100% { opacity: 0.5; }
+  }
+  
+  /* ── Closing Section ── */
+  
+  .albums-closing {
+    background-color: var(--surface);
+    position: relative;
+    padding-bottom: 6rem;
+    text-align: center;
+  }
+  
+  .albums-closing__wave {
+    width: 100%;
+    line-height: 0;
+    transform: translateY(-99%);
+  }
+  
+  .albums-closing__wave svg {
+    display: block;
+    width: 100%;
+    height: 120px;
+  }
+  
+  .albums-closing__inner {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 4rem 1rem 0;
+  }
+  
+  .albums-closing h2 {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 900;
+    color: var(--text-primary);
+    text-transform: uppercase;
+    letter-spacing: -1px;
+    line-height: 1;
+    margin-bottom: 3rem;
+  }
+  
+  .albums-closing__cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+  
+  @media (max-width: 768px) {
+    .albums-closing__cards {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  .closing-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 24px;
+    padding: 2.5rem 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+  }
+  
+  .closing-card:hover {
+    transform: translateY(-4px);
+    background: rgba(255, 255, 255, 0.05);
+  }
+  
+  .closing-card__icon {
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+    color: var(--secondary);
+  }
+  
+  .closing-card h3 {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 1rem;
+  }
+  
+  .closing-card p {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 2rem;
+    flex-grow: 1;
+  }
+  
+  .btn--outline {
+    background: transparent;
+    color: var(--secondary);
+    border: 1px solid var(--secondary);
+    padding: 0.75rem 2rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .btn--outline:hover {
+    background: var(--secondary);
+    color: var(--surface);
+  }
