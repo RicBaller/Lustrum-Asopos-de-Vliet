@@ -122,20 +122,39 @@ export class VideosPage implements OnDestroy {
 
   readonly selectedVideo = signal<Video | null>(null);
   readonly isLightboxOpen = signal(false);
+  readonly isClosingLightbox = signal(false);
+
+  private lightboxCloseTimeout: ReturnType<typeof setTimeout> | null = null;
 
   openLightbox(video: Video): void {
+    if (this.lightboxCloseTimeout !== null) {
+      clearTimeout(this.lightboxCloseTimeout);
+      this.lightboxCloseTimeout = null;
+    }
+    this.isClosingLightbox.set(false);
     this.selectedVideo.set(video);
     this.isLightboxOpen.set(true);
     this.document.body.style.overflow = 'hidden';
   }
 
   closeLightbox(): void {
-    this.isLightboxOpen.set(false);
-    this.selectedVideo.set(null);
-    this.document.body.style.overflow = '';
+    if (this.isClosingLightbox() || !this.isLightboxOpen()) return;
+
+    this.isClosingLightbox.set(true);
+    this.lightboxCloseTimeout = setTimeout(() => {
+      this.lightboxCloseTimeout = null;
+      this.isLightboxOpen.set(false);
+      this.selectedVideo.set(null);
+      this.isClosingLightbox.set(false);
+      this.document.body.style.overflow = '';
+    }, 300);
   }
 
   ngOnDestroy(): void {
+    if (this.lightboxCloseTimeout !== null) {
+      clearTimeout(this.lightboxCloseTimeout);
+      this.lightboxCloseTimeout = null;
+    }
     this.document.body.style.overflow = '';
   }
 

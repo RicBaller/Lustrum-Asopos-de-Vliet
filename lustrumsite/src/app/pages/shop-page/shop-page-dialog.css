@@ -1,0 +1,247 @@
+/* ════════════════════════════════════════════════════════
+   PRODUCT DIALOG — animaties conform activiteiten-popup
+════════════════════════════════════════════════════════ */
+
+@keyframes dialogBackdropFadeIn {
+  from { opacity: 0; backdrop-filter: blur(0px); }
+  to   { opacity: 1; backdrop-filter: blur(18px); }
+}
+
+@keyframes dialogBackdropFadeOut {
+  from { opacity: 1; backdrop-filter: blur(18px); }
+  to   { opacity: 0; backdrop-filter: blur(0px); }
+}
+
+@keyframes dialogScaleIn {
+  from { opacity: 0; transform: scale(0.95) translateY(20px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@keyframes dialogScaleOut {
+  from { opacity: 1; transform: scale(1) translateY(0); }
+  to   { opacity: 0; transform: scale(0.95) translateY(20px); }
+}
+
+/* ── Backdrop ── */
+.product-dialog-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: grid;
+  place-items: center;
+  background: rgba(16, 0, 24, 0.72);
+  backdrop-filter: blur(18px);
+  padding: 1.5rem;
+  animation: dialogBackdropFadeIn 0.3s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+.product-dialog-backdrop--closing {
+  animation: dialogBackdropFadeOut 0.3s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+/* ── Dialog panel ── */
+.product-dialog {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  width: min(100%, 900px);
+  max-height: min(90vh, 720px);
+  overflow: hidden;
+  border: 1px solid rgba(0, 255, 255, 0.18);
+  border-radius: 2rem;
+  background: var(--surface-mid);
+  box-shadow: 0 35px 80px rgba(8, 0, 12, 0.45);
+  animation: dialogScaleIn 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+.product-dialog--closing {
+  animation: dialogScaleOut 0.3s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+/* ── Close button ── */
+.product-dialog__close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 10;
+  width: 2.75rem;
+  height: 2.75rem;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(43, 0, 61, 0.7);
+  color: var(--text-primary);
+  font-size: 1.8rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.product-dialog__close:hover {
+  background: rgba(63, 0, 89, 0.95);
+}
+
+/* ── Media / Carousel ── */
+.product-dialog__media {
+  position: relative;
+  background: var(--surface-low);
+  overflow: hidden;
+}
+
+.product-dialog__carousel {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.product-dialog__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.product-dialog__placeholder {
+  width: 100%;
+  height: 100%;
+  min-height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, rgba(240, 108, 48, 0.08) 0%, rgba(0, 255, 255, 0.03) 100%);
+}
+
+.product-dialog__placeholder svg {
+  width: 64px;
+  height: 64px;
+  color: rgba(255, 255, 255, 0.2);
+}
+
+/* ── Carousel nav arrows ── */
+.product-dialog__nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(16, 0, 24, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 50%;
+  color: var(--text-primary);
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.product-dialog__nav:hover {
+  background: rgba(240, 108, 48, 0.75);
+  border-color: transparent;
+}
+
+.product-dialog__nav--prev { left: 0.75rem; }
+.product-dialog__nav--next { right: 0.75rem; }
+
+/* ── Carousel dots ── */
+.product-dialog__dots {
+  position: absolute;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 0.5rem;
+}
+
+.product-dialog__dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.35);
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.product-dialog__dot--active {
+  background: var(--primary);
+  transform: scale(1.35);
+}
+
+/* ── Content panel ── */
+.product-dialog__content {
+  overflow-y: auto;
+  padding: 2rem 1.75rem 2.25rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.product-dialog__badge {
+  display: inline-flex;
+  align-self: flex-start;
+  border-radius: 999px;
+  background: rgba(0, 255, 255, 0.14);
+  color: var(--secondary);
+  padding: 0.35rem 0.7rem;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.product-dialog__title {
+  margin-top: 1rem;
+  color: var(--primary);
+  font-size: clamp(1.6rem, 3vw, 2.6rem);
+  line-height: 0.95;
+  text-transform: uppercase;
+}
+
+.product-dialog__price {
+  margin-top: 0.75rem;
+  color: var(--secondary);
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.product-dialog__description {
+  margin-top: 1.25rem;
+  color: #f8e7ff;
+  line-height: 1.7;
+  font-size: 0.95rem;
+  flex: 1;
+}
+
+.product-dialog__description :first-child {
+  margin-top: 0;
+}
+
+.product-dialog__description p + p {
+  margin-top: 0.85rem;
+}
+
+.product-dialog__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+  margin-top: 1.5rem;
+}
+
+/* ── Responsive ── */
+@media (max-width: 680px) {
+  .product-dialog {
+    grid-template-columns: 1fr;
+    max-height: 92vh;
+    overflow-y: auto;
+  }
+
+  .product-dialog__media {
+    aspect-ratio: 4 / 3;
+    max-height: 45vw;
+  }
+}

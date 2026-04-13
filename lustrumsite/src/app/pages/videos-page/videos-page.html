@@ -98,7 +98,7 @@
 </section>
 
 @if (isLightboxOpen() && selectedVideo()) {
-  <div class="video-lightbox" (click)="closeLightbox()">
+  <div class="video-lightbox" [class.video-lightbox--closing]="isClosingLightbox()" (click)="closeLightbox()">
     <div class="video-lightbox__backdrop"></div>
 
     <button
@@ -113,7 +113,7 @@
       </svg>
     </button>
 
-    <div class="video-lightbox__content" (click)="$event.stopPropagation()">
+    <div class="video-lightbox__content" [class.video-lightbox__content--closing]="isClosingLightbox()" (click)="$event.stopPropagation()">
       <div class="video-lightbox__player">
         <iframe
           [src]="getEmbedUrl(selectedVideo()!.youtubeURL) | safe"

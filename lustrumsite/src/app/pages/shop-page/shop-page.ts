@@ -1,5 +1,5 @@
-import { CurrencyPipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+import { CurrencyPipe, DOCUMENT } from '@angular/common';
+import { ChangeDetectionStrategy, Component, OnDestroy, computed, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { catchError, map, of, startWith, timeout } from 'rxjs';
 import { Product } from '../../models/models';
@@ -20,12 +20,16 @@ interface ProductState {
 @Component({
   selector: 'app-shop-page',
   imports: [CurrencyPipe],
+  host: {
+    '(document:keydown.escape)': 'closeDialog()',
+  },
   templateUrl: './shop-page.html',
-  styleUrls: ['./shop-page.css', './shop-page-featured.css', './shop-page-collectie.css'],
+  styleUrls: ['./shop-page.css', './shop-page-featured.css', './shop-page-collectie.css', './shop-page-dialog.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ShopPage {
+export class ShopPage implements OnDestroy {
   private readonly productService = inject(ProductService);
+  private readonly document = inject(DOCUMENT);
 
   private readonly state = toSignal(
     this.productService.getAll().pipe(
@@ -82,6 +86,61 @@ export class ShopPage {
 
     return groups;
   });
+
+  readonly selectedProduct = signal<Product | null>(null);
+  readonly isClosingDialog = signal(false);
+  readonly activeImageIndex = signal(0);
+
+  private dialogCloseTimeout: ReturnType<typeof setTimeout> | null = null;
+
+  openDialog(product: Product): void {
+    if (this.dialogCloseTimeout !== null) {
+      clearTimeout(this.dialogCloseTimeout);
+      this.dialogCloseTimeout = null;
+    }
+    this.isClosingDialog.set(false);
+    this.selectedProduct.set(product);
+    this.activeImageIndex.set(0);
+    this.document.body.style.overflow = 'hidden';
+  }
+
+  closeDialog(): void {
+    if (this.isClosingDialog() || !this.selectedProduct()) return;
+    this.isClosingDialog.set(true);
+    this.dialogCloseTimeout = setTimeout(() => {
+      this.dialogCloseTimeout = null;
+      this.selectedProduct.set(null);
+      this.isClosingDialog.set(false);
+      this.document.body.style.overflow = '';
+    }, 300);
+  }
+
+  prevImage(event: Event): void {
+    event.stopPropagation();
+    const images = this.selectedProduct()?.images ?? [];
+    if (images.length <= 1) return;
+    this.activeImageIndex.update(i => (i - 1 + images.length) % images.length);
+  }
+
+  nextImage(event: Event): void {
+    event.stopPropagation();
+    const images = this.selectedProduct()?.images ?? [];
+    if (images.length <= 1) return;
+    this.activeImageIndex.update(i => (i + 1) % images.length);
+  }
+
+  setImage(index: number, event: Event): void {
+    event.stopPropagation();
+    this.activeImageIndex.set(index);
+  }
+
+  ngOnDestroy(): void {
+    if (this.dialogCloseTimeout !== null) {
+      clearTimeout(this.dialogCloseTimeout);
+      this.dialogCloseTimeout = null;
+    }
+    this.document.body.style.overflow = '';
+  }
 
   scrollTo(id: string): void {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });

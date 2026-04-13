@@ -72,7 +72,7 @@
                   {{ product.price | currency:'EUR':'symbol':'1.2-2':'nl-NL' }}
                 </span>
                 <div class="feat-card__actions">
-                  <button type="button" class="feat-card__btn-detail">Details</button>
+                  <button type="button" class="feat-card__btn-detail" (click)="openDialog(product)">Details</button>
                   <a [href]="product.link || null" target="_blank" rel="noopener noreferrer"
                     class="feat-card__btn-cart"
                     [class.feat-card__btn-cart--disabled]="!product.link"
@@ -157,7 +157,7 @@
                       </p>
                     </div>
                     <div class="shop-card__actions">
-                      <button type="button" class="shop-card__btn-detail">Details</button>
+                      <button type="button" class="shop-card__btn-detail" (click)="openDialog(product)">Details</button>
                       <a [href]="product.link || null" target="_blank" rel="noopener noreferrer"
                         class="shop-card__btn-cart"
                         [class.shop-card__btn-cart--disabled]="!product.link"
@@ -201,3 +201,84 @@
   </div>
 </section>
 
+@if (selectedProduct(); as product) {
+  <div
+    class="product-dialog-backdrop"
+    [class.product-dialog-backdrop--closing]="isClosingDialog()"
+    (click)="closeDialog()"
+  >
+    <section
+      class="product-dialog"
+      [class.product-dialog--closing]="isClosingDialog()"
+      role="dialog"
+      aria-modal="true"
+      [attr.aria-labelledby]="'product-dialog-title-' + product.id"
+      (click)="$event.stopPropagation()"
+    >
+      <button type="button" class="product-dialog__close" (click)="closeDialog()" aria-label="Sluit popup">×</button>
+
+      <!-- Linker kolom: foto carousel -->
+      <div class="product-dialog__media">
+        @if (product.images.length > 0) {
+          <div class="product-dialog__carousel">
+            <img
+              [src]="product.images[activeImageIndex()]"
+              [alt]="product.title"
+              class="product-dialog__img"
+            >
+            @if (product.images.length > 1) {
+              <button type="button" class="product-dialog__nav product-dialog__nav--prev" (click)="prevImage($event)" aria-label="Vorige foto">&#8249;</button>
+              <button type="button" class="product-dialog__nav product-dialog__nav--next" (click)="nextImage($event)" aria-label="Volgende foto">&#8250;</button>
+              <div class="product-dialog__dots">
+                @for (img of product.images; track img; let idx = $index) {
+                  <button
+                    type="button"
+                    class="product-dialog__dot"
+                    [class.product-dialog__dot--active]="activeImageIndex() === idx"
+                    (click)="setImage(idx, $event)"
+                    [attr.aria-label]="'Foto ' + (idx + 1)"
+                  ></button>
+                }
+              </div>
+            }
+          </div>
+        } @else {
+          <div class="product-dialog__placeholder">
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5">
+              <rect x="6" y="6" width="36" height="36" rx="4"/>
+              <circle cx="17" cy="18" r="3"/>
+              <path d="M6 32l10-10 8 8 6-6 12 10"/>
+            </svg>
+          </div>
+        }
+      </div>
+
+      <!-- Rechter kolom: content -->
+      <div class="product-dialog__content">
+        @if (product.category; as cat) {
+          <span class="product-dialog__badge">{{ cat.title }}</span>
+        }
+        <h2 [id]="'product-dialog-title-' + product.id" class="product-dialog__title">{{ product.title }}</h2>
+        <p class="product-dialog__price">{{ product.price | currency:'EUR':'symbol':'1.2-2':'nl-NL' }}</p>
+
+        @if (product.description) {
+          <div class="product-dialog__description" [innerHTML]="product.description"></div>
+        }
+
+        <div class="product-dialog__actions">
+          @if (product.link) {
+            <a
+              [href]="product.link"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="shop-btn shop-btn--solid shop-btn--sm"
+            >
+              Koop nu
+            </a>
+          }
+          <button type="button" class="shop-btn shop-btn--ghost shop-btn--sm" (click)="closeDialog()">Sluiten</button>
+        </div>
+      </div>
+    </section>
+  </div>
+}
