@@ -91,7 +91,14 @@ export class ShopPage implements OnDestroy {
   readonly isClosingDialog = signal(false);
   readonly activeImageIndex = signal(0);
 
+  private dialogCloseTimeout: ReturnType<typeof setTimeout> | null = null;
+
   openDialog(product: Product): void {
+    if (this.dialogCloseTimeout !== null) {
+      clearTimeout(this.dialogCloseTimeout);
+      this.dialogCloseTimeout = null;
+    }
+    this.isClosingDialog.set(false);
     this.selectedProduct.set(product);
     this.activeImageIndex.set(0);
     this.document.body.style.overflow = 'hidden';
@@ -100,7 +107,8 @@ export class ShopPage implements OnDestroy {
   closeDialog(): void {
     if (this.isClosingDialog() || !this.selectedProduct()) return;
     this.isClosingDialog.set(true);
-    setTimeout(() => {
+    this.dialogCloseTimeout = setTimeout(() => {
+      this.dialogCloseTimeout = null;
       this.selectedProduct.set(null);
       this.isClosingDialog.set(false);
       this.document.body.style.overflow = '';
@@ -127,6 +135,10 @@ export class ShopPage implements OnDestroy {
   }
 
   ngOnDestroy(): void {
+    if (this.dialogCloseTimeout !== null) {
+      clearTimeout(this.dialogCloseTimeout);
+      this.dialogCloseTimeout = null;
+    }
     this.document.body.style.overflow = '';
   }
 
