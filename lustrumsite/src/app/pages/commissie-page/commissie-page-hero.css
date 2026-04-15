@@ -1,0 +1,69 @@
+/* ── Hero section ────────────────────────────────────────────────── */
+
+.commissie-hero {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 60% 50% at 15% 30%, rgba(240, 108, 48, 0.14), transparent),
+    radial-gradient(ellipse 50% 55% at 85% 70%, rgba(0, 255, 255, 0.08), transparent),
+    var(--surface);
+  padding: 9rem var(--spacing-gutter) 12rem;
+}
+
+.commissie-hero__grain {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 22px 22px;
+  opacity: 0.2;
+  pointer-events: none;
+}
+
+.commissie-hero__inner {
+  position: relative;
+  z-index: 1;
+  max-width: 960px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.commissie-hero__eyebrow {
+  color: var(--secondary);
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+
+.commissie-hero__title {
+  margin-top: 1rem;
+  color: var(--text-primary);
+  font-size: clamp(2.8rem, 10vw, 7rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 0.95;
+  text-transform: uppercase;
+}
+
+.commissie-hero__title--accent {
+  color: var(--primary);
+  font-style: italic;
+}
+
+.commissie-hero__subtitle {
+  max-width: 38rem;
+  margin: 1.6rem auto 0;
+  color: var(--text-secondary);
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+
+.commissie-hero__stats {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 3rem;
+}

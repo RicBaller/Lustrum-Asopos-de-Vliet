@@ -1,0 +1,99 @@
+/* ── Responsive ──────────────────────────────────────────────────── */
+
+@media (max-width: 1024px) {
+  .sub-card,
+  .sub-card--skeleton {
+    grid-template-columns: 260px 1fr;
+  }
+
+  .sub-card--reverse {
+    grid-template-columns: 1fr 260px;
+  }
+}
+
+@media (max-width: 768px) {
+  .commissie-hero {
+    padding: 7rem var(--spacing-gutter) 9rem;
+  }
+
+  .commissie-hero__wave svg {
+    height: 100px;
+  }
+
+  .leden-grid {
+    gap: 2.5rem 1.5rem;
+  }
+
+  .lid-card {
+    width: 150px;
+  }
+
+  .lid-card__photo-ring {
+    width: 140px;
+    height: 140px;
+  }
+
+  .sub-card,
+  .sub-card--reverse,
+  .sub-card--skeleton {
+    grid-template-columns: 1fr;
+  }
+
+  .sub-card--reverse .sub-card__visual {
+    order: 0;
+  }
+
+  .sub-card--reverse .sub-card__body {
+    order: 0;
+  }
+
+  .sub-card__members {
+    grid-template-columns: 1fr;
+  }
+
+  .sub-member:nth-last-child(-n+2) {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .sub-member:last-child {
+    border-bottom: none;
+  }
+
+  .commissie-leden__wave svg,
+  .commissie-sub__wave svg {
+    height: 100px;
+  }
+}
+
+@media (max-width: 480px) {
+  .commissie-hero {
+    padding: 6rem var(--spacing-gutter) 7rem;
+  }
+
+  .commissie-hero__stats {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .hero-stat {
+    min-width: 100%;
+  }
+
+  .lid-card {
+    width: 130px;
+  }
+
+  .lid-card__photo-ring {
+    width: 110px;
+    height: 110px;
+  }
+
+  .lid-card__name {
+    font-size: 0.72rem;
+  }
+
+  .sub-card:not(.sub-card--expanded),
+  .sub-card--skeleton {
+    padding: 1.5rem;
+  }
+}
