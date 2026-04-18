@@ -68,7 +68,7 @@
   display: grid;
   grid-template-columns: 340px 1fr;
   gap: 3rem;
-  align-items: start;
+  align-items: stretch;
   width: 100%;
   border: 0;
   border-radius: var(--radius-xl);
@@ -102,6 +102,7 @@
 .sub-card--expanded {
   position: relative;
   z-index: 210;
+  align-items: start;
   background: var(--surface-mid);
   cursor: default;
   box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5);
@@ -193,8 +194,9 @@
 
 /* ── Body ───────────────────────────────────────────────────────── */
 
-.sub-card__body {
-  padding-top: 0.5rem;
+.sub-card__body {  display: flex;
+  flex-direction: column;
+  min-height: 0;  padding-top: 0.5rem;
 }
 
 .sub-card__name {
@@ -212,42 +214,32 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 0;
+  flex: 1;
+  min-height: 0;
   margin-top: 1.5rem;
-  max-height: 120px;
   overflow: hidden;
   transition: max-height 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 /* Fade overlay – only when content actually overflows */
-.sub-card__members--overflows::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 50px;
-  background: linear-gradient(to bottom, transparent, rgba(63, 0, 89, 0.35));
-  pointer-events: none;
-  opacity: 1;
-  transition: opacity 0.3s;
+.sub-card__members--overflows {
+  mask-image: linear-gradient(to bottom, #000 calc(100% - 30px), transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 30px), transparent 100%);
 }
 
-/* Expanded: reveal all members, hide fade */
+/* Expanded: reveal all members, remove fade */
 .sub-card--expanded .sub-card__members {
-  max-height: 800px;
-}
-
-.sub-card--expanded .sub-card__members--overflows::after {
-  opacity: 0;
+  flex: none;
+  mask-image: none;
+  -webkit-mask-image: none;
 }
 
 /* Collapsing: shrink back, restore fade */
 .sub-card--expanded.sub-card--collapsing .sub-card__members {
-  max-height: 120px;
-}
-
-.sub-card--expanded.sub-card--collapsing .sub-card__members--overflows::after {
-  opacity: 1;
+  flex: 1;
+  min-height: 0;
+  mask-image: linear-gradient(to bottom, #000 calc(100% - 30px), transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 30px), transparent 100%);
 }
 
 .sub-member {
