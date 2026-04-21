@@ -1,0 +1,190 @@
+<!-- ═══ HERO ═══ -->
+<section class="commissie-hero">
+  <div class="commissie-hero__grain"></div>
+  <div class="commissie-hero__inner">
+    <p class="commissie-hero__eyebrow">De organisatie</p>
+    <h1 class="commissie-hero__title">
+      De mensen achter<br><span class="commissie-hero__title--accent">de gekte</span>
+    </h1>
+    <p class="commissie-hero__subtitle">
+      Een Lustrum organiseren is topsport. Ontmoet het team dat dag en nacht
+      werkt om Delirium werkelijkheid te maken.
+    </p>
+
+    @if (!loading() && !error()) {
+      <div class="commissie-hero__stats">
+        <div class="hero-stat">
+          <span>{{ ledenCount() }}</span>
+          <small>commissieleden</small>
+        </div>
+        <div class="hero-stat">
+          <span>{{ subCount() }}</span>
+          <small>subcommissies</small>
+        </div>
+      </div>
+    }
+  </div>
+
+  <div class="commissie-hero__wave" aria-hidden="true">
+    <svg viewBox="0 0 1440 180" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,60 C240,150 480,180 720,120 C960,60 1200,0 1440,80 L1440,180 L0,180 Z"
+            fill="var(--surface-low)"/>
+    </svg>
+  </div>
+</section>
+
+<!-- ═══ LEDEN ═══ -->
+<section class="commissie-leden">
+  <div class="commissie-leden__inner">
+    <div class="commissie-leden__header">
+      <p class="commissie-leden__eyebrow">Est. 2024</p>
+      <h2 class="commissie-leden__title">De Lustrumcommissie</h2>
+      <p class="commissie-leden__intro">
+        Twaalf gedreven individuen. Eén collectieve missie: het epische lustrum
+        van Asopos de Vliet onvergetelijk maken.
+      </p>
+    </div>
+
+    @if (loading()) {
+      <div class="leden-grid">
+        @for (i of [1,2,3,4,5,6,7,8]; track i) {
+          <div class="lid-card lid-card--skeleton">
+            <div class="lid-card__photo-ring">
+              <div class="lid-card__photo-placeholder"></div>
+            </div>
+            <div class="lid-card__label-skeleton"></div>
+          </div>
+        }
+      </div>
+    } @else if (error(); as message) {
+      <div class="commissie-state commissie-state--error" aria-live="polite">
+        <p>{{ message }}</p>
+      </div>
+    } @else {
+      <div class="leden-grid">
+        @for (lid of leden(); track lid.id) {
+          <article class="lid-card">
+            <div class="lid-card__photo-ring">
+              @if (lid.photo) {
+                <img
+                  class="lid-card__photo"
+                  [src]="lid.photo"
+                  [alt]="lid.name"
+                  loading="lazy"
+                />
+              } @else {
+                <div class="lid-card__photo-fallback">
+                  <span>{{ lid.name.charAt(0) }}</span>
+                </div>
+              }
+            </div>
+            <div class="lid-card__label">
+              <h3 class="lid-card__name">{{ lid.name }}</h3>
+              <span class="lid-card__function">{{ lid.function }}</span>
+            </div>
+          </article>
+        }
+      </div>
+    }
+  </div>
+
+  <div class="commissie-leden__wave" aria-hidden="true">
+    <svg viewBox="0 0 1440 160" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,100 C360,20 720,140 1080,50 C1260,10 1380,40 1440,70 L1440,160 L0,160 Z"
+            fill="var(--primary)"/>
+    </svg>
+  </div>
+</section>
+
+<!-- ═══ SUBCOMMISSIES ═══ -->
+<section class="commissie-sub">
+  <div class="commissie-sub__band"></div>
+  <div class="commissie-sub__inner">
+    <div class="commissie-sub__header">
+      <p class="commissie-sub__eyebrow">De ondersteuning</p>
+      <h2 class="commissie-sub__title">Onze Commissies</h2>
+      <p class="commissie-sub__intro">
+        Zonder deze gespecialiseerde teams zou het Lustrum simpelweg niet bestaan.
+      </p>
+    </div>
+
+    @if (loading()) {
+      @for (i of [1,2,3]; track i) {
+        <div class="sub-card sub-card--skeleton">
+          <div class="sub-card__photo-skeleton"></div>
+          <div class="sub-card__body-skeleton">
+            <div class="sub-card__title-skeleton"></div>
+            <div class="sub-card__members-skeleton"></div>
+          </div>
+        </div>
+      }
+    } @else if (!error()) {
+      @for (sub of subcommissies(); track sub.id; let idx = $index) {
+        <div class="sub-card-wrapper">
+          <!-- Backdrop for expanded state -->
+          @if (expandedSubId() === sub.id) {
+            <div
+              class="sub-card-backdrop"
+              [class.sub-card-backdrop--closing]="isCollapsingSubId() === sub.id"
+              (click)="closeDialog()"
+            ></div>
+          }
+
+          <article
+            class="sub-card"
+            [class.sub-card--reverse]="idx % 2 === 1"
+            [class.sub-card--expanded]="expandedSubId() === sub.id"
+            [class.sub-card--collapsing]="isCollapsingSubId() === sub.id"
+            (click)="expandedSubId() === sub.id ? undefined : openDialog(sub)"
+          >
+            <div class="sub-card__visual">
+              @if (sub.photo) {
+                <img
+                  class="sub-card__photo"
+                  [src]="sub.photo"
+                  [alt]="sub.name"
+                  loading="lazy"
+                />
+              } @else {
+                <div class="sub-card__photo-fallback">
+                  <span>{{ sub.name.charAt(0) }}</span>
+                </div>
+              }
+            </div>
+
+            <div class="sub-card__body">
+              <h3 class="sub-card__name">{{ sub.name }}</h3>
+
+              @if (expandedSubId() === sub.id) {
+                <button
+                  type="button"
+                  class="sub-card__close"
+                  (click)="closeDialog(); $event.stopPropagation()"
+                  aria-label="Sluiten"
+                >&times;</button>
+              }
+
+              @if (sub.leden.length) {
+                <div class="sub-card__members" [class.sub-card__members--overflows]="sub.leden.length > 4">
+                  @for (lid of sub.leden; track lid.id) {
+                    <div class="sub-member">
+                      <span class="sub-member__name">{{ lid.name }}</span>
+                      <span class="sub-member__function">{{ lid.function }}</span>
+                    </div>
+                  }
+                </div>
+              }
+            </div>
+          </article>
+        </div>
+      }
+    }
+  </div>
+
+  <div class="commissie-sub__wave" aria-hidden="true">
+    <svg viewBox="0 0 1440 140" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,80 C320,10 640,130 960,60 C1120,30 1300,80 1440,50 L1440,140 L0,140 Z"
+            fill="var(--surface)"/>
+    </svg>
+  </div>
+</section>

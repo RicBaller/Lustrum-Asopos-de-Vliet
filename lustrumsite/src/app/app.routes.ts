@@ -37,6 +37,12 @@ export const routes: Routes = [
 		title: 'Delirium | Shop',
 	},
 	{
+		path: 'commissie',
+		loadComponent: () =>
+			import('./pages/commissie-page/commissie-page').then((module) => module.CommissiePage),
+		title: 'Delirium | De Commissie',
+	},
+	{
 		path: '**',
 		redirectTo: '',
 	},

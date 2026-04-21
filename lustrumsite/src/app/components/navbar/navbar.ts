@@ -33,7 +33,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
             </div>
           </li>
           <li><a routerLink="/shop" routerLinkActive="nav-link-active">Shop</a></li>
-          <li><a routerLink="/" fragment="commissie">Commissie</a></li>
+          <li><a routerLink="/commissie" routerLinkActive="nav-link-active">Commissie</a></li>
           <li><a routerLink="/" fragment="partners">Partners</a></li>
         </ul>
 
@@ -61,7 +61,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
             </div>
           </li>
           <li><a routerLink="/shop" (click)="closeMenu()">Shop</a></li>
-          <li><a routerLink="/" fragment="commissie" (click)="closeMenu()">Commissie</a></li>
+          <li><a routerLink="/commissie" (click)="closeMenu()">Commissie</a></li>
           <li><a routerLink="/" fragment="partners" (click)="closeMenu()">Partners</a></li>
           <li>
             <a routerLink="/activiteiten" class="mobile-cta" (click)="closeMenu()">Bekijk programma</a>
