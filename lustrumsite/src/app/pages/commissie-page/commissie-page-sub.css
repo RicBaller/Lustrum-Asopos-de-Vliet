@@ -213,12 +213,14 @@
   position: relative;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 0;
+  gap: 0 2.5rem;
+  align-content: start;
   flex: 1;
   min-height: 0;
+  max-height: 240px; /* Zorgt dat hij in non-expanded state niet verder groeit dan de foto */
   margin-top: 1.5rem;
   overflow: hidden;
-  transition: max-height 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition: max-height 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 /* Fade overlay – only when content actually overflows */
@@ -230,6 +232,7 @@
 /* Expanded: reveal all members, remove fade */
 .sub-card--expanded .sub-card__members {
   flex: none;
+  max-height: 2000px; /* Genoeg ruimte om open te klappen */
   mask-image: none;
   -webkit-mask-image: none;
 }
@@ -238,6 +241,7 @@
 .sub-card--expanded.sub-card--collapsing .sub-card__members {
   flex: 1;
   min-height: 0;
+  max-height: 240px;
   mask-image: linear-gradient(to bottom, #000 calc(100% - 30px), transparent 100%);
   -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 30px), transparent 100%);
 }
