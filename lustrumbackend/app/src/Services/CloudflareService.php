@@ -19,8 +19,8 @@ class CloudflareService
      */
     public function purgeAll(): void
     {
-        $token    = (string) Environment::getEnv('CLOUDFLARE_API_TOKEN');
-        $rawZones = (string) Environment::getEnv('CLOUDFLARE_ZONE_IDS');
+        $token    = trim((string) Environment::getEnv('CLOUDFLARE_API_TOKEN'));
+        $rawZones = trim((string) Environment::getEnv('CLOUDFLARE_ZONE_IDS'));
 
         if ($token === '') {
             $this->log('warning', 'CLOUDFLARE_API_TOKEN is not set — skipping purge.');
@@ -33,8 +33,10 @@ class CloudflareService
         }
 
         $this->log('info', 'Purge triggered.', [
-            'token_prefix' => substr($token, 0, 8) . '...',
-            'zone_ids'     => $rawZones,
+            'token_prefix'  => substr($token, 0, 8) . '...',
+            'token_suffix'  => '...' . substr($token, -4),
+            'token_length'  => strlen($token),
+            'zone_ids'      => $rawZones,
         ]);
 
         foreach (explode(',', $rawZones) as $zoneId) {
@@ -51,7 +53,9 @@ class CloudflareService
     {
         $url = sprintf('%s/zones/%s/purge_cache', self::API_BASE, $zoneId);
 
-        $this->log('info', "Sending purge request for zone {$zoneId}.");
+        $this->log('info', "Sending purge request for zone {$zoneId}.", [
+            'authorization_header' => 'Bearer ' . substr($token, 0, 8) . '...' . substr($token, -4),
+        ]);
 
         $context = stream_context_create([
             'http' => [
