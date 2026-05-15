@@ -2,46 +2,38 @@
 Name: cloudflare-cache
 ---
 
-# Add Versioned (draft/publish workflow) and the Cloudflare purge extension to
-# every top-level content model. After adding Versioned, run dev/build to
-# update the database schema.
+# Purge Cloudflare cache on every write for all top-level content models.
+# Set CLOUDFLARE_API_TOKEN and CLOUDFLARE_ZONE_IDS in the environment to enable.
+# Versioned (draft/publish workflow) will be added separately later.
 
 App\Models\Activity:
   extensions:
-    - SilverStripe\Versioned\Versioned
     - App\Extensions\CloudflareCachePurgeExtension
 
 App\Models\Album:
   extensions:
-    - SilverStripe\Versioned\Versioned
     - App\Extensions\CloudflareCachePurgeExtension
 
 App\Models\LustrumCommissieLid:
   extensions:
-    - SilverStripe\Versioned\Versioned
     - App\Extensions\CloudflareCachePurgeExtension
 
 App\Models\Product:
   extensions:
-    - SilverStripe\Versioned\Versioned
     - App\Extensions\CloudflareCachePurgeExtension
 
 App\Models\ProductCategory:
   extensions:
-    - SilverStripe\Versioned\Versioned
     - App\Extensions\CloudflareCachePurgeExtension
 
 App\Models\SubCommissie:
   extensions:
-    - SilverStripe\Versioned\Versioned
     - App\Extensions\CloudflareCachePurgeExtension
 
 App\Models\Video:
   extensions:
-    - SilverStripe\Versioned\Versioned
     - App\Extensions\CloudflareCachePurgeExtension
 
 App\Models\VideoCategory:
   extensions:
-    - SilverStripe\Versioned\Versioned
     - App\Extensions\CloudflareCachePurgeExtension

@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use Monolog\Logger;
 use SilverStripe\Core\Environment;
 use SilverStripe\Core\Injector\Injectable;
 
