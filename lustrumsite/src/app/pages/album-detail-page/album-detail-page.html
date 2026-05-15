@@ -8,7 +8,7 @@
         <h1 class="album-hero__title">FOUTLADING</h1>
       } @else if (album()) {
         <h1 class="album-hero__title">{{ album()!.title }}</h1>
-        <p class="album-hero__subtitle">{{ album()!.description }}</p>
+        <p class="album-hero__subtitle" [innerHTML]="album()!.description"></p>
   
         <div class="album-hero__stats">
           <div class="hero-stat">
