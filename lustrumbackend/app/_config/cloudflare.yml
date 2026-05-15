@@ -2,6 +2,21 @@
 Name: cloudflare-cache
 ---
 
+# Wire a stderr StreamHandler to the Cloudflare logger so messages appear in Docker logs.
+SilverStripe\Core\Injector\Injector:
+  Psr\Log\LoggerInterface.CloudflareService:
+    type: singleton
+    class: Monolog\Logger
+    constructor:
+      - "cloudflare"
+    calls:
+      pushHandler: [ pushHandler, [ '%$CloudflareStreamHandler' ] ]
+  CloudflareStreamHandler:
+    class: Monolog\Handler\StreamHandler
+    constructor:
+      - "php://stderr"
+      - "debug"
+
 # Purge Cloudflare cache on every write for all top-level content models.
 # Set CLOUDFLARE_API_TOKEN and CLOUDFLARE_ZONE_IDS in the environment to enable.
 # Versioned (draft/publish workflow) will be added separately later.

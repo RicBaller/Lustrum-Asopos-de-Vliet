@@ -22,19 +22,17 @@ class CloudflareService
         $token    = (string) Environment::getEnv('CLOUDFLARE_API_TOKEN');
         $rawZones = (string) Environment::getEnv('CLOUDFLARE_ZONE_IDS');
 
-        $logger = $this->logger();
-
         if ($token === '') {
-            $logger->warning('CloudflareService: CLOUDFLARE_API_TOKEN is not set — skipping purge.');
+            $this->log('warning', 'CLOUDFLARE_API_TOKEN is not set — skipping purge.');
             return;
         }
 
         if ($rawZones === '') {
-            $logger->warning('CloudflareService: CLOUDFLARE_ZONE_IDS is not set — skipping purge.');
+            $this->log('warning', 'CLOUDFLARE_ZONE_IDS is not set — skipping purge.');
             return;
         }
 
-        $logger->info('CloudflareService: purge triggered.', [
+        $this->log('info', 'Purge triggered.', [
             'token_prefix' => substr($token, 0, 8) . '...',
             'zone_ids'     => $rawZones,
         ]);
@@ -51,10 +49,9 @@ class CloudflareService
 
     private function purgeZone(string $zoneId, string $token): void
     {
-        $logger = $this->logger();
-        $url    = sprintf('%s/zones/%s/purge_cache', self::API_BASE, $zoneId);
+        $url = sprintf('%s/zones/%s/purge_cache', self::API_BASE, $zoneId);
 
-        $logger->info("CloudflareService: sending purge request for zone {$zoneId}.");
+        $this->log('info', "Sending purge request for zone {$zoneId}.");
 
         $context = stream_context_create([
             'http' => [
@@ -72,7 +69,7 @@ class CloudflareService
         $statusLine = $http_response_header[0] ?? 'no response';
 
         if ($body === false) {
-            $logger->error("CloudflareService: request failed for zone {$zoneId} — no response received.");
+            $this->log('error', "Request failed for zone {$zoneId} — no response received.");
             return;
         }
 
@@ -80,11 +77,9 @@ class CloudflareService
         $success = $decoded['success'] ?? false;
 
         if ($success) {
-            $logger->info("CloudflareService: zone {$zoneId} purged successfully.", [
-                'status' => $statusLine,
-            ]);
+            $this->log('info', "Zone {$zoneId} purged successfully.", ['status' => $statusLine]);
         } else {
-            $logger->error("CloudflareService: purge failed for zone {$zoneId}.", [
+            $this->log('error', "Purge failed for zone {$zoneId}.", [
                 'status'   => $statusLine,
                 'response' => $body,
             ]);
@@ -94,5 +89,14 @@ class CloudflareService
     private function logger(): LoggerInterface
     {
         return Injector::inst()->get(LoggerInterface::class . '.CloudflareService');
+    }
+
+    private function log(string $level, string $message, array $context = []): void
+    {
+        // Write to both the PSR-3 logger (StreamHandler → stderr) and PHP's error_log
+        // so the message always appears in Docker logs regardless of SS config.
+        $this->logger()->{$level}($message, $context);
+        $contextStr = empty($context) ? '' : ' ' . json_encode($context);
+        error_log("[CloudflareService] [{$level}] {$message}{$contextStr}");
     }
 }
