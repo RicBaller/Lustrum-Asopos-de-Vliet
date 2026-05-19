@@ -64,14 +64,13 @@ import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, OnDestro
     }
 
     .lustrum-info__eyebrow {
-      color: var(--surface);
+      color: var(--secondary);
       font-family: var(--font-display);
       font-size: 1rem;
       font-weight: 800;
       letter-spacing: 0.2em;
       text-transform: uppercase;
       margin: 0 0 0.6rem;
-      opacity: 0.6;
     }
 
     .lustrum-info__title {
@@ -89,9 +88,8 @@ import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, OnDestro
       color: var(--surface);
       font-size: 0.9rem;
       font-style: italic;
-      font-weight: 500;
+      font-weight: 700;
       margin: 0;
-      opacity: 0.55;
     }
 
     /* ── Right: body text with scroll reveal ──────────── */

@@ -10,18 +10,19 @@ import { RouterLink } from '@angular/router';
       <div class="footer-inner">
         <div class="footer-brand">
           <p class="footer-logo">DELIRIUM</p>
-          <p class="footer-sub">© 2024 Lustrum Commissie — Het Electrisch Organisme</p>
+          <p class="footer-sub">© {{ year }} Lustrum Commissie — Het Electrisch Organisme</p>
           <div class="footer-social">
-            <a href="#" class="social-pill" aria-label="Instagram">
+            <a href="https://www.instagram.com/lustrumasopos/" class="social-pill" aria-label="Instagram">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <rect x="2" y="2" width="20" height="20" rx="5"/>
                 <circle cx="12" cy="12" r="5"/>
                 <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
               </svg>
             </a>
-            <a href="#" class="social-pill" aria-label="Facebook">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/>
+            <a href="https://www.youtube.com/@asoposdevliet7424" class="social-pill" aria-label="YouTube">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round">
+                <rect x="2" y="5" width="20" height="14" rx="4"/>
+                <polygon points="10,9 16,12 10,15" fill="currentColor" stroke="none"/>
               </svg>
             </a>
           </div>
@@ -32,18 +33,17 @@ import { RouterLink } from '@angular/router';
           <ul>
             <li><a routerLink="/">Home</a></li>
             <li><a routerLink="/activiteiten">Activiteiten</a></li>
-            <li><a routerLink="/" fragment="media">Media</a></li>
-            <li><a routerLink="/" fragment="shop">Shop</a></li>
-            <li><a routerLink="/" fragment="contact">Contact</a></li>
+            <li><a routerLink="/albums" fragment="media">Albums</a></li>
+            <li><a routerLink="/shop" fragment="shop">Shop</a></li>
+            <li><a routerLink="/commissie" fragment="contact">Commissie</a></li>
           </ul>
         </nav>
 
         <nav class="footer-nav">
           <h4 class="footer-nav-title">Juridisch</h4>
           <ul>
-            <li><a href="#">Privacy</a></li>
-            <li><a href="#">Statuten</a></li>
-            <li><a href="#">Contact</a></li>
+            <li><a href="https://asopos.nl">Asopos de Vliet</a></li>
+            <li><a href="https://asopos.nl/contact">Contact</a></li>
           </ul>
         </nav>
       </div>
@@ -140,4 +140,6 @@ import { RouterLink } from '@angular/router';
     }
   `]
 })
-export class Footer {}
+export class Footer {
+  readonly year = new Date().getFullYear();
+}

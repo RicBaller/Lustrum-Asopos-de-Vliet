@@ -10,10 +10,10 @@ import { RouterLink } from '@angular/router';
       <div class="shop-teaser__inner">
         <div class="shop-teaser__copy">
           <p class="shop-teaser__eyebrow">Shop</p>
-          <h2 class="shop-teaser__title">SHOP DE<br>CHAOS</h2>
+          <h2 class="shop-teaser__title">SHOP HET<br>DELIRIUM</h2>
           <p class="shop-teaser__text">
-            Van lustrummerch tot limited drops: hier shop je straks alles om Delirium
-            ook buiten het programma mee naar huis te nemen.
+            Van lustrummerch, tickets tot limited drops: hier shop je straks alles om Delirium
+            ter ervaren, in huis te nemen en voor altijd te onthouden.
           </p>
         </div>
 

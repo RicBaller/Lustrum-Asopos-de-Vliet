@@ -1,4 +1,3 @@
-import { DOCUMENT } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnDestroy, computed, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { catchError, forkJoin, map, of, startWith, timeout } from 'rxjs';
@@ -29,7 +28,6 @@ interface CommissieState {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CommissiePage implements OnDestroy {
-  private readonly document = inject(DOCUMENT);
   private readonly commissieService = inject(CommissieService);
 
   readonly selectedSub = signal<SubCommissie | null>(null);
@@ -92,7 +90,6 @@ export class CommissiePage implements OnDestroy {
     this.isCollapsingSubId.set(null);
     this.selectedSub.set(sub);
     this.expandedSubId.set(sub.id);
-    this.document.body.style.overflow = 'hidden';
   }
 
   closeDialog(): void {
@@ -105,7 +102,6 @@ export class CommissiePage implements OnDestroy {
       this.expandedSubId.set(null);
       this.isClosingDialog.set(false);
       this.isCollapsingSubId.set(null);
-      this.document.body.style.overflow = '';
     }, 400);
   }
 
@@ -113,6 +109,5 @@ export class CommissiePage implements OnDestroy {
     if (this.dialogCloseTimeout !== null) {
       clearTimeout(this.dialogCloseTimeout);
     }
-    this.document.body.style.overflow = '';
   }
 }

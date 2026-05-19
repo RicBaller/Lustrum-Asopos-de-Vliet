@@ -28,7 +28,7 @@ function getYoutubeWatchUrl(url: string): string {
             <span>DELIRIUM</span>
             <span class="reveal-year">XIII</span>
           </div>
-          <p class="reveal-sub">De bekendmakingen van het organisme.</p>
+          <p class="reveal-sub">Bekijk de bekendmakingen van het DELIRIUM.</p>
         </header>
 
         <div class="video-cards">

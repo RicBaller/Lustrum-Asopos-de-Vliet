@@ -2,7 +2,7 @@
     <div class="activities-hero__grain"></div>
     <div class="activities-hero__inner">
     <p class="activities-hero__eyebrow">Activiteiten</p>
-    <h1 class="activities-hero__title">BELEEF HET<br>WEES DELERISCH</h1>
+    <h1 class="activities-hero__title">BELEEF HET,<br>WEES DELERISCH</h1>
     <p class="activities-hero__subtitle">Het officiele programma van het lustrum Asopos de Vliet.</p>
 
     <div class="activities-hero__stats">
@@ -108,12 +108,12 @@
 
 <section class="activities-closing">
     <div class="activities-closing__inner">
-    <h2 class="activities-closing__title">NIETS MISSEN?</h2>
+    <h2 class="activities-closing__title">IETS GEMIST?</h2>
 
     <div class="activities-closing__actions">
         @if (firstTicketLink(); as ticketLink) {
         <a class="closing-button closing-button--solid" [href]="ticketLink" target="_blank" rel="noreferrer">
-            Bestel tickets
+            Bestel de volgende tickets
         </a>
         } @else {
         <button type="button" class="closing-button closing-button--solid closing-button--disabled" disabled>
@@ -121,7 +121,7 @@
         </button>
         }
 
-        <a routerLink="/" class="closing-button closing-button--outline">Meer over het lustrum</a>
+        <a routerLink="/albums" class="closing-button closing-button--outline">Kijk fotos terug</a>
     </div>
     </div>
 </section>

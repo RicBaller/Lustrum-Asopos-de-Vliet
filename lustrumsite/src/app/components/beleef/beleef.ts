@@ -22,7 +22,7 @@ import { RouterLink } from '@angular/router';
         <header class="beleef-header">
           <div class="beleef-title-group">
             <h2 class="section-title">BELEEF HET TERUG</h2>
-            <p class="beleef-sub">De drie meest recente fotoalbums van het organisme.</p>
+            <p class="beleef-sub">Blijf nog even delirisch. De drie meest recente fotoalbums van het lustrum.</p>
           </div>
         </header>
 

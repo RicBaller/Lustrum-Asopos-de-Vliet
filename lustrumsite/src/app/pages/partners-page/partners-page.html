@@ -21,7 +21,7 @@
 @if (!loading() && !error() && mainSponsors().length > 0) {
   <section class="partners-main-section">
     <div class="partners-main-section__inner">
-      <h2 class="partners-main-section__title">Hoofd<br>Sponsoren</h2>
+      <h2 class="partners-main-section__title">Hoofdsponsoren</h2>
 
       <div class="partners-main-grid">
         @for (sponsor of mainSponsors(); track sponsor.id) {
@@ -86,7 +86,7 @@
   <div class="partners-regular-section__inner">
 
     @if (!loading() && !error() && (sponsors().length > 0 || mainSponsors().length === 0)) {
-      <h2 class="partners-regular-section__title">Overige Sponsoren</h2>
+      <h2 class="partners-regular-section__title">Sponsoren</h2>
     }
 
     @if (loading()) {
@@ -163,13 +163,13 @@
   <div class="partners-cta-section__inner">
     <div class="partners-cta-card">
       <p class="partners-cta-card__eyebrow">Interesse?</p>
-      <h2 class="partners-cta-card__title">Word onderdeel<br>van de chaos</h2>
+      <h2 class="partners-cta-card__title">Word onderdeel<br>van de waanzinnigheid</h2>
       <p class="partners-cta-card__text">
         Verbind uw naam aan het meest grensverleggende lustrum van het
         decennium. Bereik een energieke en invloedrijke doelgroep.
       </p>
       <a
-        href="mailto:sponsor&#64;asoposdelviet.nl"
+        href="mailto:zakelijk&#64;asopos.nl"
         class="partners-cta-card__btn"
       >Word Partner</a>
     </div>

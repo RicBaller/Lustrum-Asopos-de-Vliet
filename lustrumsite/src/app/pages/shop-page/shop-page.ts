@@ -4,6 +4,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { catchError, map, of, startWith, timeout } from 'rxjs';
 import { Product } from '../../models/models';
 import { ProductService } from '../../services/product.service';
+import { RouterLink } from '@angular/router';
 
 interface ProductGroup {
   id: string;
@@ -19,7 +20,7 @@ interface ProductState {
 
 @Component({
   selector: 'app-shop-page',
-  imports: [CurrencyPipe],
+  imports: [CurrencyPipe, RouterLink],
   host: {
     '(document:keydown.escape)': 'closeDialog()',
   },

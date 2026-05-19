@@ -9,8 +9,8 @@ import { RouterLink } from '@angular/router';
     <section class="cta-strip">
       <div class="cta-inner">
         <div class="cta-text">
-          <h2 class="cta-title">WORD DEEL VAN<br>HET ORGANISME</h2>
-          <p class="cta-sub">Mis geen enkel moment van Delirium. Bekijk wat er op de planning staat.</p>
+          <h2 class="cta-title">WORD DELIRISCH<br>WEES DELIRISCH</h2>
+          <p class="cta-sub">Doe mee! Kom in dezelfde toestand van geestelijke waanzin. Kom naar de delirische activiteiten.</p>
         </div>
         <div class="cta-actions">
           <a routerLink="/activiteiten" class="cta-btn">

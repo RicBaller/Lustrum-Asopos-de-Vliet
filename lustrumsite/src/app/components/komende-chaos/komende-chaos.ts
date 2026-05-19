@@ -29,7 +29,7 @@ interface KomendEvent {
       <div class="kc-inner">
 
         <header class="kc-header">
-          <h2 class="kc-title">KOMENDE<br>CHAOS</h2>
+          <h2 class="kc-title">KOMENDE<br>EVENEMENTEN</h2>
           <p class="kc-subtitle">
             De drie eerstvolgende activiteiten van het lustrum, direct uit het programma.
           </p>
