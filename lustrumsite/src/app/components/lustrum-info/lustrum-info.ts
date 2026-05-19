@@ -1,0 +1,179 @@
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, OnDestroy, inject } from '@angular/core';
+
+@Component({
+  selector: 'app-lustrum-info',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: `
+    <section class="lustrum-info">
+      <div class="lustrum-info__inner">
+
+        <div class="lustrum-info__header">
+          <p class="lustrum-info__eyebrow">XIII</p>
+          <h2 class="lustrum-info__title">Delirium</h2>
+          <p class="lustrum-info__tagline">"Waanzinnigheid"</p>
+        </div>
+
+        <div class="lustrum-info__body">
+          <p>
+            Het dertiende lustrum; een mijlpaal voorbij het voltooide. Waar twaalf symbool staat voor orde en
+            afronding, daar doorbreekt dertien het bekende. Het moment waarop het vaste begint te schuiven en
+            ruimte maakt voor het onverwachte. Wanneer dan het dertiende uur slaat, voorbij de grenzen van de
+            gewone tijd, raken wij los van het ritme dat ons altijd heeft geleid. De klok verliest haar macht,
+            minuten vervagen, en wat rest is een zwevende werkelijkheid, ergens tussen herinnering en verbeelding.
+          </p>
+          <p>
+            In deze toestand, die men een delirium zou kunnen noemen, opent zich een andere manier van ervaren.
+            Een koortsdroom waarin alles intenser leeft; gedachten vloeien vrijer, grenzen verdwijnen en het
+            onmogelijke lijkt ineens vanzelfsprekend. Het is alsof wij, de tijd voorbij zijn gestreefd.
+          </p>
+          <p>
+            Hier in het dertiende uur mag, wat eerst vaststond, buigen; wat verborgen was, mag zichtbaar worden.
+            En deze zichtbaarheid komt niet uit het niets. De afgelopen jaren hebben wij als vereniging gebouwd.
+            Met enorme toewijding en ambitie vanuit alle kanten van de vereniging.
+          </p>
+          <p class="lustrum-info__closing">
+            In het dertiende uur, in delirische toestand, vieren wij niet alleen wat is geweest, maar vooral
+            wat mogelijk wordt wanneer wij samen boven onszelf uitstijgen.
+          </p>
+          <p class="lustrum-info__sign">Delirium, we gaan de tijd voorbij.</p>
+        </div>
+
+      </div>
+    </section>
+  `,
+  styles: [`
+    .lustrum-info {
+      background: var(--surface);
+      padding: var(--spacing-section) var(--spacing-gutter);
+    }
+
+    .lustrum-info__inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      gap: 4rem 7rem;
+      align-items: start;
+    }
+
+    /* ── Left: sticky header ──────────────────────────── */
+
+    .lustrum-info__header {
+      position: sticky;
+      top: 6rem;
+    }
+
+    .lustrum-info__eyebrow {
+      color: var(--primary);
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 800;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin: 0 0 0.6rem;
+    }
+
+    .lustrum-info__title {
+      color: var(--text-primary);
+      font-family: var(--font-display);
+      font-size: clamp(3rem, 6vw, 5rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 0.9;
+      text-transform: uppercase;
+      margin: 0 0 0.8rem;
+    }
+
+    .lustrum-info__tagline {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      font-style: italic;
+      margin: 0;
+    }
+
+    /* ── Right: body text with scroll reveal ──────────── */
+
+    .lustrum-info__body {
+      display: flex;
+      flex-direction: column;
+      gap: 1.6rem;
+    }
+
+    .lustrum-info__body p {
+      color: var(--text-secondary);
+      font-size: 1.05rem;
+      line-height: 1.85;
+      margin: 0;
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity 0.65s ease, transform 0.65s ease;
+    }
+
+    .lustrum-info__body p.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* stagger delays (enter) */
+    .lustrum-info__body p:nth-child(1) { transition-delay: 0s; }
+    .lustrum-info__body p:nth-child(2) { transition-delay: 0.1s; }
+    .lustrum-info__body p:nth-child(3) { transition-delay: 0.18s; }
+    .lustrum-info__body p:nth-child(4) { transition-delay: 0.26s; }
+    .lustrum-info__body p:nth-child(5) { transition-delay: 0.32s; }
+
+    .lustrum-info__closing {
+      color: var(--text-primary) !important;
+      font-weight: 500;
+    }
+
+    .lustrum-info__sign {
+      color: var(--primary) !important;
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+    }
+
+    /* ── Responsive ───────────────────────────────────── */
+
+    @media (max-width: 768px) {
+      .lustrum-info__inner {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+      }
+
+      .lustrum-info__header {
+        position: static;
+      }
+    }
+  `],
+})
+export class LustrumInfo implements AfterViewInit, OnDestroy {
+  private readonly el = inject(ElementRef);
+  private observer: IntersectionObserver | null = null;
+
+  ngAfterViewInit(): void {
+    const paragraphs: NodeListOf<Element> =
+      this.el.nativeElement.querySelectorAll('.lustrum-info__body p');
+
+    this.observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          } else {
+            entry.target.classList.remove('visible');
+          }
+        });
+      },
+      { threshold: 0.15, rootMargin: '0px 0px -60px 0px' },
+    );
+
+    paragraphs.forEach(p => this.observer!.observe(p));
+  }
+
+  ngOnDestroy(): void {
+    this.observer?.disconnect();
+  }
+}
+

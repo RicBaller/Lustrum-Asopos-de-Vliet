@@ -33,7 +33,7 @@ import { RouterLink } from '@angular/router';
   styles: [`
     .cta-strip {
       position: relative;
-      background: var(--primary-fixed);
+      background: var(--surface);
       padding: var(--spacing-section) var(--spacing-gutter) calc(var(--spacing-section) + 60px);
       overflow: hidden;
     }
@@ -52,7 +52,7 @@ import { RouterLink } from '@angular/router';
       font-family: var(--font-display);
       font-size: clamp(2.5rem, 5vw, 4.5rem);
       font-weight: 700;
-      color: var(--surface);
+      color: var(--primary);
       letter-spacing: -0.03em;
       line-height: 1;
     }
@@ -60,7 +60,7 @@ import { RouterLink } from '@angular/router';
     .cta-sub {
       font-family: var(--font-body);
       font-size: 1.0625rem;
-      color: var(--on-primary);
+      color: var(--text-secondary);
       margin-top: 1rem;
       max-width: 420px;
     }
@@ -69,8 +69,8 @@ import { RouterLink } from '@angular/router';
       display: inline-flex;
       align-items: center;
       gap: 0.75rem;
-      background: var(--surface);
-      color: var(--primary);
+      background: var(--primary);
+      color: #fff;
       font-family: var(--font-body);
       font-size: 1rem;
       font-weight: 700;
@@ -83,8 +83,9 @@ import { RouterLink } from '@angular/router';
 
     .cta-btn:hover {
       transform: translateY(-3px);
-      background: var(--surface-highest);
-      color: var(--secondary);
+      background: var(--primary);
+      filter: brightness(1.12);
+      color: #fff;
     }
 
     .cta-wave {
