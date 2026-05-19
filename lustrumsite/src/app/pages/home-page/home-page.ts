@@ -3,18 +3,20 @@ import { Beleef } from '../../components/beleef/beleef';
 import { CtaStrip } from '../../components/cta-strip/cta-strip';
 import { Hero } from '../../components/hero/hero';
 import { KomendeChaos } from '../../components/komende-chaos/komende-chaos';
+import { LustrumInfo } from '../../components/lustrum-info/lustrum-info';
 import { RevealSection } from '../../components/reveal-section/reveal-section';
 import { ShopTeaser } from '../../components/shop-teaser/shop-teaser';
 
 @Component({
   selector: 'app-home-page',
-  imports: [Hero, RevealSection, ShopTeaser, KomendeChaos, Beleef, CtaStrip],
+  imports: [Hero, RevealSection, ShopTeaser, KomendeChaos, Beleef, LustrumInfo, CtaStrip],
   template: `
     <app-hero />
     <app-reveal-section />
     <app-shop-teaser />
     <app-komende-chaos />
     <app-beleef />
+    <app-lustrum-info />
     <app-cta-strip />
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,

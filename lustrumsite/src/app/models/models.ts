@@ -92,6 +92,18 @@ export interface SubCommissie {
   leden: SubCommissieLid[];
 }
 
+// ── Sponsor ───────────────────────────────────────────────────────────────────
+
+export interface Sponsor {
+  id: number;
+  title: string;
+  description: string | null;
+  url: string | null;
+  sortOrder: number;
+  isMainSponsor: boolean;
+  image: string | null;
+}
+
 // ── Video ─────────────────────────────────────────────────────────────────────
 
 export interface VideoCategory {

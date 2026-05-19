@@ -1,0 +1,242 @@
+<!-- ═══ HERO ═══ -->
+<section class="partners-hero">
+  <div class="partners-hero__inner">
+    <h1 class="partners-hero__title">Onze Partners</h1>
+    <p class="partners-hero__subtitle">
+      Zonder chaos geen orde. Zonder steun geen Delirium.<br>
+      Wij danken de krachten die dit lustrum elektrificeren.
+    </p>
+  </div>
+
+  <div class="partners-hero__divider" aria-hidden="true">
+    <svg viewBox="0 0 1440 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,120 L0,90 L360,30 L720,90 L1080,30 L1440,90 L1440,120 Z"
+            fill="var(--primary)"/>
+    </svg>
+  </div>
+</section>
+
+<!-- ═══ PARTNERS GRID ═══ -->
+<!-- ═══ HOOFD SPONSOREN ═══ -->
+@if (!loading() && !error() && mainSponsors().length > 0) {
+  <section class="partners-main-section">
+    <div class="partners-main-section__inner">
+      <h2 class="partners-main-section__title">Hoofd<br>Sponsoren</h2>
+
+      <div class="partners-main-grid">
+        @for (sponsor of mainSponsors(); track sponsor.id) {
+          <article
+            class="main-sponsor-card"
+            role="button"
+            tabindex="0"
+            [attr.aria-label]="'Meer info over ' + sponsor.title"
+            (click)="openDialog(sponsor)"
+            (keydown.enter)="openDialog(sponsor)"
+            (keydown.space)="openDialog(sponsor)"
+          >
+            <div class="main-sponsor-card__ring">
+              @if (sponsor.image) {
+                <img
+                  class="main-sponsor-card__image"
+                  [src]="sponsor.image"
+                  [alt]="sponsor.title"
+                  loading="lazy"
+                />
+              } @else {
+                <div class="main-sponsor-card__fallback">
+                  <span>{{ sponsor.title.charAt(0) }}</span>
+                </div>
+              }
+
+              @if (sponsor.url) {
+                <button
+                  type="button"
+                  class="main-sponsor-card__ext-link"
+                  [attr.aria-label]="'Bezoek website van ' + sponsor.title"
+                  (click)="openExternalUrl(sponsor.url, $event)"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+                       fill="none" stroke="currentColor" stroke-width="2.5"
+                       stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                    <polyline points="15 3 21 3 21 9"/>
+                    <line x1="10" y1="14" x2="21" y2="3"/>
+                  </svg>
+                </button>
+              }
+            </div>
+
+            <span class="main-sponsor-card__name">{{ sponsor.title }}</span>
+          </article>
+        }
+      </div>
+    </div>
+
+    <div class="partners-main-section__divider" aria-hidden="true">
+      <svg viewBox="0 0 1440 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0,120 L0,90 L360,30 L720,90 L1080,30 L1440,90 L1440,120 Z"
+              fill="var(--surface)"/>
+      </svg>
+    </div>
+  </section>
+}
+
+<!-- ═══ OVERIGE SPONSOREN ═══ -->
+<section class="partners-regular-section">
+  <div class="partners-regular-section__inner">
+
+    @if (!loading() && !error() && (sponsors().length > 0 || mainSponsors().length === 0)) {
+      <h2 class="partners-regular-section__title">Overige Sponsoren</h2>
+    }
+
+    @if (loading()) {
+      <div class="partners-grid">
+        @for (i of [1,2,3,4,5,6,7,8]; track i) {
+          <div class="regular-card regular-card--skeleton">
+            <div class="regular-card__image-placeholder"></div>
+          </div>
+        }
+      </div>
+    } @else if (error(); as message) {
+      <div class="partners-state partners-state--error" aria-live="polite">
+        <p>{{ message }}</p>
+      </div>
+    } @else if (sponsors().length === 0 && mainSponsors().length === 0) {
+      <div class="partners-state" aria-live="polite">
+        <p>Nog geen partners toegevoegd.</p>
+      </div>
+    } @else if (sponsors().length > 0) {
+      <div class="partners-grid">
+        @for (sponsor of sponsors(); track sponsor.id) {
+          <article
+            class="regular-card"
+            role="button"
+            tabindex="0"
+            [attr.aria-label]="'Meer info over ' + sponsor.title"
+            (click)="openDialog(sponsor)"
+            (keydown.enter)="openDialog(sponsor)"
+            (keydown.space)="openDialog(sponsor)"
+          >
+            <div class="regular-card__logo-wrap">
+              @if (sponsor.image) {
+                <img
+                  class="regular-card__logo"
+                  [src]="sponsor.image"
+                  [alt]="sponsor.title"
+                  loading="lazy"
+                />
+              } @else {
+                <div class="regular-card__fallback">
+                  <span>{{ sponsor.title.charAt(0) }}</span>
+                </div>
+              }
+            </div>
+
+            <span class="regular-card__name">{{ sponsor.title }}</span>
+
+            @if (sponsor.url) {
+              <button
+                type="button"
+                class="regular-card__ext-link"
+                [attr.aria-label]="'Bezoek website van ' + sponsor.title"
+                (click)="openExternalUrl(sponsor.url, $event)"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+                     fill="none" stroke="currentColor" stroke-width="2.5"
+                     stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                  <polyline points="15 3 21 3 21 9"/>
+                  <line x1="10" y1="14" x2="21" y2="3"/>
+                </svg>
+              </button>
+            }
+          </article>
+        }
+      </div>
+    }
+
+  </div>
+</section>
+
+<!-- ═══ CTA ═══ -->
+<section class="partners-cta-section">
+  <div class="partners-cta-section__inner">
+    <div class="partners-cta-card">
+      <p class="partners-cta-card__eyebrow">Interesse?</p>
+      <h2 class="partners-cta-card__title">Word onderdeel<br>van de chaos</h2>
+      <p class="partners-cta-card__text">
+        Verbind uw naam aan het meest grensverleggende lustrum van het
+        decennium. Bereik een energieke en invloedrijke doelgroep.
+      </p>
+      <a
+        href="mailto:sponsor&#64;asoposdelviet.nl"
+        class="partners-cta-card__btn"
+      >Word Partner</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ DIALOG ═══ -->
+@if (selectedSponsor(); as sponsor) {
+  <div
+    class="partner-dialog-backdrop"
+    [class.partner-dialog-backdrop--closing]="isClosingDialog()"
+    (click)="closeDialog()"
+    role="presentation"
+  ></div>
+
+  <div
+    class="partner-dialog"
+    [class.partner-dialog--closing]="isClosingDialog()"
+    role="dialog"
+    [attr.aria-label]="sponsor.title"
+    aria-modal="true"
+  >
+    <button
+      type="button"
+      class="partner-dialog__close"
+      (click)="closeDialog()"
+      aria-label="Sluiten"
+    >&times;</button>
+
+    <div class="partner-dialog__image-wrap">
+      @if (sponsor.image) {
+        <img
+          class="partner-dialog__image"
+          [src]="sponsor.image"
+          [alt]="sponsor.title"
+        />
+      } @else {
+        <div class="partner-dialog__image-fallback">
+          <span>{{ sponsor.title.charAt(0) }}</span>
+        </div>
+      }
+    </div>
+
+    <div class="partner-dialog__body">
+      <h2 class="partner-dialog__title">{{ sponsor.title }}</h2>
+
+      @if (sponsor.description) {
+        <p class="partner-dialog__description">{{ sponsor.description }}</p>
+      }
+
+      @if (sponsor.url) {
+        <a
+          class="partner-dialog__cta"
+          [href]="sponsor.url"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+               fill="none" stroke="currentColor" stroke-width="2.5"
+               stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+            <polyline points="15 3 21 3 21 9"/>
+            <line x1="10" y1="14" x2="21" y2="3"/>
+          </svg>
+          Bezoek website
+        </a>
+      }
+    </div>
+  </div>
+}

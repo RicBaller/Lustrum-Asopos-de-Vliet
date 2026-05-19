@@ -43,6 +43,12 @@ export const routes: Routes = [
 		title: 'Delirium | De Commissie',
 	},
 	{
+		path: 'partners',
+		loadComponent: () =>
+			import('./pages/partners-page/partners-page').then((module) => module.PartnersPage),
+		title: 'Delirium | Partners',
+	},
+	{
 		path: '**',
 		redirectTo: '',
 	},
