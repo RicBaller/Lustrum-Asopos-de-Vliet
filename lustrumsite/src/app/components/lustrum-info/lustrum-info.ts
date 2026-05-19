@@ -89,6 +89,7 @@ import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, OnDestro
       color: var(--surface);
       font-size: 0.9rem;
       font-style: italic;
+      font-weight: 500;
       margin: 0;
       opacity: 0.55;
     }
