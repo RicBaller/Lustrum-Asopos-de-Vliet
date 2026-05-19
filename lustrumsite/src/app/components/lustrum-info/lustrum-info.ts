@@ -43,7 +43,7 @@ import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, OnDestro
   `,
   styles: [`
     .lustrum-info {
-      background: var(--surface);
+      background: var(--primary-fixed);
       padding: var(--spacing-section) var(--spacing-gutter);
     }
 
@@ -64,17 +64,18 @@ import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, OnDestro
     }
 
     .lustrum-info__eyebrow {
-      color: var(--primary);
+      color: var(--surface);
       font-family: var(--font-display);
       font-size: 1rem;
       font-weight: 800;
       letter-spacing: 0.2em;
       text-transform: uppercase;
       margin: 0 0 0.6rem;
+      opacity: 0.6;
     }
 
     .lustrum-info__title {
-      color: var(--text-primary);
+      color: var(--surface);
       font-family: var(--font-display);
       font-size: clamp(3rem, 6vw, 5rem);
       font-weight: 800;
@@ -85,10 +86,11 @@ import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, OnDestro
     }
 
     .lustrum-info__tagline {
-      color: var(--text-muted);
+      color: var(--surface);
       font-size: 0.9rem;
       font-style: italic;
       margin: 0;
+      opacity: 0.55;
     }
 
     /* ── Right: body text with scroll reveal ──────────── */
@@ -100,7 +102,7 @@ import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, OnDestro
     }
 
     .lustrum-info__body p {
-      color: var(--text-secondary);
+      color: var(--surface);
       font-size: 1.05rem;
       line-height: 1.85;
       margin: 0;
@@ -122,12 +124,12 @@ import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, OnDestro
     .lustrum-info__body p:nth-child(5) { transition-delay: 0.32s; }
 
     .lustrum-info__closing {
-      color: var(--text-primary) !important;
-      font-weight: 500;
+      color: var(--surface) !important;
+      font-weight: 600;
     }
 
     .lustrum-info__sign {
-      color: var(--primary) !important;
+      color: var(--surface) !important;
       font-family: var(--font-display);
       font-size: 1.1rem;
       font-weight: 800;
