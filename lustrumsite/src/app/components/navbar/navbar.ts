@@ -99,9 +99,9 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
     }
 
     .logo-text {
-      font-family: var(--font-display);
+      font-family: var(--font-hero);
       font-size: 1.25rem;
-      font-weight: 700;
+      font-weight: 400;
       color: var(--primary);
       letter-spacing: 0.1em;
     }
