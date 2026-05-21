@@ -39,12 +39,35 @@ import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, OnDestro
         </div>
 
       </div>
+
+      <!-- Wave transition to purple Videos section -->
+      <div class="lustrum-info__wave-bottom" aria-hidden="true">
+        <svg viewBox="0 0 1440 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0,60 C360,120 720,0 1080,80 C1260,110 1380,30 1440,60 L1440,120 L0,120 Z" fill="var(--surface)"/>
+        </svg>
+      </div>
     </section>
   `,
   styles: [`
     .lustrum-info {
+      position: relative;
       background: var(--primary-fixed);
-      padding: var(--spacing-section) var(--spacing-gutter);
+      padding: var(--spacing-section) var(--spacing-gutter) calc(var(--spacing-section) + 80px);
+      overflow: hidden;
+    }
+
+    .lustrum-info__wave-bottom {
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      right: 0;
+      line-height: 0;
+    }
+
+    .lustrum-info__wave-bottom svg {
+      display: block;
+      width: 100%;
+      height: 120px;
     }
 
     .lustrum-info__inner {

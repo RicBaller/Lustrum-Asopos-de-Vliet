@@ -12,11 +12,11 @@ import { ShopTeaser } from '../../components/shop-teaser/shop-teaser';
   imports: [Hero, RevealSection, ShopTeaser, KomendeChaos, Beleef, LustrumInfo, CtaStrip],
   template: `
     <app-hero />
+    <app-lustrum-info />
     <app-reveal-section />
-    <app-shop-teaser />
     <app-komende-chaos />
     <app-beleef />
-    <app-lustrum-info />
+    <app-shop-teaser />
     <app-cta-strip />
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,

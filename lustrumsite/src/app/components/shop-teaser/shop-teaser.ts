@@ -24,7 +24,7 @@ import { RouterLink } from '@angular/router';
 
       <div class="shop-teaser__wave" aria-hidden="true">
         <svg viewBox="0 0 1440 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M0,50 C300,110 620,10 900,60 C1130,100 1290,30 1440,70 L1440,120 L0,120 Z" fill="var(--primary-fixed)"/>
+          <path d="M0,50 C300,110 620,10 900,60 C1130,100 1290,30 1440,70 L1440,120 L0,120 Z" fill="var(--surface)"/>
         </svg>
       </div>
     </section>
@@ -33,8 +33,8 @@ import { RouterLink } from '@angular/router';
     .shop-teaser {
       position: relative;
       overflow: hidden;
-      background: var(--surface);
-      padding: 5.5rem var(--spacing-gutter) calc(5.5rem + 90px);
+      background: var(--primary-fixed);
+      padding: calc(5.5rem + 80px) var(--spacing-gutter) calc(5.5rem + 90px);
     }
 
     .shop-teaser__inner {
@@ -47,7 +47,7 @@ import { RouterLink } from '@angular/router';
     }
 
     .shop-teaser__eyebrow {
-      color: var(--secondary);
+      color: var(--surface);
       font-size: 0.78rem;
       font-weight: 800;
       letter-spacing: 0.18em;
@@ -56,7 +56,7 @@ import { RouterLink } from '@angular/router';
 
     .shop-teaser__title {
       margin-top: 1rem;
-      color: var(--text-primary);
+      color: var(--surface);
       font-size: clamp(3rem, 7vw, 6rem);
       line-height: 0.92;
       letter-spacing: -0.05em;
@@ -66,7 +66,7 @@ import { RouterLink } from '@angular/router';
     .shop-teaser__text {
       max-width: 34rem;
       margin-top: 1.2rem;
-      color: var(--text-secondary);
+      color: var(--on-primary);
       font-size: 1.02rem;
       line-height: 1.8;
     }
@@ -86,8 +86,8 @@ import { RouterLink } from '@angular/router';
       padding: 0.9rem 2rem;
       border: 0;
       border-radius: var(--radius-pill);
-      background: var(--primary);
-      color: var(--on-primary);
+      background: var(--surface);
+      color: var(--text-primary);
       font-family: var(--font-body);
       font-size: 0.84rem;
       font-weight: 900;

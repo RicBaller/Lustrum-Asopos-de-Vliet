@@ -74,7 +74,7 @@ import { RouterLink } from '@angular/router';
       <!-- Bottom wave into lustrum-info (both dark) -->
       <div class="beleef-wave-bottom">
         <svg viewBox="0 0 1440 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M0,50 C300,100 600,0 900,50 C1100,80 1300,20 1440,60 L1440,100 L0,100 Z" fill="var(--surface)"/>
+          <path d="M0,50 C300,100 600,0 900,50 C1100,80 1300,20 1440,60 L1440,100 L0,100 Z" fill="var(--primary-fixed)"/>
         </svg>
       </div>
     </section>

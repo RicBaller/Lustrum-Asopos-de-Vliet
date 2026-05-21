@@ -65,7 +65,7 @@ function getYoutubeWatchUrl(url: string): string {
       <!-- Bottom wave back to surface -->
       <div class="reveal-wave-bottom">
         <svg viewBox="0 0 1440 140" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M0,60 C360,140 720,0 1080,80 C1260,120 1380,40 1440,60 L1440,140 L0,140 Z" fill="var(--surface)"/>
+          <path d="M0,60 C360,140 720,0 1080,80 C1260,120 1380,40 1440,60 L1440,140 L0,140 Z" fill="var(--primary)"/>
         </svg>
       </div>
     </section>
@@ -73,8 +73,8 @@ function getYoutubeWatchUrl(url: string): string {
   styles: [`
     .reveal-section {
       position: relative;
-      background: var(--primary-fixed);
-      padding: var(--spacing-section) var(--spacing-gutter);
+      background: var(--surface);
+      padding: var(--spacing-section) var(--spacing-gutter) calc(var(--spacing-section) + 80px);
       overflow: hidden;
     }
 
@@ -96,7 +96,7 @@ function getYoutubeWatchUrl(url: string): string {
     .reveal-sub {
       font-family: var(--font-body);
       font-size: 1rem;
-      color: var(--on-primary);
+      color: var(--text-secondary);
       padding-bottom: 0.5rem;
     }
 
@@ -170,7 +170,7 @@ function getYoutubeWatchUrl(url: string): string {
     .video-card-credits {
       font-family: var(--font-body);
       font-size: 0.9375rem;
-      color: var(--on-primary);
+      color: var(--text-secondary);
       opacity: 0.7;
       margin-top: -0.5rem;
     }
@@ -194,7 +194,7 @@ function getYoutubeWatchUrl(url: string): string {
       font-family: var(--font-display);
       font-size: 1.25rem;
       font-weight: 700;
-      color: var(--surface);
+      color: var(--text-primary);
       letter-spacing: 0.02em;
     }
 
@@ -208,13 +208,13 @@ function getYoutubeWatchUrl(url: string): string {
       font-family: var(--font-display);
       font-size: clamp(3rem, 7vw, 6rem);
       font-weight: 700;
-      color: var(--surface);
+      color: var(--text-primary);
       letter-spacing: -0.04em;
       line-height: 0.9;
     }
 
     .reveal-year {
-      color: var(--surface-highest) !important;
+      color: var(--text-muted) !important;
     }
 
     .reveal-wave-bottom {
