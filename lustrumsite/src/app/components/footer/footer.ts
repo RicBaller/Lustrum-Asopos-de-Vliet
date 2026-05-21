@@ -10,7 +10,7 @@ import { RouterLink } from '@angular/router';
       <div class="footer-inner">
         <div class="footer-brand">
           <p class="footer-logo">DELIRIUM</p>
-          <p class="footer-sub">© {{ year }} Lustrum Commissie — Het Electrisch Organisme</p>
+          <p class="footer-sub">© {{ year }} Lustrum Commissie — Het Electrisch Organisme - Made by Rick Baller</p>
           <div class="footer-social">
             <a href="https://www.instagram.com/lustrumasopos/" class="social-pill" aria-label="Instagram">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
