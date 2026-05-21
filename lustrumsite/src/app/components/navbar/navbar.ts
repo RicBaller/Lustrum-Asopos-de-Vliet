@@ -7,7 +7,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { '[class.scrolled]': 'scrolled()' },
   template: `
-    <nav class="navbar" [class.scrolled]="scrolled()">
+    <nav class="navbar" [class.scrolled]="scrolled()" [class.menu-open]="menuOpen()">
       <div class="navbar-inner">
         <a routerLink="/" class="navbar-logo" aria-label="Ga naar home">
           <span class="logo-text">DELIRIUM</span>
@@ -79,7 +79,8 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
       transition: background 0.3s ease, padding 0.3s ease;
     }
 
-    .navbar.scrolled {
+    .navbar.scrolled,
+    .navbar.menu-open {
       background: rgba(29, 0, 44, 0.95);
       backdrop-filter: blur(12px);
       padding: 1rem 2rem;
