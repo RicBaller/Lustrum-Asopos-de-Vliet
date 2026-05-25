@@ -10,7 +10,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
     <nav class="navbar" [class.scrolled]="scrolled()" [class.menu-open]="menuOpen()">
       <div class="navbar-inner">
         <a routerLink="/" class="navbar-logo" aria-label="Ga naar home">
-          <span class="logo-text">DELIRIUM</span>
+          <img src="/logo.png" alt="Delirium" class="logo-img" />
         </a>
 
         <ul class="navbar-links">
@@ -96,6 +96,18 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 
     .navbar-logo {
       flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      padding: 0.25rem;
+      background: transparent;
+      transition: background 0.3s ease;
+    }
+
+    .navbar.scrolled .navbar-logo,
+    .navbar.menu-open .navbar-logo {
+      background: #451F64;
     }
 
     .logo-text {
@@ -104,6 +116,12 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
       font-weight: 400;
       color: var(--primary);
       letter-spacing: 0.1em;
+    }
+
+    .logo-img {
+      height: 4rem;
+      width: auto;
+      display: block;
     }
 
     .navbar-links {
