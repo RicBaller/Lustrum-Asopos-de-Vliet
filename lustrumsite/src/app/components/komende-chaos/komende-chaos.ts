@@ -325,11 +325,9 @@ export class KomendeChaos {
   });
 
   private readonly activityState = toSignal(
-    this.activityService.getAll().pipe(
+    this.activityService.getUpcoming(3).pipe(
       map((activities): ActivityState => ({
-        activities: [...activities].sort(
-          (left, right) => this.toTimestamp(left.startDate) - this.toTimestamp(right.startDate)
-        ),
+        activities,
         loading: false,
       })),
       startWith({
@@ -354,14 +352,7 @@ export class KomendeChaos {
   readonly loading = computed(() => this.activityState().loading);
 
   readonly events = computed<KomendEvent[]>(() => {
-    const now = Date.now();
-    const sortedActivities = this.activityState().activities;
-    const upcomingActivities = sortedActivities.filter(
-      (activity) => this.toTimestamp(activity.endDate ?? activity.startDate) >= now
-    );
-    const sourceActivities = (upcomingActivities.length ? upcomingActivities : sortedActivities).slice(0, 3);
-
-    return sourceActivities.map((activity) => ({
+    return this.activityState().activities.map((activity) => ({
       id: activity.id,
       dateLabel: this.createDateLabel(activity),
       detailLine: this.createDetailLine(activity),
