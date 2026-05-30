@@ -11,15 +11,9 @@ const homeSchema: SeoRouteData['schema'] = [
   },
   {
     '@context': 'https://schema.org',
-    '@type': 'Event',
-    name: 'Delirium XIII',
-    eventStatus: 'https://schema.org/EventScheduled',
-    eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
-    organizer: {
-      '@type': 'Organization',
-      name: 'Lustrum Asopos de Vliet',
-    },
-    url: 'https://asoposlustrum.nl/',
+		'@type': 'WebSite',
+		name: 'Delirium XIII',
+		url: 'https://asoposlustrum.nl/',
   },
 ];
 
