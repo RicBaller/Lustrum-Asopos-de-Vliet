@@ -85,7 +85,7 @@
                 [attr.aria-label]="'Open details voor ' + card.activity.title"
             >
                 @if (card.activity.image) {
-                <img [src]="card.activity.image" [alt]="card.activity.title">
+                <img [src]="card.activity.image" [alt]="card.activity.title" loading="lazy" decoding="async">
                 } @else {
                 <div class="timeline-media__fallback">
                     <span>{{ card.badge }}</span>
@@ -142,7 +142,7 @@
 
         <div class="activity-dialog__media">
         @if (selected.activity.image) {
-            <img [src]="selected.activity.image" [alt]="selected.activity.title">
+            <img [src]="selected.activity.image" [alt]="selected.activity.title" loading="lazy" decoding="async">
         } @else {
             <div class="activity-dialog__fallback">
             <span>{{ selected.badge }}</span>

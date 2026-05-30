@@ -21,6 +21,29 @@ RUN printf 'server {\n\
     listen 80;\n\
     root /usr/share/nginx/html;\n\
     index index.html;\n\
+    gzip on;\n\
+    gzip_comp_level 5;\n\
+    gzip_vary on;\n\
+    gzip_types text/plain text/css application/json application/javascript application/xml+rss image/svg+xml;\n\
+\n\
+    location = /index.html {\n\
+        add_header Cache-Control "no-cache, no-store, must-revalidate" always;\n\
+    }\n\
+\n\
+    location ~* \\.(?:css|js|mjs|json|woff2?|ttf|otf|svg|gif|png|jpg|jpeg|webp|avif)$ {\n\
+        expires 30d;\n\
+        add_header Cache-Control "public, max-age=2592000, immutable" always;\n\
+        try_files $uri =404;\n\
+    }\n\
+\n\
+    location = /sitemap.xml {\n\
+        add_header Cache-Control "public, max-age=3600" always;\n\
+    }\n\
+\n\
+    location = /robots.txt {\n\
+        add_header Cache-Control "public, max-age=3600" always;\n\
+    }\n\
+\n\
     location / {\n\
         try_files $uri $uri/ /index.html;\n\
     }\n\

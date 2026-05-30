@@ -37,7 +37,7 @@ function getYoutubeWatchUrl(url: string): string {
               <a class="video-card" [href]="getWatchUrl(slot.youtubeURL)" target="_blank" rel="noopener noreferrer">
                 <div class="video-card-thumb">
                   @if (getThumbnail(slot.youtubeURL); as thumb) {
-                    <img [src]="thumb" [alt]="slot.title" class="video-thumb-img" />
+                    <img [src]="thumb" [alt]="slot.title" class="video-thumb-img" loading="lazy" decoding="async" />
                   }
                   <div class="play-btn" aria-hidden="true">
                     <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">

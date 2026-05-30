@@ -1,8 +1,9 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Navbar } from './components/navbar/navbar';
 import { Footer } from './components/footer/footer';
 import { Preloader } from './components/preloader/preloader';
+import { SeoService } from './seo/seo.service';
 
 @Component({
   selector: 'app-root',
@@ -18,4 +19,10 @@ import { Preloader } from './components/preloader/preloader';
   styleUrl: './app.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class App {}
+export class App {
+  private readonly seoService = inject(SeoService);
+
+  constructor() {
+    this.seoService.init();
+  }
+}

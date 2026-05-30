@@ -43,7 +43,7 @@ interface KomendEvent {
               <article class="kc-event" [class.kc-event--reverse]="i % 2 === 1">
                 <div class="kc-img-wrap">
                   @if (event.image) {
-                    <img [src]="event.image" [alt]="event.name" class="kc-img" />
+                    <img [src]="event.image" [alt]="event.name" class="kc-img" loading="lazy" decoding="async" />
                   } @else {
                     <div class="kc-img-fallback">
                       <span>{{ event.dateLabel }}</span>
