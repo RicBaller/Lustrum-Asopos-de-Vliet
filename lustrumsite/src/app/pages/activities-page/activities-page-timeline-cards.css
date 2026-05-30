@@ -1,6 +1,7 @@
 .timeline-card {
     grid-column: 1;
     grid-row: 1;
+    min-width: 0;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -31,10 +32,15 @@
 
 .timeline-card__title {
     margin-top: 0.95rem;
+    display: block;
+    max-width: 100%;
     color: var(--primary);
     font-size: clamp(1.7rem, 3vw, 2.35rem);
     line-height: 0.95;
     text-transform: uppercase;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .timeline-card__date,

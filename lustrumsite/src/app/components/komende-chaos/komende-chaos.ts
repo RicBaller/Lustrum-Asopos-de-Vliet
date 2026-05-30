@@ -110,6 +110,9 @@ interface KomendEvent {
       color: var(--surface);
       line-height: 0.95;
       letter-spacing: -0.02em;
+      max-inline-size: 100%;
+      overflow-wrap: anywhere;
+      word-break: break-word;
     }
 
     .kc-subtitle {
@@ -197,6 +200,7 @@ interface KomendEvent {
       display: flex;
       flex-direction: column;
       gap: 0.7rem;
+      min-width: 0;
       max-width: 35rem;
     }
 
@@ -217,6 +221,8 @@ interface KomendEvent {
       letter-spacing: -0.02em;
       line-height: 1.05;
       text-transform: uppercase;
+      max-inline-size: 100%;
+      min-width: 0;
     }
 
     .kc-meta {
@@ -288,6 +294,27 @@ interface KomendEvent {
       .kc-header {
         grid-template-columns: 1fr;
         margin-bottom: 3.5rem;
+      }
+
+      .kc-title {
+        font-size: clamp(2.2rem, 13vw, 3.2rem);
+        line-height: 0.92;
+        letter-spacing: -0.01em;
+      }
+
+      .kc-name {
+        font-size: clamp(1.3rem, 9vw, 2rem);
+        line-height: 1.02;
+        display: block;
+        max-width: 100%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .kc-subtitle,
+      .kc-content {
+        max-width: 100%;
       }
 
       .kc-event,
