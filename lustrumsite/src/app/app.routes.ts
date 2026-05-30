@@ -43,12 +43,36 @@ export const routes: Routes = [
 		data: {
 			seo: {
 				description: 'Bekijk het volledige activiteitenprogramma van Delirium XIII, inclusief data en ticketlinks.',
-				schema: {
-					'@context': 'https://schema.org',
-					'@type': 'CollectionPage',
-					name: 'Activiteiten Delirium XIII',
-					url: 'https://asoposlustrum.nl/activiteiten',
-				},
+				schema: [
+					{
+						'@context': 'https://schema.org',
+						'@type': 'CollectionPage',
+						name: 'Activiteiten Delirium XIII',
+						url: 'https://asoposlustrum.nl/activiteiten',
+					},
+					{
+						'@context': 'https://schema.org',
+						'@type': 'FAQPage',
+						mainEntity: [
+							{
+								'@type': 'Question',
+								name: 'Waar vind ik het actuele programma van Delirium XIII?',
+								acceptedAnswer: {
+									'@type': 'Answer',
+									text: 'Op deze activiteitenpagina vind je het volledige programma in chronologische volgorde.',
+								},
+							},
+							{
+								'@type': 'Question',
+								name: 'Kan ik direct tickets kopen voor activiteiten?',
+								acceptedAnswer: {
+									'@type': 'Answer',
+									text: 'Ja, als een evenement een ticketlink heeft, kun je direct doorklikken vanaf de activiteitenkaart.',
+								},
+							},
+						],
+					},
+				],
 			} satisfies SeoRouteData,
 		},
 	},
@@ -79,6 +103,8 @@ export const routes: Routes = [
 			seo: {
 				description: 'Bekijk een specifiek Delirium XIII album met alle foto\'s van dit moment.',
 				type: 'article',
+				noindex: true,
+				canonicalPath: '/albums',
 				schema: {
 					'@context': 'https://schema.org',
 					'@type': 'WebPage',
@@ -113,12 +139,36 @@ export const routes: Routes = [
 		data: {
 			seo: {
 				description: 'Shop exclusieve Delirium XIII merchandise van Asopos de Vliet.',
-				schema: {
-					'@context': 'https://schema.org',
-					'@type': 'CollectionPage',
-					name: 'Delirium XIII Shop',
-					url: 'https://asoposlustrum.nl/shop',
-				},
+				schema: [
+					{
+						'@context': 'https://schema.org',
+						'@type': 'CollectionPage',
+						name: 'Delirium XIII Shop',
+						url: 'https://asoposlustrum.nl/shop',
+					},
+					{
+						'@context': 'https://schema.org',
+						'@type': 'FAQPage',
+						mainEntity: [
+							{
+								'@type': 'Question',
+								name: 'Welke Delirium merchandise is beschikbaar?',
+								acceptedAnswer: {
+									'@type': 'Answer',
+									text: 'In de shop vind je uitgelichte items en de volledige collectie, gegroepeerd per categorie.',
+								},
+							},
+							{
+								'@type': 'Question',
+								name: 'Kan ik producten direct bestellen?',
+								acceptedAnswer: {
+									'@type': 'Answer',
+									text: 'Ja, bij producten met een actieve link kun je direct doorklikken naar de bestelpagina.',
+								},
+							},
+						],
+					},
+				],
 			} satisfies SeoRouteData,
 		},
 	},
@@ -147,12 +197,36 @@ export const routes: Routes = [
 		data: {
 			seo: {
 				description: 'Bekijk alle partners en sponsoren van Delirium XIII.',
-				schema: {
-					'@context': 'https://schema.org',
-					'@type': 'WebPage',
-					name: 'Delirium XIII Partners',
-					url: 'https://asoposlustrum.nl/partners',
-				},
+				schema: [
+					{
+						'@context': 'https://schema.org',
+						'@type': 'WebPage',
+						name: 'Delirium XIII Partners',
+						url: 'https://asoposlustrum.nl/partners',
+					},
+					{
+						'@context': 'https://schema.org',
+						'@type': 'FAQPage',
+						mainEntity: [
+							{
+								'@type': 'Question',
+								name: 'Hoe kan ik partner worden van Delirium XIII?',
+								acceptedAnswer: {
+									'@type': 'Answer',
+									text: 'Gebruik de call-to-action op deze pagina om contact op te nemen via e-mail voor samenwerkingen.',
+								},
+							},
+							{
+								'@type': 'Question',
+								name: 'Waar vind ik huidige sponsoren?',
+								acceptedAnswer: {
+									'@type': 'Answer',
+									text: 'Op deze pagina staan zowel hoofdsponsoren als overige sponsoren met aanvullende informatie.',
+								},
+							},
+						],
+					},
+				],
 			} satisfies SeoRouteData,
 		},
 	},

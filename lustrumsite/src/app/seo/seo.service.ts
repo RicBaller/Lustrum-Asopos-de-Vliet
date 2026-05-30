@@ -35,7 +35,8 @@ export class SeoService {
 
     const baseSiteUrl = (environment.siteUrl || this.document.location.origin).replace(/\/$/, '');
     const currentPath = this.router.url.split(/[?#]/)[0] || '/';
-    const canonicalUrl = `${baseSiteUrl}${currentPath === '/' ? '' : currentPath}`;
+    const canonicalPath = seo?.canonicalPath ?? currentPath;
+    const canonicalUrl = `${baseSiteUrl}${canonicalPath === '/' ? '' : canonicalPath}`;
     const description = seo?.description ?? 'Delirium XIII van Asopos de Vliet.';
     const image = seo?.image ? `${baseSiteUrl}${seo.image}` : `${baseSiteUrl}/favicon.ico`;
     const robots = seo?.noindex ? 'noindex, nofollow' : 'index, follow';
