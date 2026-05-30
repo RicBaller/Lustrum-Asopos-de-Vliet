@@ -13,6 +13,10 @@ export class ActivityService {
     return this.http.get<Activity[]>(this.base);
   }
 
+  getUpcoming(limit = 3): Observable<Activity[]> {
+    return this.http.get<Activity[]>(`${this.base}/upcoming`, { params: { limit: String(limit) } });
+  }
+
   getById(id: number): Observable<Activity> {
     return this.http.get<Activity>(`${this.base}/${id}`);
   }

@@ -11,6 +11,7 @@ import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, OnDestro
           <p class="lustrum-info__eyebrow">XIII</p>
           <h2 class="lustrum-info__title">Delirium</h2>
           <p class="lustrum-info__tagline">"Waanzinnigheid"</p>
+          <img src="/logo.png" alt="Delirium" class="lustrum-info__logo" />
         </div>
 
         <div class="lustrum-info__body">
@@ -113,6 +114,17 @@ import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, OnDestro
       font-style: italic;
       font-weight: 700;
       margin: 0;
+    }
+
+    .lustrum-info__logo {
+      width: 100%;
+      max-width: 260px;
+      height: auto;
+      margin-top: 1.5rem;
+      display: block;
+      background: #451F64;
+      border-radius: 50%;
+      padding: 1rem;
     }
 
     /* ── Right: body text with scroll reveal ──────────── */
