@@ -1,10 +1,11 @@
 import { NgOptimizedImage } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
+import { PrefetchOnInteractionDirective } from '../../directives/prefetch-on-interaction.directive';
 
 @Component({
   selector: 'app-navbar',
-  imports: [RouterLink, RouterLinkActive, NgOptimizedImage],
+  imports: [RouterLink, RouterLinkActive, NgOptimizedImage, PrefetchOnInteractionDirective],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { '[class.scrolled]': 'scrolled()' },
   template: `
@@ -16,12 +17,12 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 
         <ul class="navbar-links">
           <li>
-            <a routerLink="/" routerLinkActive="nav-link-active" [routerLinkActiveOptions]="{ exact: true }">
+            <a appPrefetchOnInteraction routerLink="/" routerLinkActive="nav-link-active" [routerLinkActiveOptions]="{ exact: true }">
               Home
             </a>
           </li>
           <li>
-            <a routerLink="/activiteiten" routerLinkActive="nav-link-active">Activiteiten</a>
+            <a appPrefetchOnInteraction routerLink="/activiteiten" routerLinkActive="nav-link-active">Activiteiten</a>
           </li>
           <li class="has-dropdown" routerLinkActive="nav-dropdown-active">
             <a style="cursor: pointer;">
@@ -29,16 +30,16 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
               <svg class="dropdown-icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
             </a>
             <div class="dropdown-menu">
-              <a routerLink="/albums" routerLinkActive="nav-link-active">Foto's</a>
-              <a routerLink="/videos" routerLinkActive="nav-link-active">Video's</a>
+              <a appPrefetchOnInteraction routerLink="/albums" routerLinkActive="nav-link-active">Foto's</a>
+              <a appPrefetchOnInteraction routerLink="/videos" routerLinkActive="nav-link-active">Video's</a>
             </div>
           </li>
-          <li><a routerLink="/shop" routerLinkActive="nav-link-active">Shop</a></li>
-          <li><a routerLink="/commissie" routerLinkActive="nav-link-active">Commissie</a></li>
-          <li><a routerLink="/partners" routerLinkActive="nav-link-active">Partners</a></li>
+          <li><a appPrefetchOnInteraction routerLink="/shop" routerLinkActive="nav-link-active">Shop</a></li>
+          <li><a appPrefetchOnInteraction routerLink="/commissie" routerLinkActive="nav-link-active">Commissie</a></li>
+          <li><a appPrefetchOnInteraction routerLink="/partners" routerLinkActive="nav-link-active">Partners</a></li>
         </ul>
 
-        <a routerLink="/activiteiten" class="navbar-cta">
+        <a appPrefetchOnInteraction routerLink="/activiteiten" class="navbar-cta">
           Bekijk programma
         </a>
 
@@ -49,23 +50,23 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 
       <div class="mobile-menu" [class.open]="menuOpen()">
         <ul>
-          <li><a routerLink="/" (click)="closeMenu()">Home</a></li>
-          <li><a routerLink="/activiteiten" (click)="closeMenu()">Activiteiten</a></li>
+          <li><a appPrefetchOnInteraction routerLink="/" (click)="closeMenu()">Home</a></li>
+          <li><a appPrefetchOnInteraction routerLink="/activiteiten" (click)="closeMenu()">Activiteiten</a></li>
           <li class="mobile-has-dropdown">
             <button class="mobile-dropdown-toggle" (click)="mediaDropdownOpen.set(!mediaDropdownOpen())">
               Media
               <svg [style.transform]="mediaDropdownOpen() ? 'rotate(180deg)' : 'rotate(0deg)'" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transition: transform 0.2s"><polyline points="6 9 12 15 18 9"></polyline></svg>
             </button>
             <div class="mobile-dropdown-menu" [class.open]="mediaDropdownOpen()">
-              <a routerLink="/albums" (click)="closeMenu()">Foto's</a>
-              <a routerLink="/videos" (click)="closeMenu()">Video's</a>
+              <a appPrefetchOnInteraction routerLink="/albums" (click)="closeMenu()">Foto's</a>
+              <a appPrefetchOnInteraction routerLink="/videos" (click)="closeMenu()">Video's</a>
             </div>
           </li>
-          <li><a routerLink="/shop" (click)="closeMenu()">Shop</a></li>
-          <li><a routerLink="/commissie" (click)="closeMenu()">Commissie</a></li>
-          <li><a routerLink="/partners" (click)="closeMenu()">Partners</a></li>
+          <li><a appPrefetchOnInteraction routerLink="/shop" (click)="closeMenu()">Shop</a></li>
+          <li><a appPrefetchOnInteraction routerLink="/commissie" (click)="closeMenu()">Commissie</a></li>
+          <li><a appPrefetchOnInteraction routerLink="/partners" (click)="closeMenu()">Partners</a></li>
           <li>
-            <a routerLink="/activiteiten" class="mobile-cta" (click)="closeMenu()">Bekijk programma</a>
+            <a appPrefetchOnInteraction routerLink="/activiteiten" class="mobile-cta" (click)="closeMenu()">Bekijk programma</a>
           </li>
         </ul>
       </div>

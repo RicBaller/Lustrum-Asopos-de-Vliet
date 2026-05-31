@@ -1,9 +1,10 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { PrefetchOnInteractionDirective } from '../../directives/prefetch-on-interaction.directive';
 
 @Component({
   selector: 'app-footer',
-  imports: [RouterLink],
+  imports: [RouterLink, PrefetchOnInteractionDirective],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <footer class="footer" id="contact">
@@ -31,11 +32,11 @@ import { RouterLink } from '@angular/router';
         <nav class="footer-nav">
           <h3 class="footer-nav-title">Navigatie</h3>
           <ul>
-            <li><a routerLink="/">Home</a></li>
-            <li><a routerLink="/activiteiten">Activiteiten</a></li>
-            <li><a routerLink="/albums" fragment="media">Albums</a></li>
-            <li><a routerLink="/shop" fragment="shop">Shop</a></li>
-            <li><a routerLink="/commissie" fragment="contact">Commissie</a></li>
+            <li><a appPrefetchOnInteraction routerLink="/">Home</a></li>
+            <li><a appPrefetchOnInteraction routerLink="/activiteiten">Activiteiten</a></li>
+            <li><a appPrefetchOnInteraction routerLink="/albums" fragment="media">Albums</a></li>
+            <li><a appPrefetchOnInteraction routerLink="/shop" fragment="shop">Shop</a></li>
+            <li><a appPrefetchOnInteraction routerLink="/commissie" fragment="contact">Commissie</a></li>
           </ul>
         </nav>
 
