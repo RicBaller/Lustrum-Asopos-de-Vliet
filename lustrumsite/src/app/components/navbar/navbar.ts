@@ -1,16 +1,17 @@
+import { NgOptimizedImage } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
-  imports: [RouterLink, RouterLinkActive],
+  imports: [RouterLink, RouterLinkActive, NgOptimizedImage],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { '[class.scrolled]': 'scrolled()' },
   template: `
     <nav class="navbar" [class.scrolled]="scrolled()" [class.menu-open]="menuOpen()">
       <div class="navbar-inner">
         <a routerLink="/" class="navbar-logo" aria-label="Ga naar home">
-          <img src="/logo.png" alt="Delirium" class="logo-img" />
+          <img ngSrc="/logo.png" width="64" height="64" alt="Delirium" class="logo-img" priority decoding="async" />
         </a>
 
         <ul class="navbar-links">
