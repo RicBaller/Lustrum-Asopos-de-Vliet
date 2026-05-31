@@ -29,7 +29,7 @@ import { RouterLink } from '@angular/router';
         </div>
 
         <nav class="footer-nav">
-          <h4 class="footer-nav-title">Navigatie</h4>
+          <h3 class="footer-nav-title">Navigatie</h3>
           <ul>
             <li><a routerLink="/">Home</a></li>
             <li><a routerLink="/activiteiten">Activiteiten</a></li>
@@ -40,7 +40,7 @@ import { RouterLink } from '@angular/router';
         </nav>
 
         <nav class="footer-nav">
-          <h4 class="footer-nav-title">Juridisch</h4>
+          <h3 class="footer-nav-title">Juridisch</h3>
           <ul>
             <li><a href="https://asopos.nl">Asopos de Vliet</a></li>
             <li><a href="https://asopos.nl/contact">Contact</a></li>
