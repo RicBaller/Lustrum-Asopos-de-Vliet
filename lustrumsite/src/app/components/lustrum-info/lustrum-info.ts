@@ -14,9 +14,9 @@ import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, OnDestro
           <h2 class="lustrum-info__title">Delirium</h2>
           <p class="lustrum-info__tagline">"Waanzinnigheid"</p>
           <img
-            ngSrc="/logo.png"
+            ngSrc="/logo-260.webp"
             width="260"
-            height="260"
+            height="242"
             alt="Delirium"
             class="lustrum-info__logo"
             decoding="async"
