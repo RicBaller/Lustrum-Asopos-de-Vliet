@@ -1,7 +1,9 @@
+import { NgOptimizedImage } from '@angular/common';
 import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, OnDestroy, inject } from '@angular/core';
 
 @Component({
   selector: 'app-lustrum-info',
+  imports: [NgOptimizedImage],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <section class="lustrum-info">
@@ -11,7 +13,14 @@ import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, OnDestro
           <p class="lustrum-info__eyebrow">XIII</p>
           <h2 class="lustrum-info__title">Delirium</h2>
           <p class="lustrum-info__tagline">"Waanzinnigheid"</p>
-          <img src="/logo.png" alt="Delirium" class="lustrum-info__logo" />
+          <img
+            ngSrc="/logo.png"
+            width="260"
+            height="260"
+            alt="Delirium"
+            class="lustrum-info__logo"
+            decoding="async"
+          />
         </div>
 
         <div class="lustrum-info__body">
