@@ -205,9 +205,9 @@ function getYoutubeWatchUrl(url: string): string {
     }
 
     .reveal-big-text span {
-      font-family: var(--font-display);
+      font-family: var(--font-hero);
       font-size: clamp(3rem, 7vw, 6rem);
-      font-weight: 700;
+      font-weight: 400;
       color: var(--text-primary);
       letter-spacing: -0.04em;
       line-height: 0.9;
