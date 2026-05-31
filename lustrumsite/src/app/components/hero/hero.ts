@@ -20,6 +20,12 @@ export class Hero implements AfterViewInit {
       return;
     }
 
+    video.muted = true;
+    video.defaultMuted = true;
+    video.playsInline = true;
+    video.setAttribute('muted', '');
+    video.setAttribute('playsinline', '');
+
     const playPromise = video.play();
     if (playPromise) {
       void playPromise.catch(() => {
