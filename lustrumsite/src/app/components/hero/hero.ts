@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { PrefetchOnInteractionDirective } from '../../directives/prefetch-on-interaction.directive';
 
@@ -9,4 +9,22 @@ import { PrefetchOnInteractionDirective } from '../../directives/prefetch-on-int
   styleUrls: [`./hero.scss`],
   imports: [RouterLink, PrefetchOnInteractionDirective],
 })
-export class Hero {}
+export class Hero implements AfterViewInit {
+  private readonly el = inject(ElementRef);
+
+  ngAfterViewInit(): void {
+    const root = this.el.nativeElement as HTMLElement;
+    const video = root.querySelector('.hero-background-video') as HTMLVideoElement | null;
+
+    if (!video) {
+      return;
+    }
+
+    const playPromise = video.play();
+    if (playPromise) {
+      void playPromise.catch(() => {
+        // Ignore autoplay rejections. User interaction can still start playback.
+      });
+    }
+  }
+}
