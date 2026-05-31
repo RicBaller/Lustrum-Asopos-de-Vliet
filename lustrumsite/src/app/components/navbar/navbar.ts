@@ -43,7 +43,13 @@ import { PrefetchOnInteractionDirective } from '../../directives/prefetch-on-int
           Bekijk programma
         </a>
 
-        <button class="hamburger" (click)="toggleMenu()" [attr.aria-expanded]="menuOpen()">
+        <button
+          type="button"
+          class="hamburger"
+          (click)="toggleMenu()"
+          [attr.aria-expanded]="menuOpen()"
+          [attr.aria-label]="menuOpen() ? 'Sluit menu' : 'Open menu'"
+        >
           <span></span><span></span><span></span>
         </button>
       </div>
