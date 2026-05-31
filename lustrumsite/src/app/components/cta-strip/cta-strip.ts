@@ -70,7 +70,7 @@ import { RouterLink } from '@angular/router';
       align-items: center;
       gap: 0.75rem;
       background: var(--primary);
-      color: #fff;
+      color: var(--on-primary);
       font-family: var(--font-body);
       font-size: 1rem;
       font-weight: 700;
@@ -85,7 +85,7 @@ import { RouterLink } from '@angular/router';
       transform: translateY(-3px);
       background: var(--primary);
       filter: brightness(1.12);
-      color: #fff;
+      color: var(--on-primary);
     }
 
     .cta-wave {

@@ -88,7 +88,7 @@ import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, OnDestro
     }
 
     .lustrum-info__eyebrow {
-      color: var(--secondary);
+      color: var(--surface);
       font-family: var(--font-display);
       font-size: 1rem;
       font-weight: 800;
