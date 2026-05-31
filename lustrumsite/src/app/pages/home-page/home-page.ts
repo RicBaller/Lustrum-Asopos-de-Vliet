@@ -13,11 +13,13 @@ import { ShopTeaser } from '../../components/shop-teaser/shop-teaser';
   template: `
     <app-hero />
     <app-lustrum-info />
-    <app-reveal-section />
-    <app-komende-chaos />
-    <app-beleef />
-    <app-shop-teaser />
-    <app-cta-strip />
+    @defer (on idle) {
+      <app-reveal-section />
+      <app-komende-chaos />
+      <app-beleef />
+      <app-shop-teaser />
+      <app-cta-strip />
+    }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

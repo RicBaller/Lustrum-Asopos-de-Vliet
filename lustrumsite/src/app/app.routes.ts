@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { SeoRouteData } from './seo/seo.types';
+import { HomePage } from './pages/home-page/home-page';
 
 const homeSchema: SeoRouteData['schema'] = [
   {
@@ -20,7 +21,7 @@ const homeSchema: SeoRouteData['schema'] = [
 export const routes: Routes = [
 	{
 		path: '',
-		loadComponent: () => import('./pages/home-page/home-page').then((module) => module.HomePage),
+		component: HomePage,
 		title: 'Delirium | Home',
 		data: {
 			seo: {
