@@ -19,6 +19,7 @@ echo "Database is ready."
 # ── Ensure writable dirs ───────────────────────────────────────────────────────
 mkdir -p public/assets .graphql-generated silverstripe-cache
 chown -R www-data:www-data public/assets .graphql-generated silverstripe-cache
+chmod -R 775 public/assets .graphql-generated silverstripe-cache
 
 # ── SilverStripe dev/build ──────────────────────────────────────────────────────
 echo "Running dev/build flush=1 ..."
