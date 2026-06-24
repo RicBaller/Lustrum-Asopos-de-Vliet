@@ -24,7 +24,7 @@ class AlbumController extends Controller
             $data[] = $this->serializeSummary($album);
         }
 
-        return $this->jsonResponse($data);
+        return $this->jsonResponse(['items' => $data, 'total' => count($data)]);
     }
 
     public function show(HTTPRequest $request): HTTPResponse

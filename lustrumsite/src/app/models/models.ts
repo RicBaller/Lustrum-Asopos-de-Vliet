@@ -40,6 +40,17 @@ export interface Product {
 
 // ── Album / Photo ─────────────────────────────────────────────────────────────
 
+export interface AlbumListResponse {
+  items: AlbumSummary[];
+  total: number;
+}
+
+export interface UpcomingActivitiesResponse {
+  items: Activity[];
+  total: number;
+  hasMore: boolean;
+}
+
 export interface AlbumSummary {
   id: number;
   title: string;

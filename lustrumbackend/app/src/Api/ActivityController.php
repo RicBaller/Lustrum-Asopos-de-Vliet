@@ -34,10 +34,12 @@ class ActivityController extends Controller
         $limit = max(1, min(50, (int) ($request->getVar('limit') ?: 3)));
         $today = date('Y-m-d');
 
+        $filter = [
+            '("EndDate" IS NOT NULL AND "EndDate" >= ?) OR ("EndDate" IS NULL AND "StartDate" >= ?)' => [$today, $today],
+        ];
+
         $activities = Activity::get()
-            ->where([
-                '("EndDate" IS NOT NULL AND "EndDate" >= ?) OR ("EndDate" IS NULL AND "StartDate" >= ?)' => [$today, $today],
-            ])
+            ->where($filter)
             ->sort('StartDate ASC')
             ->limit($limit);
 
@@ -46,7 +48,13 @@ class ActivityController extends Controller
             $data[] = $this->serialize($activity);
         }
 
-        return $this->jsonResponse($data);
+        $total = Activity::get()->where($filter)->count();
+
+        return $this->jsonResponse([
+            'items'   => $data,
+            'total'   => $total,
+            'hasMore' => $total > $limit,
+        ]);
     }
 
     public function show(HTTPRequest $request): HTTPResponse
