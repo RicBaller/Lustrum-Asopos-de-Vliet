@@ -37,12 +37,31 @@
 
 .activities-hero__title {
     margin-top: 1.2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+}
+
+.activities-hero__title-top {
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-size: clamp(1.5rem, 4vw, 3rem);
+    font-weight: 300;
+    font-style: italic;
+    letter-spacing: -0.01em;
+    line-height: 1.1;
+    text-transform: none;
+}
+
+.activities-hero__title-bottom {
     color: var(--primary);
-    font-size: clamp(4rem, 13vw, 8.5rem);
-    font-weight: 800;
-    letter-spacing: -0.06em;
-    line-height: 0.92;
-    text-transform: uppercase;
+    font-family: var(--font-hero);
+    font-size: clamp(4.5rem, 14vw, 10rem);
+    font-weight: 400;
+    letter-spacing: -0.04em;
+    line-height: 0.88;
+    text-transform: none;
 }
 
 .activities-hero__subtitle {
