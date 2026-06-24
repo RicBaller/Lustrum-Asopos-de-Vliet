@@ -10,10 +10,14 @@ import { RouterLink } from '@angular/router';
       <div class="shop-teaser__inner">
         <div class="shop-teaser__copy">
           <p class="shop-teaser__eyebrow">Shop</p>
-          <h2 class="shop-teaser__title">SHOP HET<br>DELIRIUM</h2>
+          <h2 class="shop-teaser__title">
+            <span class="shop-teaser__title-top">Maak je lustrumjaar</span>
+            <span class="shop-teaser__title-bottom">tastbaar</span>
+          </h2>
           <p class="shop-teaser__text">
-            Van lustrummerch, tickets tot limited drops: hier shop je straks alles om Delirium
-            ter ervaren, in huis te nemen en voor altijd te onthouden.
+            Herinneringen vervagen, het lustrumjaar blijft tastbaar. 
+            Shop lustrummerch om nooit meer te vergeten. 
+            Claim de merch nu voor jezelf, je huisgenoten en je ploeg en ga samen de tijd voorbij.
           </p>
         </div>
 
@@ -57,10 +61,25 @@ import { RouterLink } from '@angular/router';
     .shop-teaser__title {
       margin-top: 1rem;
       color: var(--surface);
-      font-size: clamp(3rem, 7vw, 6rem);
-      line-height: 0.92;
-      letter-spacing: -0.05em;
+      display: flex;
+      flex-direction: column;
+      line-height: 1;
+      letter-spacing: -0.04em;
       text-transform: uppercase;
+    }
+
+    .shop-teaser__title-top {
+      font-size: clamp(1.4rem, 3vw, 2.5rem);
+      font-weight: 200;
+      letter-spacing: -0.02em;
+    }
+
+    .shop-teaser__title-bottom {
+      font-size: clamp(3.5rem, 9vw, 8rem);
+      font-weight: 900;
+      font-style: italic;
+      line-height: 0.85;
+      letter-spacing: -0.05em;
     }
 
     .shop-teaser__text {

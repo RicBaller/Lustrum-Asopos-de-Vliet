@@ -10,9 +10,9 @@ import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, OnDestro
       <div class="lustrum-info__inner">
 
         <div class="lustrum-info__header">
-          <p class="lustrum-info__eyebrow">XIII</p>
+          <p class="lustrum-info__eyebrow">Onze betekenis van</p>
           <h2 class="lustrum-info__title">Delirium</h2>
-          <p class="lustrum-info__tagline">"Waanzinnigheid"</p>
+          <p class="lustrum-info__tagline">Lustrum XIII</p>
           <img
             ngSrc="/logo-260.webp"
             width="260"
@@ -32,7 +32,7 @@ import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, OnDestro
             minuten vervagen, en wat rest is een zwevende werkelijkheid, ergens tussen herinnering en verbeelding.
           </p>
           <p>
-            In deze toestand, die men een delirium zou kunnen noemen, opent zich een andere manier van ervaren.
+            In deze toestand, die men een <span class="delerium-word">delirium</span> zou kunnen noemen, opent zich een andere manier van ervaren.
             Een koortsdroom waarin alles intenser leeft; gedachten vloeien vrijer, grenzen verdwijnen en het
             onmogelijke lijkt ineens vanzelfsprekend. Het is alsof wij, de tijd voorbij zijn gestreefd.
           </p>
@@ -45,7 +45,7 @@ import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, OnDestro
             In het dertiende uur, in delirische toestand, vieren wij niet alleen wat is geweest, maar vooral
             wat mogelijk wordt wanneer wij samen boven onszelf uitstijgen.
           </p>
-          <p class="lustrum-info__sign">Delirium, we gaan de tijd voorbij.</p>
+          <p class="lustrum-info__sign"><span class="delerium-word">Delirium</span>, we gaan de tijd voorbij.</p>
         </div>
 
       </div>
@@ -108,9 +108,9 @@ import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, OnDestro
 
     .lustrum-info__title {
       color: var(--surface);
-      font-family: var(--font-display);
+      font-family: var(--font-hero);
       font-size: clamp(3rem, 6vw, 5rem);
-      font-weight: 800;
+      font-weight: 200;
       letter-spacing: -0.04em;
       line-height: 0.9;
       text-transform: uppercase;
@@ -119,9 +119,9 @@ import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, OnDestro
 
     .lustrum-info__tagline {
       color: var(--surface);
-      font-size: 0.9rem;
+      font-size: 1rem;
       font-style: italic;
-      font-weight: 700;
+      font-weight: 800;
       margin: 0;
     }
 
@@ -166,6 +166,10 @@ import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, OnDestro
     .lustrum-info__body p:nth-child(4) { transition-delay: 0.26s; }
     .lustrum-info__body p:nth-child(5) { transition-delay: 0.32s; }
 
+    .delerium-word {
+      font-family: var(--font-hero);
+    }
+
     .lustrum-info__closing {
       color: var(--surface) !important;
       font-weight: 600;
@@ -173,7 +177,7 @@ import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, OnDestro
 
     .lustrum-info__sign {
       color: var(--surface) !important;
-      font-family: var(--font-display);
+      font-family: var(--font-body);
       font-size: 1.1rem;
       font-weight: 800;
       letter-spacing: 0.02em;

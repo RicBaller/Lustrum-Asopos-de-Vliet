@@ -25,10 +25,10 @@ function getYoutubeWatchUrl(url: string): string {
       <div class="reveal-inner">
         <header class="reveal-header">
           <div class="reveal-big-text">
-            <span>DELIRIUM</span>
-            <span class="reveal-year">XIII</span>
+            <span>DROOM</span>
+            <span class="reveal-year">Met ons mee</span>
           </div>
-          <p class="reveal-sub">Bekijk de bekendmakingen van het DELIRIUM.</p>
+          <p class="reveal-sub">Laat je meeslepen en beleef hoe het 13e uur nadert.</p>
         </header>
 
         <div class="video-cards">
@@ -215,6 +215,11 @@ function getYoutubeWatchUrl(url: string): string {
 
     .reveal-year {
       color: var(--text-muted) !important;
+      font-size: clamp(1.5rem, 3.5vw, 3rem) !important;
+      font-family: var(--font-body) !important;
+      font-style: italic;
+      font-weight: 400;
+      letter-spacing: 0;
     }
 
     .reveal-wave-bottom {
