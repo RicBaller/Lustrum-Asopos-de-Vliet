@@ -24,6 +24,7 @@ import { PrefetchOnInteractionDirective } from '../../directives/prefetch-on-int
           <li>
             <a appPrefetchOnInteraction routerLink="/activiteiten" routerLinkActive="nav-link-active">Activiteiten</a>
           </li>
+          <li><a appPrefetchOnInteraction routerLink="/shop" routerLinkActive="nav-link-active">Shop</a></li>
           <li class="has-dropdown" routerLinkActive="nav-dropdown-active">
             <a style="cursor: pointer;">
               Media
@@ -34,7 +35,6 @@ import { PrefetchOnInteractionDirective } from '../../directives/prefetch-on-int
               <a appPrefetchOnInteraction routerLink="/videos" routerLinkActive="nav-link-active">Video's</a>
             </div>
           </li>
-          <li><a appPrefetchOnInteraction routerLink="/shop" routerLinkActive="nav-link-active">Shop</a></li>
           <li><a appPrefetchOnInteraction routerLink="/commissie" routerLinkActive="nav-link-active">Commissie</a></li>
           <li><a appPrefetchOnInteraction routerLink="/partners" routerLinkActive="nav-link-active">Partners</a></li>
         </ul>
