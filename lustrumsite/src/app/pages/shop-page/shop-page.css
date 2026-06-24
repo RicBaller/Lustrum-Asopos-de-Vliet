@@ -107,6 +107,7 @@
 
 .shop-hero__title-white { color: var(--text-primary); }
 .shop-hero__title-orange { color: var(--primary); }
+.shop-hero__title-delirium { font-family: var(--font-hero); font-weight: 400; letter-spacing: -0.04em; text-transform: none; }
 
 .shop-hero__tagline {
   max-width: 42rem;

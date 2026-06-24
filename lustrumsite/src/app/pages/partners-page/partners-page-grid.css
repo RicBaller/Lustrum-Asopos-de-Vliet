@@ -335,14 +335,14 @@
   flex-direction: column;
   align-items: center;
   gap: 1.2rem;
-  border-radius: 9999px;
+  border-radius: 2.5rem;
   background: var(--surface-mid);
   padding: 5rem 4rem;
   text-align: center;
 }
 
 .partners-cta-card__eyebrow {
-  color: var(--secondary);
+  color: var(--primary);
   font-size: 0.8rem;
   font-weight: 800;
   letter-spacing: 0.22em;
@@ -351,14 +351,31 @@
 }
 
 .partners-cta-card__title {
-  color: var(--text-primary);
-  font-family: var(--font-display);
-  font-size: clamp(2rem, 5vw, 3rem);
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  line-height: 1;
-  text-transform: uppercase;
+  display: flex;
+  flex-direction: column;
   margin: 0;
+}
+
+.partners-cta-card__title-top {
+  font-family: var(--font-body);
+  font-size: clamp(1rem, 2.5vw, 1.6rem);
+  font-weight: 300;
+  font-style: italic;
+  color: var(--text-primary);
+  letter-spacing: 0;
+  line-height: 1.3;
+  text-transform: none;
+}
+
+.partners-cta-card__title-bottom {
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 7vw, 5rem);
+  font-weight: 900;
+  font-style: italic;
+  color: var(--secondary);
+  letter-spacing: -0.04em;
+  line-height: 0.9;
+  text-transform: none;
 }
 
 .partners-cta-card__text {
