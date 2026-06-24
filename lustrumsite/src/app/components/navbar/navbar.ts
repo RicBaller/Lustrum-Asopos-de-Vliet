@@ -12,7 +12,7 @@ import { PrefetchOnInteractionDirective } from '../../directives/prefetch-on-int
     <nav class="navbar" [class.scrolled]="scrolled()" [class.menu-open]="menuOpen()">
       <div class="navbar-inner">
         <a routerLink="/" class="navbar-logo" aria-label="Ga naar home">
-          <img ngSrc="/logo-128.webp" width="64" height="64" alt="Delirium" class="logo-img" priority decoding="async" />
+          <img ngSrc="/logo-wit-128.webp" width="64" height="64" alt="Delirium" class="logo-img" priority decoding="async" />
         </a>
 
         <ul class="navbar-links">
@@ -115,7 +115,7 @@ import { PrefetchOnInteractionDirective } from '../../directives/prefetch-on-int
 
     .navbar.scrolled .navbar-logo,
     .navbar.menu-open .navbar-logo {
-      background: #451F64;
+      background: transparent;
     }
 
     .logo-text {
