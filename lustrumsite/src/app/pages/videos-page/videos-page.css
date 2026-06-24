@@ -7,6 +7,7 @@
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  padding-bottom: 6rem;
 }
 
 .videos-hero__grain {
