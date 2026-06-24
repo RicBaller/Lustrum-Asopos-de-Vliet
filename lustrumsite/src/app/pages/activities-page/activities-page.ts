@@ -24,6 +24,7 @@ interface ActivityTimelineCard {
   activity: Activity;
   badge: string;
   dateLine: string;
+  monthNumber: string;
   summary: string;
   timeLine: string;
 }
@@ -129,6 +130,7 @@ export class ActivitiesPage implements OnDestroy {
       activity,
       badge: this.createBadge(activity),
       dateLine: this.createDateLine(activity),
+      monthNumber: this.createMonthNumber(activity),
       summary: this.createExcerpt(activity.description),
       timeLine: this.createTimeLine(activity),
     }))
@@ -281,6 +283,11 @@ export class ActivitiesPage implements OnDestroy {
     }
 
     return `${startTime} tot ${endTime}`;
+  }
+
+  private createMonthNumber(activity: Activity): string {
+    const date = this.parseDate(activity.startDate);
+    return this.isValidDate(date) ? String(date.getMonth() + 1) : '?';
   }
 
   private formatShortMonth(date: Date): string {
