@@ -66,9 +66,9 @@ import { PrefetchOnInteractionDirective } from '../../directives/prefetch-on-int
     }
 
     .footer-logo {
-      font-family: var(--font-display);
+      font-family: var(--font-hero);
       font-size: 1.5rem;
-      font-weight: 700;
+      font-weight: 400;
       color: var(--primary);
       letter-spacing: 0.08em;
       margin-bottom: 0.75rem;

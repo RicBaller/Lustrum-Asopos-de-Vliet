@@ -18,7 +18,6 @@ import { ShopTeaser } from '../../components/shop-teaser/shop-teaser';
       <app-komende-chaos />
       <app-beleef />
       <app-shop-teaser />
-      <app-cta-strip />
     }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
