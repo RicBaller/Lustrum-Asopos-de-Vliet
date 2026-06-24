@@ -25,7 +25,7 @@ export class AlbumsPage {
 
   private readonly albumsState = toSignal(
     this.albumService.getAll().pipe(
-      map((albums): AlbumsState => ({ albums, error: null, loading: false })),
+      map((response): AlbumsState => ({ albums: response.items, error: null, loading: false })),
       startWith({ albums: [], error: null, loading: true } satisfies AlbumsState),
       catchError(() => of({ albums: [], error: 'De albums konden niet worden geladen.', loading: false } satisfies AlbumsState))
     ),

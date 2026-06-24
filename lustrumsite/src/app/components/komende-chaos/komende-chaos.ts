@@ -8,6 +8,7 @@ import { ActivityService } from '../../services/activity.service';
 interface ActivityState {
   activities: Activity[];
   loading: boolean;
+  hasMore: boolean;
 }
 
 interface KomendEvent {
@@ -71,6 +72,12 @@ interface KomendEvent {
               </article>
             }
           </div>
+
+          @if (hasMore()) {
+            <div class="kc-all-events">
+              <a routerLink="/activiteiten" class="kc-btn kc-btn--solid">Bekijk alle activiteiten</a>
+            </div>
+          }
         } @else {
           <div class="kc-empty">Er staan nog geen komende activiteiten in het programma.</div>
         }
@@ -279,6 +286,12 @@ interface KomendEvent {
       color: var(--on-secondary);
     }
 
+    .kc-all-events {
+      display: flex;
+      justify-content: center;
+      margin-top: 3rem;
+    }
+
     .kc-empty {
       border-radius: 2rem;
       background: rgba(255, 255, 255, 0.16);
@@ -353,18 +366,21 @@ export class KomendeChaos {
 
   private readonly activityState = toSignal(
     this.activityService.getUpcoming(3).pipe(
-      map((activities): ActivityState => ({
-        activities,
+      map((response): ActivityState => ({
+        activities: response.items,
         loading: false,
+        hasMore: response.hasMore,
       })),
       startWith({
         activities: [],
         loading: true,
+        hasMore: false,
       } satisfies ActivityState),
       catchError(() =>
         of({
           activities: [],
           loading: false,
+          hasMore: false,
         } satisfies ActivityState)
       )
     ),
@@ -372,14 +388,16 @@ export class KomendeChaos {
       initialValue: {
         activities: [],
         loading: true,
+        hasMore: false,
       },
     }
   );
 
-  readonly loading = computed(() => this.activityState().loading);
+  readonly loading = computed(() => this.activityState()?.loading ?? true);
+  readonly hasMore = computed(() => this.activityState()?.hasMore ?? false);
 
   readonly events = computed<KomendEvent[]>(() => {
-    return this.activityState().activities.map((activity) => ({
+    return (this.activityState()?.activities ?? []).map((activity) => ({
       id: activity.id,
       dateLabel: this.createDateLabel(activity),
       detailLine: this.createDetailLine(activity),

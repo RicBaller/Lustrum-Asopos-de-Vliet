@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { catchError, map, of } from 'rxjs';
+import { catchError, of } from 'rxjs';
 import { AlbumService } from '../../services/album.service';
 import { AlbumSummary } from '../../models/models';
 import { RouterLink } from '@angular/router';
@@ -22,12 +22,12 @@ import { RouterLink } from '@angular/router';
         <header class="beleef-header">
           <div class="beleef-title-group">
             <h2 class="section-title">BELEEF HET TERUG</h2>
-            <p class="beleef-sub">Blijf nog even delirisch. De drie meest recente fotoalbums van het lustrum.</p>
+            <p class="beleef-sub">Blijf nog even delirisch. Bekijk hier de drie meest recente fotoalbums van het lustrum.</p>
           </div>
         </header>
 
         <div class="memories-track">
-          @if (albums() === undefined) {
+          @if (albums() === undefined || albums() === null) {
             @for (i of [1, 2, 3]; track i) {
               <article class="memory-card memory-card--skeleton">
                 <div class="memory-img">
@@ -69,6 +69,12 @@ import { RouterLink } from '@angular/router';
             }
           }
         </div>
+
+        @if (hasMoreAlbums()) {
+          <div class="beleef-more">
+            <a routerLink="/albums" class="beleef-btn">Verder terug in de tijd</a>
+          </div>
+        }
       </div>
 
       <!-- Bottom wave into lustrum-info (both dark) -->
@@ -252,6 +258,37 @@ import { RouterLink } from '@angular/router';
       line-height: 1.2;
     }
 
+    .beleef-more {
+      display: flex;
+      justify-content: center;
+      margin-top: 3rem;
+    }
+
+    .beleef-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 2.9rem;
+      padding: 0.65rem 1.45rem;
+      border: 1.5px solid var(--primary);
+      background: transparent;
+      border-radius: var(--radius-pill);
+      color: var(--primary);
+      font-family: var(--font-body);
+      font-size: 0.75rem;
+      font-weight: 900;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: background 0.2s, color 0.2s, transform 0.2s;
+    }
+
+    .beleef-btn:hover {
+      background: var(--primary);
+      color: var(--on-primary);
+      transform: translateY(-2px);
+    }
+
     .beleef-wave-bottom {
       position: absolute;
       bottom: -2px;
@@ -301,10 +338,12 @@ import { RouterLink } from '@angular/router';
 export class Beleef {
   private readonly albumService = inject(AlbumService);
 
-  readonly albums = toSignal(
+  private readonly albumResponse = toSignal(
     this.albumService.getAll().pipe(
-      map(albums => albums.slice(-3)),
-      catchError(() => of([] as AlbumSummary[])),
+      catchError(() => of({ items: [] as AlbumSummary[], total: 0 })),
     ),
   );
+
+  readonly albums = computed(() => this.albumResponse()?.items.slice(-3));
+  readonly hasMoreAlbums = computed(() => (this.albumResponse()?.total ?? 0) > 3);
 }
