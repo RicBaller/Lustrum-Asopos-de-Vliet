@@ -160,3 +160,42 @@
   0%, 100% { opacity: 0.4; }
   50% { opacity: 1; }
 }
+
+/* ── Contact pills ──────────────────────────────────────────────── */
+
+.commissie-leden__contact {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.commissie-contact-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: var(--radius-pill);
+  background: rgba(240, 108, 48, 0.12);
+  border: 1px solid rgba(240, 108, 48, 0.25);
+  padding: 0.45rem 1rem;
+  color: var(--primary);
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  text-transform: lowercase;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+
+.commissie-contact-pill:hover {
+  background: rgba(240, 108, 48, 0.22);
+  border-color: rgba(240, 108, 48, 0.5);
+  color: var(--primary);
+}
+
+.commissie-contact-pill__icon {
+  flex-shrink: 0;
+  width: 1rem;
+  height: 1rem;
+}
