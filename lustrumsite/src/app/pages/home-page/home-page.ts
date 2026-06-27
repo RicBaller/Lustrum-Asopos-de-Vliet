@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Beleef } from '../../components/beleef/beleef';
-import { CtaStrip } from '../../components/cta-strip/cta-strip';
 import { Hero } from '../../components/hero/hero';
 import { KomendeChaos } from '../../components/komende-chaos/komende-chaos';
 import { LustrumInfo } from '../../components/lustrum-info/lustrum-info';
@@ -9,7 +8,7 @@ import { ShopTeaser } from '../../components/shop-teaser/shop-teaser';
 
 @Component({
   selector: 'app-home-page',
-  imports: [Hero, RevealSection, ShopTeaser, KomendeChaos, Beleef, LustrumInfo, CtaStrip],
+  imports: [Hero, RevealSection, ShopTeaser, KomendeChaos, Beleef, LustrumInfo],
   template: `
     <app-hero />
     <app-lustrum-info />
