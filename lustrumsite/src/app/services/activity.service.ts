@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { Activity, UpcomingActivitiesResponse } from '../models/models';
+import { Activity } from '../models/models';
 
 @Injectable({ providedIn: 'root' })
 export class ActivityService {
@@ -13,8 +13,8 @@ export class ActivityService {
     return this.http.get<Activity[]>(this.base);
   }
 
-  getUpcoming(limit = 3): Observable<UpcomingActivitiesResponse> {
-    return this.http.get<UpcomingActivitiesResponse>(`${this.base}/upcoming`, { params: { limit: String(limit) } });
+  getUpcoming(limit = 3): Observable<Activity[]> {
+    return this.http.get<Activity[]>(`${this.base}/upcoming`, { params: { limit: String(limit) } });
   }
 
   getById(id: number): Observable<Activity> {
