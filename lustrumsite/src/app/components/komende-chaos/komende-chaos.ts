@@ -71,6 +71,14 @@ interface KomendEvent {
               </article>
             }
           </div>
+
+          @if (hasMore()) {
+            <div class="kc-footer">
+              <a routerLink="/activiteiten" class="kc-btn kc-btn--more">
+                Bekijk alle activiteiten
+              </a>
+            </div>
+          }
         } @else {
           <div class="kc-empty">Er staan nog geen komende activiteiten in het programma.</div>
         }
@@ -289,6 +297,17 @@ interface KomendEvent {
       text-align: center;
     }
 
+    .kc-footer {
+      display: flex;
+      justify-content: center;
+      margin-top: 4rem;
+    }
+
+    .kc-btn--more {
+      padding: 0.75rem 2rem;
+      font-size: 0.8rem;
+    }
+
     /* ── Responsive ── */
     @media (max-width: 640px) {
       .kc-header {
@@ -352,7 +371,7 @@ export class KomendeChaos {
   });
 
   private readonly activityState = toSignal(
-    this.activityService.getUpcoming(3).pipe(
+    this.activityService.getAll().pipe(
       map((activities): ActivityState => ({
         activities,
         loading: false,
@@ -378,8 +397,20 @@ export class KomendeChaos {
 
   readonly loading = computed(() => this.activityState().loading);
 
+  private readonly upcomingActivities = computed<Activity[]>(() => {
+    const now = Date.now();
+    return this.activityState().activities
+      .filter(a => {
+        const start = this.parseDate(a.startDate);
+        return this.isValidDate(start) && start.getTime() >= now;
+      })
+      .sort((a, b) => this.toTimestamp(a.startDate) - this.toTimestamp(b.startDate));
+  });
+
+  readonly hasMore = computed(() => this.upcomingActivities().length > 3);
+
   readonly events = computed<KomendEvent[]>(() => {
-    return this.activityState().activities.map((activity) => ({
+    return this.upcomingActivities().slice(0, 3).map((activity) => ({
       id: activity.id,
       dateLabel: this.createDateLabel(activity),
       detailLine: this.createDetailLine(activity),
