@@ -80,6 +80,10 @@ export class CommissiePage implements OnDestroy {
   readonly subcommissies = computed(() => this.state().subcommissies);
   readonly ledenCount = computed(() => this.state().leden.length);
   readonly subCount = computed(() => this.state().subcommissies.length);
+  readonly ledenRijen = computed(() => {
+    const l = this.state().leden;
+    return [l.slice(0, 3), l.slice(3, 7), l.slice(7, 9), l.slice(9)].filter(r => r.length > 0);
+  });
 
   openDialog(sub: SubCommissie): void {
     if (this.dialogCloseTimeout !== null) {

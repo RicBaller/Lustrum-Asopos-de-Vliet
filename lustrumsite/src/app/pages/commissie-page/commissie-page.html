@@ -74,28 +74,32 @@
         <p>{{ message }}</p>
       </div>
     } @else {
-      <div class="leden-grid">
-        @for (lid of leden(); track lid.id) {
-          <article class="lid-card">
-            <div class="lid-card__photo-ring">
-              @if (lid.photo) {
-                <img
-                  class="lid-card__photo"
-                  [src]="lid.photo"
-                  [alt]="lid.name"
-                  loading="lazy"
-                />
-              } @else {
-                <div class="lid-card__photo-fallback">
-                  <span>{{ lid.name.charAt(0) }}</span>
+      <div class="leden-rows">
+        @for (rij of ledenRijen(); track rij[0].id) {
+          <div class="leden-rij">
+            @for (lid of rij; track lid.id) {
+              <article class="lid-card">
+                <div class="lid-card__photo-ring">
+                  @if (lid.photo) {
+                    <img
+                      class="lid-card__photo"
+                      [src]="lid.photo"
+                      [alt]="lid.name"
+                      loading="lazy"
+                    />
+                  } @else {
+                    <div class="lid-card__photo-fallback">
+                      <span>{{ lid.name.charAt(0) }}</span>
+                    </div>
+                  }
                 </div>
-              }
-            </div>
-            <div class="lid-card__label">
-              <h3 class="lid-card__name">{{ lid.name }}</h3>
-              <span class="lid-card__function">{{ lid.function }}</span>
-            </div>
-          </article>
+                <div class="lid-card__label">
+                  <h3 class="lid-card__name">{{ lid.name }}</h3>
+                  <span class="lid-card__function">{{ lid.function }}</span>
+                </div>
+              </article>
+            }
+          </div>
         }
       </div>
     }

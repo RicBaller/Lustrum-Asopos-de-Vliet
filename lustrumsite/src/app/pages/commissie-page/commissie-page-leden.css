@@ -45,13 +45,27 @@
   line-height: 1.6;
 }
 
-/* ── Leden grid — centered rows of 4 ───────────────────────────── */
+/* ── Leden grid — skeleton only ─────────────────────────────────── */
 
 .leden-grid {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 3.5rem 3rem;
+}
+
+/* ── Leden rows — 3 / 4 / 2 / 4 ────────────────────────────────── */
+
+.leden-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 3.5rem;
+}
+
+.leden-rij {
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
 }
 
 /* ── Lid card ───────────────────────────────────────────────────── */
