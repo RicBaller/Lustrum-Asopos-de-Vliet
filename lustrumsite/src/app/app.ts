@@ -4,6 +4,7 @@ import { Navbar } from './components/navbar/navbar';
 import { Footer } from './components/footer/footer';
 import { Preloader } from './components/preloader/preloader';
 import { SeoService } from './seo/seo.service';
+import { PosthogService } from './services/posthog';
 
 @Component({
   selector: 'app-root',
@@ -22,7 +23,7 @@ import { SeoService } from './seo/seo.service';
 export class App {
   private readonly seoService = inject(SeoService);
 
-  constructor() {
+  constructor(posthogService: PosthogService) {
     this.seoService.init();
   }
 }
