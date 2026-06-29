@@ -108,6 +108,10 @@
   box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5);
 }
 
+.sub-card--expanded .sub-card__visual {
+  align-self: stretch;
+}
+
 .sub-card--expanded.sub-card--collapsing {
   background: rgba(63, 0, 89, 0.35);
   box-shadow: none;
